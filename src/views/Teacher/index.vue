@@ -10,7 +10,7 @@
              menuList:[
                {url:'/TeacherMessage',label:'个人信息'},
                {url:'/TeacherCourse',label:'课程管理'},
-               {url:'/SuggestMessage',label:'建议题库管理'}
+               {url:'/TeacherSuggestLib',label:'建议题库管理'}
                ],
              title:'教师管理系统'
           }

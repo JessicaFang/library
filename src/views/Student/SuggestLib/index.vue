@@ -13,16 +13,13 @@
       <el-form-item label-width="60px" label="课程号">
         <el-input v-model="form.courseId" placeholder="请输入课程号"></el-input>
       </el-form-item>
-      <el-form-item label-width="45px" label="难度">
-        <el-select v-model="form.difficultLevel" placeholder="请选择题目难度">
-          <el-option label="较容易" value="0"></el-option>
-          <el-option label="容易" value="0.3"></el-option>
-          <el-option label="较困难" value="0.6"></el-option>
-          <el-option label="困难" value="1"></el-option>
+      <el-form-item label-width="75px" label="审核状态">
+        <el-select v-model="form.suggestState" placeholder="请选择题目难度">
+          <el-option label="待审核" value="待审核"></el-option>
+          <el-option label="未通过" value="未通过"></el-option>
+          <el-option label="未提交" value="未提交"></el-option>
+          <el-option label="已审核" value="已审核"></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label-width="60px" label="知识点">
-        <el-input v-model="form.knowledgeTitle" placeholder="请输入知识点"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSearch">查找</el-button>
@@ -45,22 +42,20 @@
 </template>
 
 <script>
-  import{ delLib }from '@/api/manager'
-  import{ exportData }from '@/api/public'
+  import {selectSuggest,selectSuggestById,delSuggest,exportSuggest,submitSuggest} from '@/api/student'
   import {tableConfig,btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
   import TableButton from '@/components/Table/tableButton'
   import tableMixin from '@/util/Mixins/tableMixins'
-  import { mapActions } from 'vuex'
+  import { mapActions,mapGetters } from 'vuex'
   export default {
     name: "index",
     data(){
       return {
         form:{
           type:'1',
-          courseId:'',
-          difficultLevel:'',
-          knowledgeTitle:'',
+          courseId:'2',
+          suggestState:''
         },
         type:'',
         tableData:[],
@@ -72,6 +67,9 @@
     components:{
       DTable,
       TableButton
+    },
+    computed:{
+      ...mapGetters(['getParams']),
     },
     mixins: [tableMixin],
     methods:{
@@ -88,6 +86,9 @@
             break;
           case 'DELETEQ':
             this.handleDeleteQClick();
+            break;
+          case 'REVIEW':
+          this.handleReviewQClick();
         }
       },
       getCloumnId(){
@@ -99,11 +100,19 @@
         return id
       },
       handleAlterQClick(){
-        var type=this.type;
-        var id=this.selectCloumn[0].id
-        const params={type:type,id:id};
-        var data={};
-         if(type=='1') {
+        if(this.selectCloumn[0].suggestState!='已审核') {
+          var type = this.type;
+          var data={};
+          var id = this.selectCloumn[0].id
+          const params = {type: type, id: id};
+          selectSuggestById(params).then(res=>{
+            if(res.success==true){
+              data=res.obj;
+              this.setQuestActions({type: type, data: data})
+              this.$router.push('/StudentAlterQ')
+            }
+          })
+          /*  if(type=='1') {
             data = {
              trueIndex: '1',
              options: [
@@ -161,49 +170,55 @@
              myQuestion: '<p>helloworld</p>',
              difficultLevel: '0.6'
            }
-         }
-        this.setQuestActions({type:type,data:data})
-        this.$router.push('/StudentAlterQ')
-      },
-      handleDeleteQClick() {
-        if(this.selectCloumn.length>0) {
-            const id=this.getCloumnId();
-            var params = {id: id, type:this.form.type};
-            delLib(params).then((res) =>{
-              if(res.success==true){
-                this.getTable();
-                this.$message({
-                  type: 'info',
-                  message: "删除成功"
-                });
-              }else{
-                this.$message({
-                  type: 'danger',
-                  message: "删除失败"
-                });
-              }
-            })
+         }*/
         }else{
           this.$message({
-            message: "请选择数据",
-            type: 'warning'
-          });
+             type:'warning',
+             message:'该题目已经提交审核'
+          })
         }
       },
-      handleExportQClick() {
-        if(this.selectCloumn.length>0) {
+      handleDeleteQClick() {
+      if(this.selectCloumn.length>0) {
           const id=this.getCloumnId();
-          var params = {id: id};
-          exportData(params).then((res) => {
+          var params = {ids: id, type:this.type};
+          delSuggest(params).then((res) =>{
+            if(res.success==true){
+              //参数识别
+              this.paramsChange();
+              this.getTable();
+              this.$message({
+                type: 'info',
+                message: "删除成功"
+              });
+            }else{
+              this.$message({
+                type: 'danger',
+                message: "删除失败"
+              });
+            }
+          })
+      }else{
+        this.$message({
+          message: "请选择数据",
+          type: 'warning'
+        });
+      }
+    },
+      handleReviewQClick() {
+        if(this.selectCloumn.length>0) {
+          var flag=true;
+          this.selectCloumn.forEach((item, index) => {
+             if(item.suggestState!='未提交'){
+               flag=false;
+             }
+          });
+          if(flag){
+          const id=this.getCloumnId();
+          var params = {ids: id,type:this.type};
+          submitSuggest(params).then((res) => {
             if (res.success == true) {
-              var blob = new Blob(res.data);
-              var a = document.createElement('a');
-              a.href = URL.createObjectURL(blob);
-              a.download = '用户列表.xlsx';
-              a.style.display = 'none';
-              document.body.appendChild(a);
-              a.click();
-              a.remove();
+              if(this.form.suggestState=='未提交')this.paramsChange();
               this.getTable();
               this.$message({
                 type: 'info',
@@ -215,7 +230,12 @@
                 message: "操作失败"
               });
             }
-          })
+          })}else{
+            this.$message({
+              type:'warning',
+              message:'只能提交未提交的数据'
+            })
+          }
         }else{
           this.$message({
             message: "请选择数据",
@@ -223,28 +243,55 @@
           });
         }
       },
+      handleExportQClick() {
+        if(this.selectCloumn.length>0) {
+          const id=this.getCloumnId();
+          var params = {ids: id,type:this.type};
+       /*   var url='http://jwuyou.ngrok.xiaomiqiu.cn/iEExl/exportLib'
+          url=url+'?type='+this.type+'&ids='+id;*/
+           exportSuggest(params).then((res) => {
+             console.log(res);
+             var blob = new Blob(res.obj);
+             var a=document.createElement('a');
+             a.href=URL.createObjectURL(blob);
+             a.download='题目信息.xlsx';
+             a.style.display='none';
+             document.body.appendChild(a);
+             a.click();
+             a.remove();
+            if (res.success == true) {
+              console.log(res);
+              this.getTable();
+              this.$message({
+                type: 'info',
+                message: "操作成功"
+              });
+            } else {
+              this.$message({
+                type: 'danger',
+                message: "操作失败"
+              });
+            }
+          })}else{
+          this.$message({
+            message: "请选择数据",
+            type: 'warning'
+          });
+        }
+      },
       onSearch(){
+        this.defaultParams={page:1,rows:10};
         this.getTable();
       },
       getTable(){
-        this.tableData=[
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-        ]
-        this.total=40;
-        const params=Object.assign({},this.defaultParams,this.form);
-        this.type=this.form.type;
-        //this.defaultParams多少页多少行
-      /*  const params=Object.assign({},this.defaultParams,{roleLevel:this.roleLevel,status:'0'},this.form);
-        getMessage(params).then(res=>{
+        const params=Object.assign({},this.defaultParams,this.form,{sno:this.getParams.username});
+        selectSuggest(params).then(res=>{
           if(res.success==true){
-            this.tableData=translate(res.obj);
-            this.total=res.total
+            this.tableData=res.obj;
+            this.total=res.total;
+            this.type=this.form.type;
           }
-        })*/
+        })
       },
       init(){
         this.table=tableConfig;

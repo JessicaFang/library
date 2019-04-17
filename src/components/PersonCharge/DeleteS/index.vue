@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import{ addKnowledge,deleteKnowledge,alterKnowledge }from '@/api/manager'
+  import{ delCourseStudent  }from '@/api/public'
   import {tableConfig,btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
   import TableButton from '@/components/Table/tableButton'
@@ -57,7 +57,7 @@
     methods:{
       handleClick(event) {
         switch (event) {
-          case 'DELETETEACHER':
+          case 'DELETESTUDENT':
             this.handleDeleteTeacherClick();
             break;
           case 'GOBACK':
@@ -67,35 +67,35 @@
       },
       handleDeleteTeacherClick() {
         if(this.selectCloumn.length>0) {
-          this.$confirm('是否撤销负责人', "提示", {
+          this.$confirm('是否删除学生', "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: 'warning'
           }).then(() => {
             var no = [];
             this.selectCloumn.forEach((item, index) => {
-              no[index] = item.tno;
+              no[index] = item.sno;
             });
             no=no.toString();
             var params = {courseId:this.courseId,tnos:no};
-            deleteKnowledge(params).then((res) =>{
+            delCourseStudent(params).then((res) =>{
               if(res.success==true){
                 this.getTable();
                 this.$message({
                   type: 'info',
-                  message: "撤销成功"
+                  message: "删除成功"
                 });
               }else{
                 this.$message({
                   type: 'danger',
-                  message: "撤销失败"
+                  message: "删除失败"
                 });
               }
             })
           }).catch(() => {
             this.$message({
               type: 'info',
-              message: "取消撤销"
+              message: "取消删除"
             })
           })
         }else{
@@ -108,24 +108,22 @@
       handleGoBackClick(){
         this.$router.go(-1);
       },
-      onSearch(){
-        this.getTable();
-      },
       getTable(){
         //可以根据名字进行查询
         const params=Object.assign({},this.defaultParams,{courseId:this.courseId},this.form);
         const obj=[
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
+
         ];
         this.tableData=obj;
         this.total=40;

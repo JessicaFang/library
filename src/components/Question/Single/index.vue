@@ -52,9 +52,7 @@
         },
         check(){
           var message='';
-          console.log(this.questionForm);
           if(this.validate(this.questionForm.singleQuestion)){
-            console.log(this.questionForm.options)
             for(var i=0; i<4;i++){
               if(!this.validate(this.questionForm.options[i])){
                 message="请进行选项的填写";

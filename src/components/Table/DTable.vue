@@ -17,6 +17,9 @@
       :key="index"
       :prop="item.prop"
       :label="item.label">
+      <template  slot-scope="scope">
+        <div v-html="scope.row[item.prop]"></div>
+      </template>
     </el-table-column>
   </el-table>
     <pagination class="bottom" :total="total"  @pageMesChange ='pageMesChange' ></pagination>

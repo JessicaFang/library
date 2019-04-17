@@ -2,9 +2,11 @@
   <div>
     <el-card v-for="(item,index1) in list" :key="index1">
     <div class="title">题目</div>
-      {{item.question}}
+      <div v-html="item.question"></div>
     <div class="blank">答案</div>
-       {{item.answer}}
+       <div class="answer" v-html="item.answer"></div>
+    <div class="blank" v-show="rules">评分规则</div>
+       <div class="answer" v-html="item.rules"></div>
      <div v-show="item.errorMsg">
         <div class="error">输入错误 ：</div>
         {{item.errorMsg}}
@@ -25,11 +27,20 @@
       obj:{
         type:Array,
         default:[],
+      },
+      flag:{
+        type:Boolean,
+        default:false,
       }
     },
     watch:{
       obj:function (obj) {
         this.list=_.cloneDeep(obj);
+      }
+    },
+    beforeMount(){
+      if(this.flag){
+        this.list=_.cloneDeep(this.obj);
       }
     }
   }

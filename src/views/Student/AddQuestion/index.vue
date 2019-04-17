@@ -76,6 +76,7 @@
         this.$router.push('/StudentImport')
       },
       onSearch(){
+        this.defaultParams={page:1,rows:10};
         this.getTable();
       },
       getTable(){

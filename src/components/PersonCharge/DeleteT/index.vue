@@ -4,9 +4,6 @@
       <el-form-item label-width="45px" label="姓名">
         <el-input v-model="form.username" auto-complete="text"></el-input>
       </el-form-item>
-      <el-form-item label-width="45px" label="职称" >
-        <el-input v-model="form.classOrTitle" auto-complete="text"></el-input>
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSearch">查找</el-button>
       </el-form-item>
@@ -28,9 +25,7 @@
 </template>
 
 <script>
-  import KnowledgeMessage from '@/components/Message/KnowledgeMessage'
-  import {translate} from "@/util/translate";
-  import{ addKnowledge,deleteKnowledge,alterKnowledge }from '@/api/manager'
+  import{ delCourseTeacher }from '@/api/public'
   import {tableConfig,btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
   import TableButton from '@/components/Table/tableButton'
@@ -49,16 +44,11 @@
         tableData:[],
         table:{},
         total:0,
-        dialogTitle:'',
-        dialogVisible:false,
-        knowForm:{},
-        updateMessage:'',
       }
     },
     components:{
       DTable,
       TableButton,
-      KnowledgeMessage
     },
     mixins: [tableMixin],
     computed: {
@@ -67,17 +57,17 @@
     methods:{
       handleClick(event) {
         switch (event) {
-          case 'ADDTEACHER':
-            this.handleAddTeacherClick();
+          case 'DELETETEACHER':
+            this.handleDeleteTeacherClick();
             break;
           case 'GOBACK':
             this.handleGoBackClick();
             break;
         }
       },
-      handleAddTeacherClick() {
+      handleDeleteTeacherClick() {
         if(this.selectCloumn.length>0) {
-          this.$confirm('是否添加负责人', "提示", {
+          this.$confirm('是否撤销负责人', "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: 'warning'
@@ -88,24 +78,24 @@
             });
             no=no.toString();
             var params = {courseId:this.courseId,tnos:no};
-            deleteKnowledge(params).then((res) =>{
+            delCourseTeacher(params).then((res) =>{
               if(res.success==true){
                 this.getTable();
                 this.$message({
                   type: 'info',
-                  message: "添加成功"
+                  message: "撤销成功"
                 });
               }else{
                 this.$message({
                   type: 'danger',
-                  message: "添加失败"
+                  message: "撤销失败"
                 });
               }
             })
           }).catch(() => {
             this.$message({
               type: 'info',
-              message: "取消添加"
+              message: "取消撤销"
             })
           })
         }else{
@@ -118,32 +108,30 @@
       handleGoBackClick(){
         this.$router.go(-1);
       },
-      onSearch(){
-        this.getTable();
-      },
       getTable(){
-        //this.defaultParams多少页多少行
-        //只需要还未被选择的学生
-        const params=Object.assign({},this.defaultParams,{roleLevel:'2',status:'1'},this.form);
+        //可以根据名字进行查询
+        const params=Object.assign({},this.defaultParams,{courseId:this.courseId},this.form);
         const obj=[
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        ]
-        this.tableData=translate(obj);
-        this.total=4
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
+          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',tno:'001',name:'小熊'},
+        ];
+        this.tableData=obj;
+        this.total=40;
         /*  getMessage(params).then(res=>{
-            if(res.success==true){
-              this.tableData=translate(res.obj);
-              this.total=res.total
-            }
-          })*/
+          if(res.success==true){
+            this.tableData=translate(res.obj);
+            this.total=res.total
+          }
+        })*/
       },
       init(){
         this.courseId=this.getId;

@@ -5,25 +5,32 @@ import Register from '@/views/Main/Register'
 import Reset from '@/views/Main/Reset'
 import Teacher from '@/views/Teacher'
 import TeacherCourse from '@/views/Teacher/Course'
+import TeacherKnowledge from '@/components/Knowledge'
+import TeacherChoiceS from '@/components/PersonCharge/ChoiceS'
+import TeacherDeleteS from '@/components/PersonCharge/DeleteS'
+import TeacherChargeC from '@/views/Teacher/Course/ChargeLib'
+import TeacherAlterQ from '@/components/AlterQuestion'
+import TeacherImport from '@/components/Export';
+import TeacherSuggestLib from '@/views/Teacher/SuggestLib';
 import TeacherMessage from '@/views/Teacher/Message'
 import Student from  '@/views/Student'
 import StudentMessage from  '@/views/Student/Message'
 import StudentAddQuest from  '@/views/Student/AddQuestion'
 import SuggestLib from  '@/views/Student/SuggestLib'
-import StudentAlterQ from  '@/views/Student/SuggestLib/AlterQ'
+import StudentAlterQ from  '@/components/AlterQuestion'
 import Manager from '@/views/Manager'
 import ManagerReviewST from '@/views/Manager/Review'
 import ManagerReviewM from '@/views/Manager/ManagerReview'
 import ManagerTeacher from '@/views/Manager/Teacher'
 import ManagerStudent from '@/views/Manager/Student'
 import ManagerCourse from '@/views/Manager/Course'
-import Knowledge from '@/views/Manager/Course/Knowledge'
-import ChoiceT from '@/views/Manager/Course/ChoiceT'
-import DeleteT from '@/views/Manager/Course/DeleteT'
-import ChoiceS from '@/views/Manager/Course/ChoiceS'
-import DeleteS from '@/views/Manager/Course/DeleteS'
+import Knowledge from '@/components/Knowledge'
+import ChoiceT from '@/components/PersonCharge/ChoiceT'
+import DeleteT from '@/components/PersonCharge/DeleteT'
+import ChoiceS from '@/components/PersonCharge/ChoiceS'
+import DeleteS from '@/components/PersonCharge/DeleteS'
 import ManagerQuestLib from '@/views/Manager/QuestionLib'
-import ALTERQ from '@/views/Manager/QuestionLib/AlterQ'
+import ALTERQ from '@/components/AlterQuestion'
 import ManagerExport from '@/components/Export';
 import ManagerMessage from '@/views/Manager/Message'
 import StudentImport from '@/components/Export';
@@ -54,6 +61,13 @@ export default new Router({
       children: [    //嵌套路由
         { path: '/TeacherMessage',name:'TeacherCourse', component: TeacherMessage },
         { path: '/TeacherCourse',name:'TeacherMessage', component: TeacherCourse },
+        { path: '/TeacherKnowledge',name:'TeacherKnowledge', component: TeacherKnowledge },
+        { path: '/TeacherDeleteS',name:'TeacherDeleteS', component: TeacherDeleteS },
+        { path: '/TeacherChoiceS',name:'TeacherChoiceS', component: TeacherChoiceS },
+        { path: '/TeacherImport',name:'TeacherImport', component: TeacherImport },
+        { path: '/TeacherChargeC',name:'TeacherChargeC', component: TeacherChargeC },
+        { path: '/TeacherAlterQ',name:'TeacherAlterQ', component: TeacherAlterQ },
+        { path: '/TeacherSuggestLib',name:'TeacherSuggestLib', component: TeacherSuggestLib },
       ]
     },
     {

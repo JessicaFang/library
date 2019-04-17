@@ -4,7 +4,7 @@
       <el-form-item label-width="45px" label="姓名">
         <el-input v-model="form.username" auto-complete="text"></el-input>
       </el-form-item>
-      <el-form-item label-width="45px" label="班级" >
+      <el-form-item label-width="45px" label="职称" >
         <el-input v-model="form.classOrTitle" auto-complete="text"></el-input>
       </el-form-item>
       <el-form-item>
@@ -28,9 +28,9 @@
 </template>
 
 <script>
-  import KnowledgeMessage from '@/components/Message/KnowledgeMessage'
   import {translate} from "@/util/translate";
-  import{ addKnowledge,deleteKnowledge,alterKnowledge }from '@/api/manager'
+  import KnowledgeMessage from '@/components/Message/KnowledgeMessage'
+  import {addCourseTeacher} from '@/api/public'
   import {tableConfig,btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
   import TableButton from '@/components/Table/tableButton'
@@ -67,28 +67,28 @@
     methods:{
       handleClick(event) {
         switch (event) {
-          case 'ADDSTUDENT':
-            this.handleAddStudentClick();
+          case 'ADDTEACHER':
+            this.handleAddTeacherClick();
             break;
           case 'GOBACK':
             this.handleGoBackClick();
             break;
         }
       },
-      handleAddStudentClick() {
+      handleAddTeacherClick() {
         if(this.selectCloumn.length>0) {
-          this.$confirm('是否添加学生', "提示", {
+          this.$confirm('是否添加负责人', "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: 'warning'
           }).then(() => {
             var no = [];
             this.selectCloumn.forEach((item, index) => {
-              no[index] = item.sno;
+              no[index] = item.tno;
             });
             no=no.toString();
             var params = {courseId:this.courseId,tnos:no};
-            deleteKnowledge(params).then((res) =>{
+            addCourseTeacher(params).then((res) =>{
               if(res.success==true){
                 this.getTable();
                 this.$message({
@@ -117,9 +117,6 @@
       },
       handleGoBackClick(){
         this.$router.go(-1);
-      },
-      onSearch(){
-        this.getTable();
       },
       getTable(){
         //this.defaultParams多少页多少行

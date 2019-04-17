@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :inline="true" :model="form" class="form">
+    <el-form :inline="true" :model="form" class="form" v-show="showForm">
       <el-form-item label="题目难度">
         <el-select v-model="form.difficultLevel" placeholder="请选择题目难度">
           <el-option label="较容易" value="0"></el-option>
@@ -30,6 +30,8 @@
 
 <script>
   import { saveLib } from '@/api/manager'
+  import { saveSuggest } from "@/api/student";
+  import { reset }  from '@/util/reset'
   import Single from  '@/components/Question/Single'
   import Double from  '@/components/Question/Double'
   import blankFill from  '@/components/Question/blankFill'
@@ -40,17 +42,16 @@
     name: "HandExport",
     data(){
       return {
-        form:{
-          difficultLevel:'',
-          knowledgeTitle:'',
-        },
+        form:{},
         template:'Single',
         questionMes:{},
-        typeFlag:false,
+        roleLevel:'',
+        submitFunction:'',
+        showForm:true,
       }
     },
     computed: {
-      ...mapGetters(['getQuestMes'])
+      ...mapGetters(['getQuestMes','getParams'])
     },
     components:{
       Single,
@@ -82,18 +83,36 @@
       submit(data){
         const Message=this.getQuestMes.data;
         const params=Object.assign({},{id:Message.id,courseId:Message.courseId,type:this.getQuestMes.type},this.form,data);
-      /*  saveLib(params);*/
+        this.submitFunction(params).then(res=>{
+           if(res.success==true){
+             reset(this.getQuestMes.type,this.$refs.question);
+             this.$message({
+               type:'success',
+               message:'修改题目成功'
+             })
+             this.$router.go(-1);
+           }else{
+             this.$message({
+               type:'warning',
+               message:'修改题目失败'
+             })
+          }
+        })
       }
     },
     beforeMount(){
-      console.log(this.getQuestMes);
-      this.form.difficultLevel=this.getQuestMes.data.difficultLevel;
-      this.form.knowledgeTitle=this.getQuestMes.data.knowledgeTitle;
+      console.log("hello")
+      this.roleLevel=this.getParams.roleLevel;
+      if(this.roleLevel=='3'){
+        this.submitFunction=saveSuggest;
+        this.showForm=false;
+      }else{
+        this.form.difficultLevel=this.getQuestMes.data.difficultLevel;
+        this.form.knowledgeTitle=this.getQuestMes.data.knowledgeTitle;
+        this.submitFunction=saveLib;
+      }
       this.questionMes=this.getQuestMes.data;
       this.typeChange();
-      /*  test().then(res=>{
-          console.log(res);
-        })*/
     }
   }
 </script>

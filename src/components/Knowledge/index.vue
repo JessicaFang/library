@@ -118,11 +118,6 @@
       },
       handleDeleteClick() {
         if(this.selectCloumn.length>0) {
-          this.$confirm('是否删除知识点', "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: 'warning'
-          }).then(() => {
             var know = [];
             this.selectCloumn.forEach((item, index) => {
               know[index] = item.knowledgeTitle;
@@ -131,6 +126,7 @@
             var params = {courseId:this.courseId,knowledgeTitle:know};
             deleteKnowledge(params).then((res) =>{
               if(res.success==true){
+                this.paramsChange();
                 this.getTable();
                 this.$message({
                   type: 'info',
@@ -138,17 +134,11 @@
                 });
               }else{
                 this.$message({
-                  type: 'danger',
+                  type: 'warning',
                   message: "删除失败"
                 });
               }
             })
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: "取消删除"
-            })
-          })
         }else{
           this.$message({
             message: "请选择数据",
@@ -185,11 +175,7 @@
       handleGoBackClick(){
         this.$router.go(-1);
       },
-      onSearch(){
-        this.getTable();
-      },
       getTable(){
-        //this.defaultParams多少页多少行
         const params=Object.assign({},this.defaultParams,{courseId:this.courseId,knowledgeTitle:this.form.knowledgeTitle});
         this.tableData=[
           {courseId:'1',knowledgeTitle:'哈哈哈哈'},
@@ -205,12 +191,6 @@
           {courseId:'1',knowledgeTitle:'哈哈哈哈'},
         ];
         this.total=40;
-        /*  getMessage(params).then(res=>{
-            if(res.success==true){
-              this.tableData=translate(res.obj);
-              this.total=res.total
-            }
-          })*/
       },
       init(){
         this.courseId=this.getId;

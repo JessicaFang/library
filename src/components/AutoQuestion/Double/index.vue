@@ -2,11 +2,11 @@
   <div>
     <el-card  v-for="(item,index1) in list" :key="index1">
     <div class="title">题目</div>
-      {{item.question}}
+      <div v-html="item.question"></div>
       <div class="double">答案</div>
       <div v-for="(opt,index2) in item.options" :key="index2" class="answers">
-       <input disabled v-model="item.answer" type="checkbox" :value="index2" />
-       {{opt}}
+        <input disabled v-model="item.answer" type="checkbox" :value="index2" />
+        <div v-html="opt"></div>
     </div>
       <div v-show="item.errorMsg">
         <div class="error">输入错误 ：</div>
@@ -30,10 +30,19 @@
       obj: {
         type: Array,
         default: [],
+      },
+      flag:{
+        type:Boolean,
+        default:false,
       }
     },
     watch:{
       obj:function (obj) {
+        this.init(obj);
+      }
+    },
+    methods:{
+      init(obj){
         this.list=_.cloneDeep(obj);
         for (var i = 0; i < this.list.length; i++) {
           var answer=this.list[i].answer.split("");
@@ -45,6 +54,11 @@
         }
       }
     },
+    beforeMount(){
+      if(this.flag){
+        this.init(this.obj);
+      }
+    }
   }
 
 
@@ -53,7 +67,9 @@
 
 <style scoped>
   .answers{
-    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
   }
   .title,.double,.error{
     width: 60px;

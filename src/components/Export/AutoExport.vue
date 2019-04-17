@@ -2,7 +2,7 @@
   <div>
     <el-form :inline="true" :model="form" class="form">
       <el-form-item label="题目类型">
-        <el-select v-model="form.type"  placeholder="请选择题目难度">
+        <el-select v-model="form.type" >
           <el-option label="单选题" value="1"></el-option>
           <el-option label="多选题" value="2"></el-option>
           <el-option label="判断题" value="3"></el-option>
@@ -10,16 +10,16 @@
           <el-option label="简答题" value="5"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="题目难度">
-        <el-select v-model="form.diffcultLevel" placeholder="请选择题目难度">
+      <el-form-item label="题目难度" v-show="formShow">
+        <el-select v-model="form.difficultLevel" >
           <el-option label="较容易" value="0"></el-option>
           <el-option label="容易" value="0.3"></el-option>
           <el-option label="较困难" value="0.6"></el-option>
           <el-option label="困难" value="1"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="知识点">
-        <el-select v-model="form.knowledgeTitle" placeholder="请选择题目难度">
+      <el-form-item label="知识点"  v-show="formShow">
+        <el-select v-model="form.knowledgeTitle">
           <el-option label="属性" value="属性"></el-option>
           <el-option label="物理" value="物理"></el-option>
           <el-option label="化学" value="化学"></el-option>
@@ -37,7 +37,6 @@
           <div><a @click='displayRules'  href="#">规则展示</a>&nbsp;&nbsp;<a @click="displayExample" href="#">范例展示</a></div>
         </div>
         <textarea v-model="inputContent" class="input"></textarea>
-   <!--      <editor-bar v-model="inputContent" class="input" :showToolBar="showToolBar"  @htmlChange="val=>change(val)"></editor-bar>-->
       </div>
        <div class="center"></div>
        <div class="right"  v-loading="loading">
@@ -45,7 +44,6 @@
          <div class="rightContent">
            <component
              :obj="obj"
-             :config="form"
              :is="template"
            ></component>
          </div>
@@ -79,7 +77,7 @@
     data(){
       return {
         form:{
-          diffcultLevel:'',
+          difficultLevel:'',
           type:'1',
           knowledgeTitle:'',
           courseId:"",
@@ -93,6 +91,7 @@
         dialogContent:'',
         template:'Single',
         obj:[],
+        formShow:true,
       /*  obj:[
            {
               question:'1.jaisohidfdifhdifhdifhd',
@@ -253,9 +252,9 @@
           const params=Object.assign({},{type:this.form.type,txt:this.inputContent});
            libFormat(params).then(res=>{
              this.obj=res.obj;
+             this.typeChange();
              if(res.success==true){
               this.type=this.form.type,
-              this.typeChange();
               this.loading=false;
               if(res.msg.length!=0){
                 this.disable=false;
@@ -277,18 +276,31 @@
         }
         var params=Object.assign({},form,{obj:this.obj})
         if(this.getParams.roleLevel=='3'){
+          delete params.difficultLevel;
+          delete params.knowledgeTitle;
           params.sno=this.getParams.username
         }
         batAddSAMLib(params).then(res=>{
           if(res.success==true){
             this.disable=true;
             this.inputContent='';
+            this.obj=[];
+            this.$message({
+              type:'success',
+              message:'上传题目成功',
+            })
+          }else{
+            this.$message({
+              type:'warning',
+              message:res.msg
+            })
           }
         })
       }
     },
     mounted(){
       this.form.courseId=this.getId;
+      this.formShow=this.getParams.roleLevel=='3'?false:true;
       this.typeChange();
     }
   }

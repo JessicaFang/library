@@ -28,12 +28,49 @@ export function test(data={}) {
 
 export function saveSuggest(data={}) {
   return request({
-    url: '/lib/saveSuggest',
+    url: '/suggest/saveSuggest',
     method: 'post',
     data
   });
 }
+export function selectSuggest(data={}) {
+  return request({
+    url: '/suggest/selectSuggest',
+    method: 'post',
+    data
+  });
+}
+export function selectSuggestById(data={}) {
+  return request({
+    url: '/suggest/selectSuggestById',
+    method: 'post',
+    data
+  });
+}
+export function delSuggest(params) {
+  return request({
+    url: '/suggest/delSuggest',
+    method: 'post',
+    params
+  });
+}
 
+//exportSuggest还没有搞定的数据导出接口
+export function exportSuggest(params={}) {
+  return request({
+    url: '/iEExl/exportLib',
+    method: 'post',
+    params
+  });
+}
+
+export function submitSuggest(params) {
+  return request({
+    url: '/suggest/submitSuggest',
+    method: 'post',
+    params
+  });
+}
 
 
 

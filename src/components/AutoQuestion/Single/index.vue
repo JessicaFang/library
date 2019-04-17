@@ -2,11 +2,11 @@
   <div>
    <el-card v-for="(item,index1) in list" :key="index1">
      <div class="title">题目</div>
-      {{item.question}}
+      <div v-html="item.question"></div>
      <div class="single">答案</div>
      <div v-for="(opt,index2) in item.options" :key="index2" class="answers">
         <el-radio v-model="item.answer" disabled  :label="index2"></el-radio>
-        {{opt}}
+        <div  v-html="opt"></div>
      </div>
      <div v-show="item.errorMsg">
         <div class="error">输入错误 ：</div>
@@ -28,21 +28,34 @@
         obj:{
           type:Array,
           default:[],
+        } ,
+        flag:{
+          type:Boolean,
+          default:false,
         }
       },
       watch:{
         obj:function (obj) {
-          this.list=_.cloneDeep(obj);
-          for(var i=0;i<this.list.length;i++){
-            var answer=this.list[i].answer;
-            if(answer){
-              this.list[i].answer=answer.charCodeAt(0)-65;
+          this.init(obj);
+        }
+      },
+      methods:{
+        init(obj) {
+          this.list = _.cloneDeep(obj);
+          for (var i = 0; i < this.list.length; i++) {
+            var answer = this.list[i].answer;
+            if (answer) {
+              this.list[i].answer = answer.charCodeAt(0) - 65;
             }
           }
           console.log(this.list);
         }
       },
-
+      beforeMount(){
+        if(this.flag) {
+          this.init(this.obj)
+        }
+      }
     }
 
 
@@ -73,4 +86,9 @@
  .single{
    margin-top: 10px;
  }
+  .answers{
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+  }
 </style>

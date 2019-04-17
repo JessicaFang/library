@@ -3,7 +3,7 @@
     <el-form-item label="课程号" prop="courseId" >
       <el-input v-model="form.courseId" auto-complete="text"disabled></el-input>
     </el-form-item>
-    <el-form-item  label="课程名"  prop="courseName">
+    <el-form-item  label="课程名"  prop="knowledgeTitle">
       <el-input v-model="form.knowledgeTitle" auto-complete="text"></el-input>
     </el-form-item>
   </el-form>
@@ -14,13 +14,13 @@
     name: "index",
     props:{
       myForm:Array,
-      id:String
+      id:Number
     },
     data() {
       return {
         form: {},
         rules: {
-          courseName: [{required: true, message: '请输入知识点', trigger: 'change'}],
+          knowledgeTitle: [{required: true, message: '请输入知识点', trigger: 'change'}],
         }
       }
     },
