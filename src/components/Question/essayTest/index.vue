@@ -72,7 +72,6 @@
       },
       onSubmit(){
         var message=this.check();
-        console.log(this.questionForm)
         if (message.length!=0){
           this.$message({
             message:message,

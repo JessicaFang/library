@@ -4,29 +4,29 @@
     <editor-bar v-model="questionForm.blankQuestion" @htmlChange="val=>change(val,'blankQuestion')"></editor-bar>
     <div class="blank">填空</div>
     <!--渲染时候的更新问题，v-for的时候数据得到更新，但是questioForm.option进行变化而v-for没有渲染，是得不到数据的-->
-     <div  class="blankFill" v-for="(item,index) in list">
+    <div  class="blankFill" v-for="(item,index) in list">
       <span>{{index+1}}、</span>
-         <!-- <editor-bar
-            :index="index"
-            :valueChange="flag"
-            @endChange="flagChange"
-            v-model="questionForm.options[index]"
-            @htmlChange="val=>change(val,'options',index)">
-          </editor-bar>-->
-       <div class="blankDiv">
-         <el-tag
-           class="tag"
-           :key="tag"
-           v-for="(tag,indexTag) in questionForm.blankAnswer[index]"
-           closable
-           @close="handleClose(index,indexTag)">
-           {{tag}}
-         </el-tag>
-          <el-input  placeholder="请输入填空内容" class="content"  v-model="blankInput[index]" @keyup.enter.native="havePress(index)"></el-input>
-       </div>
+      <!-- <editor-bar
+         :index="index"
+         :valueChange="flag"
+         @endChange="flagChange"
+         v-model="questionForm.options[index]"
+         @htmlChange="val=>change(val,'options',index)">
+       </editor-bar>-->
+      <div class="blankDiv">
+        <el-tag
+          class="tag"
+          :key="tag"
+          v-for="(tag,indexTag) in questionForm.blankAnswer[index]"
+          closable
+          @close="handleClose(index,indexTag)">
+          {{tag}}
+        </el-tag>
+        <el-input  placeholder="请输入填空内容" class="content"  v-model="blankInput[index]" @keyup.enter.native="havePress(index)"></el-input>
+      </div>
       <el-button v-show="index>0"  @click="deleteBlank(index)" icon="el-icon-close"></el-button>
     </div>
-     <div class="addBlank"><el-button type="primary"  @click="addBlank">增加一个填空</el-button></div>
+    <div class="addBlank"><el-button type="primary"  @click="addBlank">增加一个填空</el-button></div>
     <div class="bottom">
       <el-button class="button" type="primary" @click="onSubmit">提交</el-button>
     </div>
@@ -69,10 +69,9 @@
       },
       check() {
         var message = '';
-        if (validate(this.questionForm.blankQuestion)) {
+        if (this.validate(this.questionForm.blankQuestion)) {
           for (var i = 0; i < this.list; i++) {
-            for(var j = 0; j < this.questionForm.blankAnswer[i]; j++)
-              if (this.questionForm.blankAnswer[i][j].trim() != '') {
+            if(this.questionForm.blankAnswer[i]&&this.questionForm.blankAnswer[i].length==0){
               message = "请进行选项的填写";
               return message;
             }
@@ -91,17 +90,20 @@
           });
         } else {
           this.list++;
-          this.questionForm.blankAnswer.push([]);
+          this.blankInput[this.list-1]='';
+          var  temp=this.questionForm.blankAnswer;
+          temp.push([]);
+          this.$set(this.questionForm,'blankAnswer',temp)
         }
       },
       deleteBlank(index) {
-        console.log(this.questionForm.blankAnswer)
-        this.questionForm.blankAnswer.splice(index, 1);
+        this.blankInput.splice(index,1);
+        var  temp=this.questionForm.blankAnswer;
+        temp.splice(index, 1);
+        this.$set(this.questionForm,'blankAnswer',temp);
         this.$nextTick(() => {
           this.list--;
-         /* this.questionForm.options.pop();*/
         })
-        //一旦数据有变化，一定要更新list ,最简单粗暴的方法是list++ list--
       },
       blankCheck() {
         this.blankInput.forEach((item, index) => {
@@ -130,7 +132,6 @@
       onSubmit() {
         this.blankCheck();
         var message = this.check();
-        console.log(this.questionForm)
         if (message.length != 0) {
           this.$message({
             message: message,
@@ -162,7 +163,7 @@
   .blankDiv{
     border: 1px solid #dcdfe6;
     margin-bottom: 10px;
-   margin-right: 10px;
+    margin-right: 10px;
     width: calc(100% - 92px);
     min-height: 50px;
   }

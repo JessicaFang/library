@@ -23,13 +23,6 @@ export function importData(data) {
     data
   });
 }
-export function exportData(data) {
-  return request({
-    url: '/user/updateUserInfo',
-    method: 'post',
-    data
-  });
-}
 export function updateData(data) {
   return request({
     url: '/user/updateUserInfo',
@@ -90,7 +83,7 @@ export function alterKnowledge(data) {
 
 export function saveLib(data) {
   return request({
-    url: '/user/updateUserInfo',
+    url: '/lib/saveLib',
     method: 'post',
     data
   });
@@ -102,5 +95,29 @@ export function delLib(data) {
     data
   });
 }
+//导出题目信息
+export function exportData(data) {
+  return request({
+    url: '/lib/batAddSAMLib',
+    method: 'post',
+    data
+  });
+}
 
-
+//查看所有题目
+export function selectLib(data) {
+  return request({
+    url: '/lib/selectLib',
+    method: 'post',
+    data
+  });
+}
+//todo
+//查看单道题目
+export function selectLibById(data) {
+  return request({
+    url: '/lib/selectLibById',
+    method: 'post',
+    data
+  });
+}

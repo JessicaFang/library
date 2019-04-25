@@ -3,7 +3,8 @@
     <div class="top">
       <h3>{{title}}</h3>
       <div class="topRight">
-        <span>欢迎你：{{getParams.username}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>欢迎你：{{getParams.username}}</span>&nbsp;&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;
+        <span @click="quit" class="quit">退出</span>&nbsp;&nbsp;&nbsp;&nbsp;
         <img :src="main" class="img" @click="uploadImg">
         <input @change="addImg"  style="display: none" type="file" ref="img" name="image" accept="image/x-png,image/gif,image/jpeg,image/bmp"/>
       </div>
@@ -96,6 +97,9 @@
           }
           return new Blob([u8arr], {type:mime});
          },
+         quit(){
+           //退出登录
+         }
        },
        beforeMount(){
 
@@ -146,5 +150,10 @@
     width: calc(100% - 200px);
     max-height: calc( 100% - 40px);
     overflow: auto;
+  }
+  .quit{
+    color: white;
+    text-decoration: underline;
+    cursor: pointer;
   }
 </style>

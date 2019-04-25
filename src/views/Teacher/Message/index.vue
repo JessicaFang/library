@@ -25,11 +25,9 @@
     },
     beforeMount(){
       this.params=this.getParams;
-      console.log(this.params);
       getMessage(this.params).then(res=>{
         if(res.success===true){
           this.myForm=translate(res.obj);
-          console.log(this.myForm)
         }
       })
     }

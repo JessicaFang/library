@@ -29,10 +29,45 @@ export function batAddSAMLib(data) {
     data
   });
 }
-export function exportData(data) {
+
+export function upload(data) {
   return request({
-    url: '/lib/batAddSAMLib',
+    url: '/editor/upload',
     method: 'post',
     data
   });
 }
+
+//为课程添加学生
+export function addCourseStudent(params) {
+  return request({
+    url: '/courser/addCourseStudent',
+    method: 'get',
+    params
+  });
+}
+//为课程添加老师
+export function addCourseTeacher(params) {
+  return request({
+    url: '/courser/addCourseTeacher',
+    method: 'get',
+    params
+  });
+}
+//删除课程下的学生
+export function delCourseStudent(params) {
+  return request({
+    url: '/courser/delCourseStudent',
+    method: 'get',
+    params
+  });
+}
+//删除课程下的老师
+export function delCourseTeacher(params) {
+  return request({
+    url: '/courser/delCourseTeacher',
+    method: 'get',
+    params
+  });
+}
+

@@ -6,6 +6,7 @@
 </template>
 
 <script>
+     import {upload} from '@/api/public'
      import E from 'wangeditor';
      export default {
       name: "editorBar",
@@ -52,27 +53,33 @@
            //定义图片上传的地址
            this.editor.customConfig.uploadImgShowBase64 = true;
            this.editor.customConfig.showLinkImg=false;
-           this.editor.customConfig.uploadImgServer = 'http://47.106.198.122/api/CanteenAdmin/CanteenManagement/UploadImage'// 配置服务器端地址
-           this.editor.customConfig.uploadImgMaxSize = 2 * 1024 * 1024 // 将图片大小限制为 2M
+           this.editor.customConfig.withCredentials = true;
+           this.editor.customConfig.uploadImgParamsWithUrl = true;
+           this.editor.customConfig.uploadImgMaxSize = 100* 1024  // 将图片大小限制为 2M
+           this.editor.customConfig.uploadImgHeaders = {
+             'Accept': 'text/x-json',
+             'Access-Control-Allow-Origin':'*',
+           }
+           this.editor.customConfig.uploadFileName = 'files';
            this.editor.customConfig.uploadImgMaxLength = 6 // 限制一次最多上传 3 张图片
-           this.editor.customConfig.uploadImgTimeout = 3 * 60 * 1000 // 设置超时时间
+           this.editor.customConfig.uploadImgTimeout = 3 * 60 * 10000// 设置超时时间
            this.editor.customConfig.debugger = true ;
            this.editor.customConfig.zIndex = 300;
-
-
-           //解决跨域上传服务器的问题
-          /* this.editor.customConfig.customUploadImg = async (files, insert) => {
-             /!* files 是 input 中选中的文件列表 *!/
-             let formData = new FormData();
-             formData.append('file', files[0])
+           this.editor.customConfig.customUploadImg = async (files, insert) => {
+             /* files 是 input 中选中的文件列表 */
+             var formData = new FormData();
+             formData.append('files', files[0]);
              //先让图片进行上传，在修改图片路径
-          /!*   let data = await this.upload(formData)*!/
-              let data=formData;
-             /!* upload方法是后台提供的上传图片的接口 *!/
-             /!* insert 是编辑器自带的 获取图片 url 后，插入到编辑器的方法 上传代码返回结果之后，将图片插入到编辑器中*!/
-             insert(data.imgUrl)
-           }*/
-
+             var result = await upload(formData);
+             console.log(result);
+             /* upload方法是后台提供的上传图片的接口 */
+             /* insert 是编辑器自带的 获取图片 url 后，插入到编辑器的方法 上传代码返回结果之后，将图片插入到编辑器中*/
+             if (result.errno == 0) {
+               for (var i = 0; i < result.data.length; i++) {
+                 insert('http://jwuyou.ngrok.xiaomiqiu.cn' + result.data[i]);
+               }
+             }
+           };
           this.editor.customConfig.menus=[
             'head',  // 标题
             'bold',  // 粗体
@@ -91,9 +98,10 @@
             'undo',  // 撤销
             'redo'  // 重复
           ];
-          this.editor.customConfig.uploadImgHooks = {
+   /*       this.editor.customConfig.uploadImgHooks = {
             fail: (xhr, editor, result) => {
               // 插入图片失败回调
+
             },
             success: (xhr, editor, result) => {
               // 图片上传成功回调
@@ -105,15 +113,14 @@
               // 网络超时的回调
             },
             error: (xhr, editor) => {
-              console.log(editor)
-              // 图片上传错误的回调
+                console.log(xhr);
             },
             customInsert: (insertImg, result, editor) => {
               // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
               // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
               // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
               // 图片上传成功,插入图片的回调
-            /*  console.log(result);*/
+            /!*  console.log(result);*!/
               // if(result.code == 200){
               //获取返回服务器地址
               var url = result.data;
@@ -122,7 +129,7 @@
               insertImg(url)//将内容插入到富文本中
               // }
             }
-          };
+          };*/
            const that=this;
            this.editor.customConfig.onchange=function(html){
              that.$emit('htmlChange',html);
@@ -134,7 +141,7 @@
              }
            };
            this.editor.create();
-           this.$refs.editor.addEventListener('input', function () {
+           this.$refs.editor.addEventListener('click', function () {
                that.$refs.editor.click();
            })
         },

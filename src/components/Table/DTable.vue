@@ -16,7 +16,12 @@
       v-for="(item,index) in table.list"
       :key="index"
       :prop="item.prop"
-      :label="item.label">
+      :label="item.label"
+      :width="item.width"
+     >
+      <template  slot-scope="scope">
+        <div v-html="scope.row[item.prop]"></div>
+      </template>
     </el-table-column>
   </el-table>
     <pagination class="bottom" :total="total"  @pageMesChange ='pageMesChange' ></pagination>
@@ -36,11 +41,14 @@
           total:{
             type:Number,
             required:true,
+          },
+          tableHeight:{
+              type:Number,
+              default:450
           }
       },
       data(){
           return {
-            tableHeight:450,
             multipleSelection: []
           }
       },

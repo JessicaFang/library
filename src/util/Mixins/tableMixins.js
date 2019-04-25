@@ -29,14 +29,13 @@ var tableMixin = {
       this.selectCloumn=val;
          this.ButtonGroup.forEach((item,index)=>{
            const i = {...item};
-             if(i.event=='ALTER'||i.event=='CHARGEK'||i.event=='CHOICEM'||i.event=='DELETEM'||i.event=='CHOICES'||i.event=='DELETES'||i.event=='ALTERQ'||i.event=='IMPORT')  i.disable=!(this.selectCloumn.length > 0 && this.selectCloumn.length < 2);
+             if(i.event=='ALTER'||i.event=='CHARGEK'||i.event=='CHOICEM'||i.event=='DELETEM'||i.event=='CHOICES'||i.event=='DELETES'||i.event=='ALTERQ'||i.event=='IMPORT'||i.event=='CHARGE'||i.event=='VIEW'||i.event=='ADDPAPER'||i.event=='CHARGEP'||i.event=='ALTERQTEST'||i.event=='ALTERQPUBLIC'||i.event=='Test')  i.disable=!(this.selectCloumn.length > 0 && this.selectCloumn.length < 2);
               this.ButtonGroup.splice(index, 1, i)
          })
     },
     handleAddClick(){
       this.myForm.length=0;
       this.myForm.splice(0,1,{});
-      console.log(this.myForm)
       setTimeout(()=>{
         this.dialogVisible=true;
       },0)
@@ -111,6 +110,10 @@ var tableMixin = {
            this.dialogVisible=false;
         })
         .catch(_ => {});
+    },
+    onSearch(){
+      this.defaultParams={page:1,rows:10};
+      this.getTable();
     },
   }
 };

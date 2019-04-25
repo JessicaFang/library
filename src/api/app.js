@@ -14,7 +14,6 @@ import request from '@/util/request';
   }
 })*/
 export function Login(data) {
-  console.log(data);
   return request({
     url: '/login/userLoginBack',
     method: 'post',

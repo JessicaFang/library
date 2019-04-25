@@ -9,8 +9,9 @@
           return {
              menuList:[
                {url:'/TeacherMessage',label:'个人信息'},
-               {url:'/TeacherCourse',label:'课程管理'},
-               {url:'/SuggestMessage',label:'建议题库管理'}
+               {url:'/TeacherCourse',label:'试卷管理'},
+               {url:'/TeacherSuggestLib',label:'学生试卷管理'},
+               {url:'/TeacherStatics',label:'试卷统计'}
                ],
              title:'教师管理系统'
           }

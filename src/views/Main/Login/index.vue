@@ -18,7 +18,6 @@
               <el-radio-group v-model="form.roleLevel">
                 <el-radio label="3">学生</el-radio>
                 <el-radio label="2" >老师</el-radio>
-                <el-radio label="1">管理员</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item>
@@ -78,9 +77,6 @@
         this.setParamsActions(params);
         //由于动态路由也是传递params的，所以在 this.$router.push() 方法中path不能和params一起使用，否则params将无效。需要用name来指定页面。
         switch (this.form.roleLevel){
-          case "1":
-            this.$router.push({name:'Manager'});
-            break;
           case "2":
             this.$router.push({name:'Teacher'});
             break;

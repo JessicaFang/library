@@ -80,7 +80,6 @@
       },
       onSubmit(){
         var message=this.check();
-        console.log(this.questionForm)
         if (message.length!=0){
           this.$message({
             message:message,
@@ -88,26 +87,18 @@
           })
         }else{
           const form=_.cloneDeep(this.questionForm);
-          var trueIndex='';
-           form.trueIndex.forEach(item=>{
-              trueIndex=trueIndex+item
-           });
-           form.trueIndex=trueIndex;
           this.$emit('submit',form)
         }
       }
     },
     beforeMount(){
-       const data=this.questionMes
-      if(data!=undefined&&Object.keys(data).length!=0){
-        this.questionForm.multipleQuestion=data.multipleQuestion;
-        this.questionForm.options=data.options;
-        const tempArray=data.trueIndex.split('');
-        tempArray.forEach((item,index)=>{
-          this.questionForm.trueIndex[index]=item.charCodeAt(0)-48;
-        })
-      }else{
-        this.validate=validate;
+       const data=this.questionMes;
+      if(data!=undefined&&Object.keys(data).length!=0) {
+        this.questionForm.multipleQuestion = data.multipleQuestion;
+        this.questionForm.options = data.multipleTestChoice;
+        this.questionForm.trueIndex = data.multipleTestAnswer;
+      }else {
+        this.validate = validate;
       }
     }
   }

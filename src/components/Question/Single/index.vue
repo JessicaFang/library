@@ -52,9 +52,7 @@
         },
         check(){
           var message='';
-          console.log(this.questionForm);
           if(this.validate(this.questionForm.singleQuestion)){
-            console.log(this.questionForm.options)
             for(var i=0; i<4;i++){
               if(!this.validate(this.questionForm.options[i])){
                 message="请进行选项的填写";
@@ -87,7 +85,7 @@
             })
           }else{
              const form=_.cloneDeep(this.questionForm);
-             form.trueIndex=form.trueIndex+'';
+             form.trueIndex=form.trueIndex;
              this.$emit('submit',form);
           }
         }
@@ -96,8 +94,8 @@
         const data=this.questionMes;
         if(data!=undefined&&Object.keys(data).length!=0){
             this.questionForm.singleQuestion=data.singleQuestion;
-            this.questionForm.options=data.options;
-            this.questionForm.trueIndex=parseInt(data.trueIndex);
+            this.questionForm.options=data.singleTestChoice;
+            this.questionForm.trueIndex=parseInt(data.singleTestAnswer);
         }else{
             this.validate=validate;
         }

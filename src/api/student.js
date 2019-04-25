@@ -9,31 +9,76 @@ export function getStudent(params) {
   });
 }
 
-//获取学生可以进行添加试题的课程表
-export function getCourse(params) {
+export function saveSuggest(data={}) {
   return request({
-    url: '/course/queryCourseStudent',
+    url: '/suggest/saveSuggest',
+    method: 'post',
+    data
+  });
+}
+export function selectSuggest(data={}) {
+  return request({
+    url: '/suggest/selectSuggest',
+    method: 'post',
+    data
+  });
+}
+export function selectSuggestById(data={}) {
+  return request({
+    url: '/suggest/selectSuggestById',
+    method: 'post',
+    data
+  });
+}
+export function delSuggest(params) {
+  return request({
+    url: '/suggest/delSuggest',
+    method: 'post',
+    params
+  });
+}
+
+//exportSuggest还没有搞定的数据导出接口
+export function exportSuggest(params={}) {
+  return request({
+    url: '/iEExl/exportLib',
+    method: 'post',
+    params
+  });
+}
+
+export function submitSuggest(params) {
+  return request({
+    url: '/suggest/submitSuggest',
+    method: 'post',
+    params
+  });
+}
+
+
+//查阅试卷基础信息
+
+export function queryTestPaper(params) {
+  return request({
+    url: '/test/queryTestPaper',
+    method: 'get',
+    params
+  });
+}
+//学生查看学生试卷
+export function stuQueryBaseStuPaper(params) {
+  return request({
+    url: '/stuPaper/stuQueryBaseStuPaper',
     method: 'get',
     params
   });
 }
 
-export function test(data={}) {
+//查看详细学生试卷
+export function queryStuPaper(params) {
   return request({
-    url: '/lib/selectLib',
-    method: 'post',
-    data
+    url: '/stuPaper/queryStuPaper',
+    method: 'get',
+    params
   });
 }
-
-export function saveSuggest(data={}) {
-  return request({
-    url: '/lib/saveSuggest',
-    method: 'post',
-    data
-  });
-}
-
-
-
-

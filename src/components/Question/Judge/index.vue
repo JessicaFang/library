@@ -4,8 +4,8 @@
     <editor-bar v-model="questionForm.judgeQuestion" @htmlChange="val=>change(val,'judgeQuestion')"></editor-bar>
     <div class="choice">选择判断结果</div>
     <div>
-      <el-button  :type="choice[0]"  ref="1" @click="judge('1')">正确</el-button>
-      <el-button  :type="choice[1]" @click="judge('0')">错误</el-button>
+      <el-button  :type="choice[0]"  ref="1" @click="judge('1')">true</el-button>
+      <el-button  :type="choice[1]" @click="judge('0')">false</el-button>
     </div>
     <div class="bottom">
       <el-button class="button" type="primary" @click="onSubmit">提交</el-button>
@@ -48,7 +48,7 @@
       },
       check(){
         var message='';
-        if(validate(this.questionForm.judgeQuestion)){
+        if(this.validate(this.questionForm.judgeQuestion)){
           if(this.questionForm.judgeAnswer.length==0){
             message="请选择正确与否";
             return message
@@ -72,7 +72,6 @@
       },
       onSubmit(){
         var message=this.check();
-        console.log(this.questionForm)
         if (message.length!=0){
           this.$message({
             message:message,
@@ -85,13 +84,11 @@
       }
     },
     beforeMount(){
-      const data=this.questionMes
+      const data=this.questionMes;
       if(data!=undefined&&Object.keys(data).length!=0){
         this.questionForm.judgeQuestion=data.judgeQuestion;
         const num=data.judgeAnswer==true?'1':'0';
         this.judge(num);
-      }else{
-        this.validate=validate;
       }
     }
   }

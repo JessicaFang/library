@@ -9,8 +9,8 @@
       return {
         menuList:[
           {url:'/StudentMessage',label:'个人信息'},
-          {url:'/StudentAddQuest',label:'题目添加'},
-          {url:'/SuggestLib',label:'题库管理'}
+          {url:'/ChoiceTest',label:'考试列表'},
+          {url:'/ChargeTest',label:'试卷查看'}
         ],
         title:'学生管理系统'
       }
