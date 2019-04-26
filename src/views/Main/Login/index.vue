@@ -75,28 +75,38 @@
       ),
       judge(){
         const params={username:this.form.username,roleLevel:this.form.roleLevel};
-        this.setParamsActions(params);
-        //由于动态路由也是传递params的，所以在 this.$router.push() 方法中path不能和params一起使用，否则params将无效。需要用name来指定页面。
-        switch (this.form.roleLevel){
-          case "1":
-            this.$router.push({name:'Manager'});
-            break;
-          case "2":
-            this.$router.push({name:'Teacher'});
-            break;
-          case "3":
-            this.$router.push({name:'Student'});
-            break;
-          default:
-            console.log("err");
-        }
+        //TODO password待加密 password不传到$router.push()
+        /* let params1 = {username:this.form.username,roleLevel:this.form.roleLevel,password:this.form.password}
+         Login(params1).then(res=>{
+           if(res.success){*/
+            this.setParamsActions(params);
+            //由于动态路由也是传递params的，所以在 this.$router.push() 方法中path不能和params一起使用，否则params将无效。需要用name来指定页面。
+            switch (this.form.roleLevel){
+              case "1":
+                this.$router.push({name:'Manager'});
+                break;
+              case "2":
+                this.$router.push({name:'Teacher'});
+                break;
+              case "3":
+                this.$router.push({name:'Student'});
+                break;
+              default:
+                console.log("err");
+            }
+       /*   }else{
+            this.$message.error(res.msg)
+          }
+        })*/
+
       },
       onSubmit(){
-        this.$refs.form.validate(valid=>{
+        this.judge();
+        /*this.$refs.form.validate(valid=>{
           if(valid){
             this.judge();
           }
-        })
+        })*/
       },
     }
   }

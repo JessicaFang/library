@@ -2,15 +2,15 @@
   <div>
     <el-form ref="form"  :model="form" class="form"  :inline="true">
       <el-form-item label-width="45px" label="姓名">
-        <el-input v-model="form.username" auto-complete="text"></el-input>
+        <el-input v-model="form.name" auto-complete="text"></el-input>
       </el-form-item>
       <el-form-item label-width="45px" label="职称" >
         <el-input v-model="form.classOrTitle" auto-complete="text"></el-input>
       </el-form-item>
       <el-form-item label-width="100px" label="是否管理员" >
-        <el-select v-model="isAdmin" @change="getTable">
-          <el-option label="是" value="0"></el-option>
-          <el-option label="否" value="1"></el-option>
+        <el-select v-model="form.isAdmin" @change="isAdminChange">
+          <el-option label="是" value="1"></el-option>
+          <el-option label="否" value="0"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -47,10 +47,10 @@
     data(){
       return {
         form:{
-          username:'',
+          name:'',
           classOrTitle:'',
+          isAdmin:'0',
         },
-        isAdmin:'0',
         tableData:[],
         table:{},
         total:0,
@@ -82,14 +82,13 @@
             cancelButtonText: "取消",
             type: 'warning'
           }).then(() => {
-            var username = [];
+            var no = [];
             this.selectCloumn.forEach((item, index) => {
-              username[index] = item.no
+              no[index] = item.no
             });
-            username=username.toString();
-            console.log(username);
+            no=no.toString();
             //可以多个一起设置一起撤销
-            var params = {username: username, isAdmin:isAdmin,roleLevel:'2'};
+            var params = {username: no, isAdmin:isAdmin,roleLevel:'2'};
             updateManager(params).then((res) =>{
               if(res.success==true){
                 this.getTable();
@@ -133,25 +132,41 @@
       getTable(){
         //需要添加管理员选项
         const params=Object.assign({},this.defaultParams,{roleLevel:'2',status:'1'},this.form);
-        const obj=[
+      /*  const obj=[
           {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
           {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
           {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
           {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
         ]
         this.tableData=translate(obj);
-        this.total=4
-        /*getMessage(params).then(res=>{
+        this.total=4*/
+        getMessage(params).then(res=>{
           if(res.success==true){
             this.tableData=translate(res.obj);
             this.total=res.total
           }
-        })*/
+        })
       },
       init(){
         this.table=tableConfig;
         this.ButtonGroup=btnConfig;
       },
+      calSelection(val){
+        this.selectCloumn=val;
+        this.ButtonGroup.forEach((item,index)=>{
+          const i = {...item};
+          if((i.event=='review'&&this.form.isAdmin=='1')||(i.event=='cancel'&&this.form.isAdmin=='0')) {
+            i.disable = true;
+          }else{
+            i.disable=false;
+          }
+          this.ButtonGroup.splice(index, 1, i)
+        })
+      },
+      isAdminChange(){
+        this.calSelection([]);
+        this.getTable();
+      }
     },
     beforeMount(){
       this.init();

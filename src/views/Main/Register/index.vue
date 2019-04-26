@@ -93,14 +93,23 @@
         },
         onSubmit(){
           this.$refs.form.validate(valid=>{
-            this.$router.go(-1);
-          /*  if (valid){
+            if (valid){
               Register(this.form).then(res=>{
-                if(res.sucesss===true){
-
+                let that = this
+                if(res.success){
+                  this.$message({
+                    type:'success',
+                    message: '操作成功，即将跳转到登录页面',
+                    onClose(){
+                      that.$router.go(-1);
+                    },
+                    showCancelButton:true
+                  });
+                }else{
+                  this.$message.error(res.msg)
                 }
               })
-            } */
+            }
           })
         }
       }

@@ -27,11 +27,11 @@ var tableMixin = {
     },
     calSelection(val){
       this.selectCloumn=val;
-         this.ButtonGroup.forEach((item,index)=>{
-           const i = {...item};
-             if(i.event=='ALTER'||i.event=='CHARGEK'||i.event=='CHOICEM'||i.event=='DELETEM'||i.event=='CHOICES'||i.event=='DELETES'||i.event=='ALTERQ'||i.event=='IMPORT'||i.event=='CHARGE'||i.event=='VIEW')  i.disable=!(this.selectCloumn.length > 0 && this.selectCloumn.length < 2);
-              this.ButtonGroup.splice(index, 1, i)
-         })
+      this.ButtonGroup.forEach((item,index)=>{
+        const i = {...item};
+        if(i.event=='ALTER'||i.event=='CHARGEK'||i.event=='CHOICEM'||i.event=='DELETEM'||i.event=='CHOICES'||i.event=='DELETES'||i.event=='ALTERQ'||i.event=='IMPORT'||i.event=='CHARGE'||i.event=='VIEW')  i.disable=!(this.selectCloumn.length > 0 && this.selectCloumn.length < 2);
+        this.ButtonGroup.splice(index, 1, i)
+      })
     },
     handleAddClick(){
       this.myForm.length=0;

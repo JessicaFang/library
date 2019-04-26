@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const service = axios.create({
-  baseURL: 'http://jwuyou.ngrok.xiaomiqiu.cn',
+  // baseURL: 'http://jwuyou.ngrok.xiaomiqiu.cn',
+  baseURL:'http://127.0.0.1:8091/',
   timeout: 60 * 1000,
   withCredentials: true,
 })

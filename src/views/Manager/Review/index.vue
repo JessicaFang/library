@@ -8,7 +8,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label-width="45px" label="姓名">
-        <el-input v-model="form.username" auto-complete="text"></el-input>
+        <el-input v-model="form.name" auto-complete="text"></el-input>
       </el-form-item>
       <el-form-item label-width="80px" label="班级|职称" >
         <el-input v-model="form.classOrTitle" auto-complete="text"></el-input>
@@ -47,7 +47,7 @@
     data(){
       return {
         form:{
-          username:'',
+          name:'',
           classOrTitle:'',
         },
         roleLevel:'2',
@@ -82,13 +82,12 @@
             cancelButtonText: "取消",
             type: 'warning'
           }).then(() => {
-            var username = [];
+            var no = [];
             this.selectCloumn.forEach((item, index) => {
-              username[index] = item.no
+              no[index] = item.no
             });
-            username=username.toString();
-            console.log(username);
-            var params = {username: username, status:status,roleLevel:this.roleLevel};
+            no=no.toString();
+            var params = {username: no, status:status,roleLevel:this.roleLevel};
             examine(params).then((res) =>{
               if(res.success==true){
                 this.getTable();
@@ -118,12 +117,12 @@
       },
       handleReviewClick(){
         const status='1';
-        const message="是否进行审核通过";
+        const message="是否审核通过";
         this.examine(status,message);
       },
       handleDeleteClick() {
         const status='0';
-        const message="是否进行审核通过";
+        const message="是否审核失败";
         this.examine(status,message);
       },
       onSearch(){

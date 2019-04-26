@@ -13,20 +13,19 @@ import request from '@/util/request';
 
   }
 })*/
-export function Login(data) {
-  console.log(data);
+export function Login(params) {
   return request({
     url: '/login/userLoginBack',
-    method: 'post',
-    data
+    method: 'get',
+    params
   });
 }
 
- export function Register(data) {
+ export function Register(params) {
     return request({
-      url:'register/userRegist',
-      method:'post',
-      data
+      url:'regist/userRegist',
+      method:'get',
+      params
     })
   };
 
