@@ -44,8 +44,8 @@ export default new Router({
       name: 'Teacher',
       component:Teacher,
       children: [    //嵌套路由
-        { path: '/TeacherMessage',name:'TeacherCourse', component: TeacherMessage },
-        { path: '/TeacherCourse',name:'TeacherMessage', component: TeacherCourse },
+        { path: '/TeacherMessage',name:'TeacherMessage', component: TeacherMessage },
+        { path: '/TeacherCourse',name:'TeacherCourse', component: TeacherCourse },
         { path: '/TeacherAddPaper',name:'TeacherAddPaper', component: TeacherAddPaper },
         { path: '/TeacherChargePaper',name:'TeacherChargePaper', component: TeacherChargePaper },
         { path: '/TeacherEditPaper',name:'TeacherEditPaper', component: TeacherEditPaper },

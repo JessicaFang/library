@@ -1,34 +1,5 @@
 import request from '@/util/request';
 
-//获取学生个人信息
-export function getMessage(params) {
-  return request({
-    url: '/user/queryUserList',
-    method: 'get',
-    params
-  });
-}
-export function updateMessage(data) {
-   return request({
-     url:'/user/updateUserInfo',
-     method:'post',
-     data
-   })
-}
-export function libFormat(data) {
-  return request({
-    url:'/lib/libFormat',
-    method:'post',
-    data
-  })
-}
-export function batAddSAMLib(data) {
-  return request({
-    url: '/lib/batAddSAMLib',
-    method: 'post',
-    data
-  });
-}
 
 export function upload(data) {
   return request({
@@ -38,36 +9,36 @@ export function upload(data) {
   });
 }
 
-//为课程添加学生
-export function addCourseStudent(params) {
+//登录
+export function login(data) {
   return request({
-    url: '/courser/addCourseStudent',
-    method: 'get',
-    params
+    url: '/login/userLoginFront',
+    method: 'post',
+    data
   });
 }
-//为课程添加老师
-export function addCourseTeacher(params) {
+//注册
+export function register(data) {
   return request({
-    url: '/courser/addCourseTeacher',
-    method: 'get',
-    params
+    url: '/regist/userRegist',
+    method: 'post',
+    data
   });
 }
-//删除课程下的学生
-export function delCourseStudent(params) {
+//获取个人信息（包括学生和老师）
+export function getMessage(params) {
   return request({
-    url: '/courser/delCourseStudent',
-    method: 'get',
+    url:'/user/queryUserList',
+    method:'get',
     params
-  });
-}
-//删除课程下的老师
-export function delCourseTeacher(params) {
-  return request({
-    url: '/courser/delCourseTeacher',
-    method: 'get',
-    params
-  });
+  })
 }
 
+//更新个人信息（包括学生和老师）
+export function updateMessage(data) {
+  return request({
+    url:'/user/updateUserInfo',
+    method:'post',
+    data
+  })
+}

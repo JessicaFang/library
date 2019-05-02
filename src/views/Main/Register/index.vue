@@ -36,7 +36,7 @@
 <script>
   import Top from '@/components/top';
   import bottom from '@/components/bottom';
-  import { Register } from '@/api/app'
+  import { register } from '@/api/public'
     export default {
         name: "index",
       data(){
@@ -93,14 +93,22 @@
         },
         onSubmit(){
           this.$refs.form.validate(valid=>{
-            this.$router.go(-1);
-          /*  if (valid){
-              Register(this.form).then(res=>{
-                if(res.sucesss===true){
-
+           if (valid){
+             register(this.form).then(res=>{
+                if(res.success===true){
+                   this.$message({
+                     type:'success',
+                     message:'注册成功'
+                   });
+                  this.$router.go(-1);
+                }else{
+                  this.$message({
+                    type:'warning',
+                    message:res.msg,
+                  });
                 }
               })
-            } */
+            }
           })
         }
       }
