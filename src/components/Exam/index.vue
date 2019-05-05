@@ -8,20 +8,20 @@
         </div>
         <div class="headMessage">
           <span>学号：<span style="color: lightskyblue">{{exam.sno}}</span></span>&nbsp;&nbsp;
-          <span v-show="exam.allTotalScore">总分：<span style="color: red">{{exam.allTotalScore}}</span></span>&nbsp;&nbsp;
+          <span v-show="exam.allTotalScore">总分：<span style="color: red">{{exam.allTotalScore}}分</span></span>&nbsp;&nbsp;
           <span v-show="paperState=='1'&&chargeName!=false&&chargeName">批改老师：{{chargeName}}</span>
         </div>
       </div>
       <div class="content">
-        <div class="module" v-show="exam.resultSingleVos&&exam.resultSingleVos.length!=0">
+        <div class="module"  v-if="exam.resultSingleVos&&exam.resultSingleVos.length!=0">
           <h3>单选题</h3>
           <div v-for="(item,index) in exam.resultSingleVos" :key="index" class="question">
-            <h6 class="title">{{index+1}}、<span v-html="item.testSingleVo.singleQuestion"></span>
+            <h6 class="title">{{index+1}}、<span class="questionTitle" v-html="item.testSingleVo.singleQuestion"></span>
               （<span style="color: red">{{item.testSingleVo.singlePoints}}分</span>）
             </h6>
             <div v-for="(opt,index2) in item.testSingleVo.singleTestChoice" :key="index2" class="answers">
               <el-radio v-model="item.singleAnswer" disabled  :label="index2+''"></el-radio>
-              <span v-text="translate(index2)"></span>、<span v-html="opt"></span>
+              <span v-text="translate(index2)"></span>、<span class="questionContent" v-html="opt"></span>
             </div>
             <div>
               <div>正确答案：<span>{{translate(item.testSingleVo.singleTestAnswer)}}</span></div>
@@ -29,17 +29,17 @@
             </div>
           </div>
         </div>
-        <div  class="module" v-show="exam.resultMultipleVos&&exam.resultMultipleVos.length!=0">
+        <div  class="module" v-if="exam.resultMultipleVos&&exam.resultMultipleVos.length!=0">
           <h3>多选题</h3>
           <div v-for="(item,index) in exam.resultMultipleVos" :key="index" class="question">
             <h6  class="title">
               {{index+1}}、
-              <span v-html="item.testMultipleVo.multipleQuestion"></span>
+              <span class="questionTitle" v-html="item.testMultipleVo.multipleQuestion"></span>
               （<span style="color: red">{{item.testMultipleVo.multiplePoints}}分</span>）
             </h6>
             <div v-for="(opt,index2) in item.testMultipleVo.multipleTestChoice" :key="index2" class="answers">
               <input disabled v-model="item.multipleAnswer" type="checkbox" :value="index2" />
-              <span v-text="translate(index2)"></span>、<span v-html="opt"></span>
+              <span v-text="translate(index2)"></span>、<span class="questionContent" v-html="opt"></span>
             </div>
             <div>
               <div>正确答案：<span>{{translateArr(item.testMultipleVo.multipleTestAnswer)}}</span></div>
@@ -47,12 +47,12 @@
             </div>
           </div>
         </div>
-        <div  class="module" v-show="exam.resultJudgeVos&&exam.resultJudgeVos.length!=0">
+        <div  class="module" v-if="exam.resultJudgeVos&&exam.resultJudgeVos.length!=0">
           <h3>判断题</h3>
           <div v-for="(item,index) in exam.resultJudgeVos" :key="index" class="question">
             <h6  class="title">
               {{index+1}}、
-              <span v-html="item.testJudgeVo.judgeQuestion"></span>
+              <span class="questionTitle" v-html="item.testJudgeVo.judgeQuestion"></span>
               （<span style="color: red">{{item.testJudgeVo.judgePoints}}分</span>）
             </h6>
             <div  class="answers">
@@ -65,12 +65,12 @@
             </div>
           </div>
         </div>
-        <div  class="module" v-show="exam.resultBlankVos&&exam.resultBlankVos.length!=0">
+        <div  class="module" v-if="exam.resultBlankVos&&exam.resultBlankVos.length!=0">
           <h3>填空题</h3>
           <div v-for="(item,index) in exam.resultBlankVos" :key="index" class="question">
             <h6  class="title">
               {{index+1}}、
-              <span v-html="item.testBlankVo.blankQuestion"></span>
+              <span class="questionTitle" v-html="item.testBlankVo.blankQuestion"></span>
               （<span style="color: red">{{item.testBlankVo.blankPoints}}分</span>）
             </h6>
             <div v-for='(opt,index2) in item.blankAnswer' :key="index2" class="answers">
@@ -85,17 +85,17 @@
               </div>
               <div>考试结果：
                 <div class="result" v-if="isManual"><el-input class="input" v-model="blank[item.testBlankVo.testBlankId]"></el-input></div>
-                <div class="result" v-else>{{blank[item.testBlankVo.testBlankId]}}</div>
+                <div class="result" v-else>{{blank[item.testBlankVo.testBlankId]}}分</div>
               </div>
             </div>
           </div>
         </div>
-        <div  class="module" v-show="exam.resultQuestionVos&&exam.resultQuestionVos.length!=0">
+        <div  class="module" v-if="exam.resultQuestionVos&&exam.resultQuestionVos.length!=0">
           <h3>问答题</h3>
           <div v-for="(item,index) in exam.resultQuestionVos" :key="index" class="question">
             <h6  class="title">
               {{index+1}}、
-              <span v-html="item.testQuestionVo.myQuestion"></span>
+              <span class="questionTitle" v-html="item.testQuestionVo.myQuestion"></span>
               （<span style="color: red">{{item.testQuestionVo.myPoints}}分</span>）
             </h6>
             <div v-html="item.myAnswer" class="answers"></div>
@@ -103,7 +103,7 @@
               <div>正确答案：<span  v-html="item.testQuestionVo.myAnswer"></span></div>
               <div>考试结果：
                 <div class="result" v-if="isManual"><el-input class="input" v-model="my[item.testQuestionVo.testQuestionId]"></el-input></div>
-                <div class="result" v-else>{{my[item.testQuestionVo.testQuestionId]}}</div>
+                <div class="result" v-else>{{my[item.testQuestionVo.testQuestionId]}}分</div>
               </div>
             </div>
           </div>
@@ -118,6 +118,7 @@
 
 <script>
   import {mapGetters,mapActions} from 'vuex';
+  import { correctStuPaper } from '@/api/teacher'
   export default {
     name: "index",
     data(){
@@ -150,6 +151,8 @@
       },
       submit(){
         this.isManual=this.getIsManual;
+        console.log(this.isManual)
+        //其中学生查看试卷，没有设置isManual ，所以直接go -1 ,在教师查看试卷时，查看设置了false，修改设置了true，
         if(this.isManual==true){
             var message=this.check();
             if(message){
@@ -181,7 +184,21 @@
                 resultQuestionVos.push(obj);
               }
               var params=Object.assign({},{myReviewerTno:this.getParams.username,paperId:this.getPaperId,sno:this.exam.sno,resultBlankVos:resultBlankVos,resultQuestionVos:resultQuestionVos})
-              console.log(params);
+             console.log(params);
+              correctStuPaper(params).then(res=>{
+                if(res.success==true){
+                  this.$message({
+                    type:'success',
+                    message:'批改成功'
+                  });
+                  this.$router.go(-1);
+                }else{
+                  this.$message({
+                    type:'warning',
+                    message:res.msg,
+                  })
+                }
+              })
             }
         }else{
           this.$router.go(-1);
@@ -310,6 +327,9 @@
     }
   }
   .result{
+    display: inline-block;
+  }
+  .questionTitle,.questionContent{
     display: inline-block;
   }
 </style>

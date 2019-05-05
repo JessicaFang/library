@@ -63,7 +63,7 @@
         title="题目列表"
         :visible="visible"
         :before-close="handleClose">
-        <questionList ref="questionList"></questionList>
+        <questionList ref="questionList" :type="type"></questionList>
         <span slot="footer" class="dialog-footer" style="margin-top: 10px">
              <el-button @click="dialogVisible = false">取消</el-button>
              <el-button @click="getQuestion" type="primary">确定</el-button>
@@ -82,6 +82,7 @@
   import { mapGetters,mapActions } from 'vuex';
   import questionList from '@/views/Teacher/Course/AddPaper/questionList'
   import {calPoint} from '@/util/calPoint'
+  import {selectLibByIds,addTestPaper,updateTestPaper} from '@/api/teacher'
   export default {
     name: "paperContent",
     data(){
@@ -195,7 +196,7 @@
     },
     methods:{
       ...mapActions( // 语法糖
-        ['setPaperActions','setPointActions','setActiveActions','setAllPointActions'] // 相当于this.$store.dispatch('modifyName'),提交这个方法
+        ['setPaperActions','setPointActions','setActiveActions','setAllPointActions','setPaperIdActions'] // 相当于this.$store.dispatch('modifyName'),提交这个方法
       ),
       questionSelect(type){
         this.type=type;
@@ -207,13 +208,24 @@
           id.push(item.id);
         });
         this.dialogVisible=false;
-        var params={type:this.type,id:id.join(',')};
-        this.setStateData();
+        var params={type:this.type,ids:id.join(',')};
+        selectLibByIds(params).then(res=>{
+            if(res.success==true){
+              var res=_.cloneDeep(res.obj);
+              this.setStateData(res);
+            }else{
+              this.$message({
+                type:'warning',
+                message:res.msg,
+              })
+            }
+        })
+
       },
-      setStateData(){
+      setStateData(res){
         switch (this.type){
           case '1':
-            var res=[
+         /*   var res=[
               {
                 singleQuestion:'jaisohidfdifhdifhdifhd',
                 options:[
@@ -280,7 +292,7 @@
                 courseId:2,
                 difficultLevel:0.6,
               },
-            ];
+            ];*/
             console.log(this.getPaper['testSingleVos']);
             var arrObj=[];
             res.forEach((item)=>{
@@ -289,8 +301,9 @@
                 singleTestChoice:item.options,
                 singleTestAnswer:item.trueIndex,
                 knowledgeTest:item.knowledgeTitle,
-                difficultLevel:item.difficultLevel,
-                testSingleId:item.id,
+                difficultLevel:item.difficultLevel+'',
+                singleId:item.id,
+                testSingleId:null,
                 singlePoints:""
               };
               arrObj.push(obj);
@@ -302,7 +315,7 @@
             this.setPaperActions({name:'testSingleVos',value:arrObj});
             break;
           case '2':
-            var res=[
+        /*    var res=[
               {multipleQuestion:'jaisohidfdifhdifhdifhd',
                 options:[
                   '斤斤计较军放到',
@@ -364,7 +377,7 @@
                 courseId:2,
                 difficultLevel:0.6,
               },
-            ];
+            ];*/
             for (var i = 0; i < res.length; i++) {
               var trueIndex=[];
               const temp=res[i].trueIndex.split("");
@@ -380,8 +393,9 @@
                 multipleTestChoice:item.options,
                 multipleTestAnswer:item.trueIndex,
                 knowledgeTest:item.knowledgeTitle,
-                difficultLevel:item.difficultLevel,
-                testJudgeId:item.id,
+                difficultLevel:item.difficultLevel+'',
+                testMultipleId:null,
+                multipleId:item.id,
                 multiplePoints:"",
               };
               arrObj.push(obj);
@@ -393,7 +407,7 @@
             this.setPaperActions({name:'testMultipleVos',value:arrObj});
             break;
           case '3':
-            var res=[
+          /*  var res=[
               {
                 judgeQuestion:'jaisohidfdifhdifhdifhd',
                 judgeAnswer:true,
@@ -437,15 +451,16 @@
                 courseId:2,
                 difficultLevel:0.6,
               },
-            ];
+            ];*/
             var arrObj=[];
             res.forEach((item)=>{
               var obj={
                 judgeQuestion:item.judgeQuestion,
                 judgeAnswer:item.judgeAnswer,
                 knowledgeTest:item.knowledgeTitle,
-                difficultLevel:item.difficultLevel,
-                testJudgeId:item.id,
+                difficultLevel:item.difficultLevel+'',
+                testJudgeId:null,
+                judgeId:item.id,
                 judgePoints:""
               };
               arrObj.push(obj);
@@ -457,7 +472,7 @@
             this.setPaperActions({name:'testJudgeVos',value:arrObj});
             break;
           case '4':
-            var res=[
+           /* var res=[
               {
                 blankQuestion:'dddddddddddddddd',
                 blankAnswer:[['dddd','ddd'],['ddd','dd']],
@@ -482,15 +497,16 @@
                 knowledgeTitle:'知识点',
                 difficultLevel: 0.6
               },
-            ];
+            ];*/
             var arrObj=[];
             res.forEach((item)=>{
               var obj={
                 blankQuestion:item.blankQuestion,
                 blankAnswer:item.blankAnswer,
                 knowledgeTest:item.knowledgeTitle,
-                difficultLevel:item.difficultLevel,
-                testBlankId:item.id,
+                difficultLevel:item.difficultLevel+'',
+                testBlankId:null,
+                blankId:item.id,
                 blankPoints:"",
               };
               arrObj.push(obj);
@@ -503,7 +519,7 @@
             this.setPaperActions({name:'testBlankVos',value:arrObj});
             break;
           case '5':
-            var res=[
+         /*   var res=[
               {
                 myQuestion:'jaisohidfdifhdifhdifhd',
                 myAnswer:'122',
@@ -537,7 +553,7 @@
                 courseId:2,
                 difficultLevel:0.6,
               },
-            ];
+            ];*/
             var arrObj=[];
             res.forEach((item)=>{
               var obj={
@@ -545,8 +561,9 @@
                 myAnswer:item.myAnswer,
                 detailReviewRules:item.detailReviewRules,
                 knowledgeTest:item.knowledgeTitle,
-                difficultLevel:item.difficultLevel,
-                testQuestionId:item.id,
+                difficultLevel:item.difficultLevel+'',
+                testQuestionId:null,
+                myQuestionId:item.id,
                 myPoints:"",
               };
               arrObj.push(obj);
@@ -586,12 +603,43 @@
           paper.testPaper.questionPoints = this.my.count;
           paper.testPaper.totalPoints = this.single.count + this.double.count + this.judge.count + this.blank.count + this.my.count;
           paper.testPaper.courseId = this.getId;
+          if(paper.testMultipleVos&&paper.testMultipleVos.length!=0){
+            for(let i=0;i<paper.testMultipleVos.length;i++){
+             if(typeof paper.testMultipleVos[i].multipleTestAnswer!='string') {
+               console.log(1);
+               paper.testMultipleVos[i].multipleTestAnswer = paper.testMultipleVos[i].multipleTestAnswer.join("");
+             }
+            }
+          }
+          console.log(this.getActive.source);
           if (this.getActive.source == 'ChargePaper') {
-            console.log(paper);
-            this.$router.go(-1);
+            console.log('管理试卷',paper);
+            updateTestPaper(paper).then(res=>{
+              if(res.success===true){
+                this.$router.go(-1);
+              }else{
+                this.$message({
+                  type:'warning',
+                  message:res.msg,
+                })
+                if(res.msg=='考试前2小时才能修改已发布的试卷试题'){
+                  this.$router.go(-1)
+                }
+              }
+            })
           } else {
-             paper.testPaper.courseId = this.getId;
-            this.setActiveActions({active: 3, source: 'paperContent'});
+             console.log('添加试卷',paper);
+              addTestPaper(paper).then(res=>{
+              if(res.success===true){
+                this.setPaperIdActions({paperId:res.obj.paperId});
+                this.setActiveActions({active: 3, source: 'paperContent'});
+              }else{
+                this.$message({
+                  type:'warning',
+                  message:res.msg,
+                })
+              }
+            });
           }
         }
       },
@@ -606,7 +654,7 @@
             var tempPoint=this.getPoint['singlePoints'];
             for(var i=0;i<this.single.length;i++){
               if(tempPoint[i]===0) {
-                 return '成绩请不要输入为0'
+                return '成绩请不要输入为0'
               }else if(tempPoint[i]==undefined||(typeof tempPoint[i]=='string'&&tempPoint[i].trim()==='')){
                 return '请进行单选题成绩的输入'
               }

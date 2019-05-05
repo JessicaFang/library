@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const service = axios.create({
-  baseURL: 'http://vixncp.natappfree.cc',
+  baseURL: 'http://4gqjmt.natappfree.cc',
   timeout: 60 * 1000,
   withCredentials: true,
 })

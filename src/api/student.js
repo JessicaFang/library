@@ -65,6 +65,27 @@ export function queryTestPaper(params) {
     params
   });
 }
+
+//获取试卷详细信息进行考试
+
+export function studentQueryTestPaper(params) {
+  return request({
+    url: '/test/studentQueryTestPaper',
+    method: 'get',
+    params
+  });
+}
+
+//提交试题答案
+
+export function submitAnswer(data) {
+  return request({
+    url: '/stuPaper/submitAnswer',
+    method: 'post',
+    data
+  });
+}
+
 //学生查看学生试卷
 export function stuQueryBaseStuPaper(params) {
   return request({

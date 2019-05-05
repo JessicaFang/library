@@ -25,6 +25,25 @@ export function register(data) {
     data
   });
 }
+
+//发送验证码
+export function sendCode(params) {
+  return request({
+    url: '/user/sendCode',
+    method: 'get',
+    params
+  });
+}
+
+//发送验证码后重置密码
+export function resetPwd(params) {
+  return request({
+    url: '/user/resetPwd',
+    method: 'get',
+    params
+  });
+}
+
 //获取个人信息（包括学生和老师）
 export function getMessage(params) {
   return request({

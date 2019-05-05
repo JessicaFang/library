@@ -17,10 +17,10 @@
       </el-date-picker>
     </el-form-item>
     <el-form-item label="考试时长" prop="minutesLength" >
-      <el-input placeholder="请输入考试时间" v-model="form.minutesLength" ></el-input>
+      <el-input placeholder="请输入考试时间(分钟)" v-model="form.minutesLength" ></el-input>
     </el-form-item>
     <el-form-item label="及格分数" prop="passingScore">
-      <el-input placeholder="请输入几个分数" v-model="form.passingScore" ></el-input>
+      <el-input placeholder="请输入及格分数" v-model="form.passingScore" ></el-input>
     </el-form-item>
   </el-form>
     <div class="submitButton">
@@ -31,6 +31,7 @@
 
 <script>
   import {mapGetters} from 'vuex';
+  import {publishTestPaper} from '@/api/teacher'
   export default {
     name: "paperDetail",
     data(){
@@ -81,13 +82,31 @@
       }
     },
     computed: {
-      ...mapGetters(['getPaper']),
+      ...mapGetters(['getPaper','getPaperId']),
     },
     methods:{
       publicTest(){
         this.$refs.form.validate((valid) => {
           if (valid) {
-              console.log(this.form)
+            var params=Object.assign({},this.form,{paperId:this.getPaperId})
+             publishTestPaper(params).then(res=>{
+               console.log(params);
+               if(res.success==true){
+                 this.$message({
+                   type:'success',
+                   message:'操作成功'
+                 })
+                 this.$router.go(-1);
+               }else{
+                   this.$message({
+                     type:'warning',
+                     message:res.msg
+                   });
+                   if(res.msg=='考试一天前才能修改已发布信息'){
+                     this.$router.go(-1);
+                   }
+               }
+             })
           } else {
             console.log('error submit!!');
           }
@@ -95,12 +114,6 @@
       }
     },
     beforeMount(){
-      /*  paperHead:'',
-          paperTitle:'',
-          minutesLength:'',
-          testTime:'',
-          passingScore:'',
-          */
       for(var key in this.form){
         this.form[key]=this.getPaper['testPaper'][key];
       }

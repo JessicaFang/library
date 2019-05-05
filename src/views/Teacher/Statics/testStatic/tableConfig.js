@@ -1,8 +1,5 @@
 export const btnConfig=[
-  {colLength:8,event:'ALTERQTEST',icon:'fa fa-check-square',label:'修改试卷'},
-  {colLength:8,event:'ALTERQPUBLIC',icon:'fa fa-check-square',label:'修改发布信息'},
-  {colLength:8,event:'DELETEQ',icon:'fa fa-times-rectangle',label:'删除'},
-  {colLength:8,event:'GOBACK',icon:'fa fa-times-rectangle',label:'返回上一页'},
+  {colLength:8,event:'VIEW',icon:'fa fa-check-square',label:'试卷统计查看'},
 ];
 export const tableConfig={
   selection:true,

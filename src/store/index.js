@@ -5,6 +5,7 @@ import manager from './manager'
 import paper from './paper'
 import points from './points'
 import exam from './exam'
+import resetPwd from './resetPwd'
 import createPersistedState from "vuex-persistedstate"
 vue.use(vuex);
 const store=new vuex.Store({
@@ -13,7 +14,8 @@ const store=new vuex.Store({
     manager,
     paper,
     points,
-    exam
+    exam,
+    resetPwd
   },
   plugins:[createPersistedState({
     storage: window.sessionStorage,
@@ -21,7 +23,8 @@ const store=new vuex.Store({
       return {
         // 只储存state中的user
         global: val.global,
-        exam:val.exam
+        exam:val.exam,
+        resetPwd:val.resetPwd
       }
     }
   })]

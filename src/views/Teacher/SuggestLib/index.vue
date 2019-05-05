@@ -75,19 +75,6 @@
       getTable(){
         console.log(this.getParams);
         const params=Object.assign({},this.defaultParams,{tno:this.getParams.username},this.form);
-        this.tableData=[
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-        ];
-        this.total=40;
         getCourseTeacher(params).then(res=>{
           if(res.success==true){
             console.log(res.obj[0]);

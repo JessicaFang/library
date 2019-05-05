@@ -4,7 +4,7 @@ export const btnConfig=[
 export const tableConfig={
   selection:true,
   list:[
-    {prop:'paperId',label:'试题号'},
+    {prop:'paperId',label:'试卷号'},
     {prop:'courseId',label:'课程号'},
     {prop:'paperTitle',label:'试题名称'},
     {prop:'testTime',label:'考试时间',width:300},

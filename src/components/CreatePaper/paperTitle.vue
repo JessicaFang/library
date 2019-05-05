@@ -7,8 +7,8 @@
           </el-input>
         </el-form-item>
         <el-form-item label="试卷分类" prop="classification" >
-          <el-select v-model="form.classification" placeholder="请选择分类" @focus="getOptions" multiple>
-            <el-option v-for="(item,index) in options" :label="item.label" :key="index" :value="item.value"></el-option>
+          <el-select clearable v-model="form.classification" placeholder="请选择分类" @focus="getOptions" multiple>
+            <el-option v-for="(item,index) in options" :label="item.knowledgeTitle" :key="index" :value="item.knowledgeTitle"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="组卷方式">
@@ -23,7 +23,8 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex';
+    import { mapActions,mapGetters } from 'vuex';
+    import { queryKnowLedge } from '@/api/teacher'
     export default {
         name: "paperTitle",
         data(){
@@ -38,12 +39,12 @@
               paperTitle: [
                 {required: true, message: '请输入试题名称', trigger: 'change'}
               ],
-              classification: [
-                {required: true, message: '请选择试题分类', trigger: 'change'}
-              ],
             }
           }
         },
+      computed:{
+        ...mapGetters(['getId']),
+      },
         methods:{
           ...mapActions( // 语法糖
             ['setPaperActions','setActiveActions'] // 相当于this.$store.dispatch('modifyName'),提交这个方法
@@ -63,22 +64,17 @@
 
           },
           getOptions() {
-            this.options = [{
-              value: '选项1',
-              label: '黄金糕'
-            }, {
-              value: '选项2',
-              label: '双皮奶'
-            }, {
-              value: '选项3',
-              label: '蚵仔煎'
-            }, {
-              value: '选项4',
-              label: '龙须面'
-            }, {
-              value: '选项5',
-              label: '北京烤鸭'
-            }]
+            var courseId=this.getId;
+            queryKnowLedge({courseId}).then(res=>{
+              if(res.success==true){
+                 this.options=res.obj;
+              }else{
+                this.$message({
+                  type:'warning',
+                  message:res.msg,
+                })
+              }
+            });
           }
         }
     }

@@ -2,7 +2,7 @@
   <div>
     <el-form :inline="true" :model="form" class="form">
       <el-form-item label="题目难度">
-        <el-select v-model="form.difficultLevel" placeholder="请选择题目难度">
+        <el-select clearable v-model="form.difficultLevel" placeholder="请选择题目难度">
           <el-option label="较容易" value="0"></el-option>
           <el-option label="容易" value="0.3"></el-option>
           <el-option label="较困难" value="0.6"></el-option>
@@ -10,8 +10,8 @@
         </el-select>
       </el-form-item>
       <el-form-item label="知识点">
-        <el-select v-model="form.knowledgeTitle" placeholder="请选择题目难度" multiple>
-          <el-option label="知识点" value="知识点"></el-option>
+        <el-select clearable v-model="form.knowledgeTitle" placeholder="请选择题目知识点" @focus="getOptions" >
+          <el-option v-for="(item,index) in options" :label="item.knowledgeTitle" :key="index" :value="item.knowledgeTitle"></el-option>
         </el-select>
       </el-form-item>
     </el-form>
@@ -27,7 +27,7 @@
 
 <script>
   import { saveLib } from '@/api/manager'
-  import { saveSuggest } from "@/api/student";
+  import { queryKnowLedge } from '@/api/teacher'
   import { reset }  from '@/util/reset'
   import Single from  '@/components/Question/Single'
   import Double from  '@/components/Question/Double'
@@ -47,10 +47,11 @@
         questionMes:{},
         roleLevel:'',
         submitFunction:'',
+        options:[],
       }
     },
     computed: {
-      ...mapGetters(['getQuestMes','getPaper'])
+      ...mapGetters(['getQuestMes','getPaper','getActive'])
     },
     components:{
       Single,
@@ -84,7 +85,8 @@
       },
       submit(data){
         this.dealData(data);
-        this.setActiveActions({active:2,source:'AlterQuestion',alterFlag:true});
+        var source=this.getActive.source=='paperTitle'?'AlterQuestion':this.getActive.source;
+        this.setActiveActions({active:2,source:source,alterFlag:true});
         this.$router.go(-1);
         /*const Message=this.getQuestMes.data;
         const params=Object.assign({},{id:Message.id,courseId:Message.courseId,type:this.getQuestMes.type},this.form,data);
@@ -103,7 +105,20 @@
           }
         })*/
       },
+      getOptions() {
+        queryKnowLedge().then(res=>{
+          if(res.success==true){
+            this.options=res.obj;
+          }else{
+            this.$message({
+              type:'warning',
+              message:res.msg,
+            })
+          }
+        });
+      },
       dealData(data){
+        console.log(data);
         const tempData=_.cloneDeep(data);
         const index=this.getQuestMes.index;
         const type=this.getQuestMes.type;
@@ -118,6 +133,7 @@
               difficultLevel:this.form.difficultLevel,
               singlePoints:questionIndex.singlePoints,
               testSingleId:questionIndex.testSingleId,
+              singleId:questionIndex.singleId
             };
             this.setPaperActions({name:'testSingleVos',subName:index,value:obj,flag:true});
             break;
@@ -131,6 +147,7 @@
               difficultLevel:this.form.difficultLevel,
               multiplePoints:questionIndex.multiplePoints,
               testMultipleId:questionIndex.testMultipleId,
+              multipleId:questionIndex.multipleId,
             };
             this.setPaperActions({name:'testMultipleVos',subName:index,value:obj,flag:true});
             break;
@@ -144,6 +161,7 @@
               difficultLevel:this.form.difficultLevel,
               judgePoints:questionIndex.judgePoints,
               testJudgeId:questionIndex.testJudgeId,
+              judgeId:questionIndex.judgeId,
             };
             this.setPaperActions({name:'testJudgeVos',subName:index,value:obj,flag:true});
             break;
@@ -155,7 +173,8 @@
               knowledgeTest:this.form.knowledgeTitle,
               difficultLevel:this.form.difficultLevel,
               blankPoints:questionIndex.blankPoints,
-              testBlankId:questionIndex.testBlankId
+              testBlankId:questionIndex.testBlankId,
+              blankId:questionIndex.blankId
             };
             this.setPaperActions({name:'testBlankVos',subName:index,value:obj,flag:true});
             break;
@@ -169,6 +188,7 @@
               difficultLevel:this.form.difficultLevel,
               myPoints:questionIndex.myPoints,
               testQuestionId:questionIndex.testQuestionId,
+              myQuestionId:questionIndex.myQuestionId,
             };
             this.setPaperActions({name:'testQuestionVos',subName:index,value:obj,flag:true});
         };

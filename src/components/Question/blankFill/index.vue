@@ -6,13 +6,6 @@
     <!--渲染时候的更新问题，v-for的时候数据得到更新，但是questioForm.option进行变化而v-for没有渲染，是得不到数据的-->
     <div  class="blankFill" v-for="(item,index) in list">
       <span>{{index+1}}、</span>
-      <!-- <editor-bar
-         :index="index"
-         :valueChange="flag"
-         @endChange="flagChange"
-         v-model="questionForm.options[index]"
-         @htmlChange="val=>change(val,'options',index)">
-       </editor-bar>-->
       <div class="blankDiv">
         <el-tag
           class="tag"

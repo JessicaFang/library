@@ -48,6 +48,7 @@
           this.init();
         },
         deep:true,
+        immediate:true,
       },
       points:{
         handler(){

@@ -48,6 +48,7 @@
     watch:{
       single:{
         handler:function (newVal,OldVal) {
+          console.log('adfdfd')
           this.init();
         },
         deep:true,
@@ -66,6 +67,7 @@
       ),
       init(){
         const singleState=this.getPaper['testSingleVos'];
+        console.log(singleState);
         this.list=[];
         if(singleState&&singleState.length!=0) {
           singleState.forEach((item, index) => {
@@ -78,6 +80,7 @@
               'singlePoints': item.singlePoints,
             };
             this.$set(this.list,index,obj)
+            console.log(this.list);
           })
           this.pointList=this.getPoint['singlePoints'];
         }

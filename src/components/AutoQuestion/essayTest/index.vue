@@ -7,7 +7,8 @@
         <div class="blank">答案</div>
            <div class="answer" v-html="item.myAnswer"></div>
         <div class="rules">评分规则</div>
-           <div class="answer" v-html="item.detailReviewRules"></div>
+           <div v-if="item.detailReviewRules" class="answer" v-html="item.detailReviewRules"></div>
+           <div v-else>无</div>
       </div>
       <div class="grade">
         分数：
@@ -118,6 +119,7 @@
     padding:5px 0px;
   }
    .rules{
+     margin-top:10px ;
      width: 120px;
    }
   .blank{

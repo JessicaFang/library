@@ -19,11 +19,11 @@
           <h3>单选题</h3>
           <div v-for="(item,index) in exam.testSingleVos" :key="index" class="question">
             <h6 class="title">
-              {{index+1}}、<span v-html="item.singleQuestion"></span>（{{item.singlePoints}}分）
+              {{index+1}}、<span class="questionTitle" v-html="item.singleQuestion"></span>（{{item.singlePoints}}分）
             </h6>
             <div v-for="(opt,index2) in item.singleTestChoice" :key="index2" class="answers">
               <el-radio v-model="single[item.testSingleId]"   :label="index2+''"></el-radio>
-              <span v-text="translate(index2)"></span>、<span v-html="opt"></span>
+              <span v-text="translate(index2)"></span>、<span class="questionContent" v-html="opt"></span>
             </div>
           </div>
         </div>
@@ -31,11 +31,11 @@
           <h3>多选题</h3>
           <div v-for="(item,index) in exam.testMultipleVos" :key="index" class="question">
             <h6  class="title">
-              {{index+1}}、<span v-html="item.multipleQuestion"></span>（{{item.multiplePoints}}分）
+              {{index+1}}、<span class="questionTitle" v-html="item.multipleQuestion"></span>（{{item.multiplePoints}}分）
             </h6>
             <div v-for="(opt,index2) in item.multipleTestChoice" :key="index2" class="answers">
               <input  v-model="multiple[item.testMultipleId]" type="checkbox" :value="index2" />
-              <span v-text="translate(index2)"></span>、<span v-html="opt"></span>
+              <span v-text="translate(index2)"></span>、<span class="questionContent" v-html="opt"></span>
             </div>
           </div>
         </div>
@@ -43,7 +43,7 @@
           <h3>判断题</h3>
           <div v-for="(item,index) in exam.testJudgeVos" :key="index" class="question">
             <h6  class="title">
-              {{index+1}}、<span v-html="item.judgeQuestion"></span>（{{item.judgePoints}}分）
+              {{index+1}}、<span class="questionTitle" v-html="item.judgeQuestion"></span>（{{item.judgePoints}}分）
             </h6>
             <div  class="answers">
               <el-radio v-model="judge[item.testJudgeId]"   :label="1"></el-radio><i class="el-icon-check"></i>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -55,7 +55,7 @@
           <h3>填空题</h3>
           <div v-for="(item,index) in exam.testBlankVos" :key="index" class="question">
             <h6  class="title">
-              {{index+1}}、<span v-html="item.blankQuestion"></span>（{{item.blankPoints}}分）
+              {{index+1}}、<span class="questionTitle" v-html="item.blankQuestion"></span>（{{item.blankPoints}}分）
             </h6>
             <div v-for='(opt,index2) in item.blankCounter' :key="index2" class="answers">
               第{{index2+1}}个空:<el-input class="input" v-model="blank[item.testBlankId][index2]"></el-input>
@@ -66,7 +66,7 @@
           <h3>问答题</h3>
           <div v-for="(item,index) in exam.testQuestionVos" :key="index" class="question">
             <h6  class="title">
-              {{index+1}}、<span v-html="item.myQuestion"></span>（{{item.myPoints}}分）
+              {{index+1}}、<span class="questionTitle" v-html="item.myQuestion"></span>（{{item.myPoints}}分）
             </h6>
             <textarea  v-html="my[item.testQuestionId]" class="answers myAnswer"></textarea>
           </div>
@@ -85,6 +85,7 @@
 </template>
 
 <script>
+  import { submitAnswer } from '@/api/student'
   import {mapGetters,mapActions} from 'vuex';
   export default {
     name: "index",
@@ -156,9 +157,22 @@
           resultQuestionVos.push(obj);
         }
         var params=Object.assign({},{paperId,sno,resultSingleVos,resultMultipleVos,resultJudgeVos,resultBlankVos,resultQuestionVos})
-        console.log(params);
-        this.exitFullScreen();
-        window.open('http://127.0.0.1:8080/#/ChoiceTest','_self')
+        submitAnswer(params).then(res=>{
+          if(res.success==true){
+            this.exitFullScreen();
+            window.open('http://127.0.0.1:8080/#/ChoiceTest','_self')
+          }else {
+            this.$message({
+              type: 'warning',
+              message: res.msg
+            })
+            if (res.msg == '试卷只能提交一次') {
+              this.exitFullScreen();
+              window.open('http://127.0.0.1:8080/#/ChoiceTest', '_self')
+            }
+          }
+        })
+
       },
       exitFullScreen(){
         // 判断各种浏览器，找到正确的方法
@@ -166,7 +180,7 @@
           document.mozCancelFullScreen || //Chrome等
           document.webkitExitFullscreen || //FireFox
           document.webkitExitFullscreen; //IE11
-        if (exitMethod) {
+        if (exitMethod&&(document.isFullScreen || document.mozIsFullScreen || document.webkitIsFullScreen)) {
           exitMethod.call(document);
         }
       },
@@ -206,7 +220,7 @@
         }
       }
       //实现全屏效果
-     this.fullScreen();
+      this.fullScreen();
       this.countTime();
     },
   }
@@ -221,12 +235,12 @@
   }
   .examBackground{
     padding:0px 50px 0 150px;
-    background: white;
+    background:  #f5f5f5;
   }
   .exam{
     width: 75%;
     padding: 14px 0;
-    background: #f5f5f5;
+    background:white;
   }
   .head{
     border-bottom: 1px solid silver;
@@ -284,4 +298,11 @@
   .timeText{
     padding: 10px 0;
   }
+  .content{
+    margin-left:8px;
+  }
+  .questionTitle, .questionContent{
+    display: inline-block;
+  }
+
 </style>

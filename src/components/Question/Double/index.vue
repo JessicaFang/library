@@ -97,6 +97,8 @@
         this.questionForm.multipleQuestion = data.multipleQuestion;
         this.questionForm.options = data.multipleTestChoice;
         this.questionForm.trueIndex = data.multipleTestAnswer;
+        console.log(1);
+        console.log(this.questionForm.trueIndex)
       }else {
         this.validate = validate;
       }

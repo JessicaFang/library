@@ -1,19 +1,18 @@
 <template>
   <div>
     <el-form ref="form"  :model="form" class="form"  :inline="true">
-      <el-form-item label-width="60px" label="课程号">
-        <el-input v-model="form.courseId" placeholder="请输入课程号"></el-input>
-      </el-form-item>
       <el-form-item label-width="45px" label="难度">
-        <el-select v-model="form.difficultLevel" placeholder="请选择题目难度">
-          <el-option label="较容易" value="0"></el-option>
-          <el-option label="容易" value="0.3"></el-option>
-          <el-option label="较困难" value="0.6"></el-option>
-          <el-option label="困难" value="1"></el-option>
+        <el-select clearable v-model="form.difficultLevel" placeholder="请选择题目难度">
+          <el-option label="容易" value="0"></el-option>
+          <el-option label="一般" value="0.3"></el-option>
+          <el-option label="困难" value="0.6"></el-option>
+          <el-option label="很困难" value="1"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label-width="60px" label="知识点">
-        <el-input v-model="form.knowledgeTitle" placeholder="请输入知识点"></el-input>
+        <el-select clearable v-model="form.knowledgeTitle" placeholder="请选择分类" @focus="getOptions" >
+          <el-option v-for="(item,index) in options" :label="item.knowledgeTitle" :key="index" :value="item.knowledgeTitle"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSearch">查找</el-button>
@@ -35,57 +34,68 @@
   import {tableConfig,btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
   import tableMixin from '@/util/Mixins/tableMixins'
-  import { mapActions } from 'vuex'
+  import { mapActions,mapGetters } from 'vuex'
+  import { queryKnowLedge,selectLib } from '@/api/teacher'
+  import {translateDiff} from '@/util/translate'
   export default {
     name: "index",
     data(){
       return {
         form:{
-          type:'1',
-          courseId:'',
           difficultLevel:'',
           knowledgeTitle:'',
         },
+        options:[],
         tableHeight:200,
-        type:'',
         tableData:[],
         table:{},
         total:0,
         ButtonGroup:[],
       }
     },
+    props:{
+      type:{
+        required:true,
+        type:String,
+      }
+    },
     components:{
       DTable,
     },
     mixins: [tableMixin],
+    computed:{
+      ...mapGetters(['getId']),
+    },
     methods:{
       onSearch(){
         this.getTable();
       },
       getTable(){
-        this.tableData=[
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-          {courseId:'1',id:'001',difficultLevel:'容易',questionContent:'手机端付款'},
-        ]
-        this.total=40;
-        const params=Object.assign({},this.defaultParams,this.form);
-        this.type=this.form.type;
-        //this.defaultParams多少页多少行
-        /*  const params=Object.assign({},this.defaultParams,{roleLevel:this.roleLevel,status:'0'},this.form);
-          getMessage(params).then(res=>{
+        const params=Object.assign({},this.defaultParams,this.form,{type:this.type,courseId:this.getId});
+        selectLib(params).then(res=>{
             if(res.success==true){
-              this.tableData=translate(res.obj);
+              this.tableData=translateDiff(res.obj);
               this.total=res.total
+            }else{
+              this.$message({
+                type:'warning',
+                message:res.msg
+              })
             }
-          })*/
+          })
+      },
+      getOptions() {
+        var courseId=this.getId;
+        queryKnowLedge({courseId}).then(res=>{
+          if(res.success==true){
+            this.options=res.obj;
+          }else{
+            this.$message({
+              type:'warning',
+              message:res.msg,
+            })
+          }
+        });
       },
       init(){
         this.table=tableConfig;

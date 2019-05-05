@@ -1,6 +1,6 @@
 <template>
   <div class="message">
-    <AlterMessage :myForm="myForm" :params="params"></AlterMessage>
+    <AlterMessage :myForm="myForm" @update="update" :params="params"></AlterMessage>
   </div>
 </template>
 
@@ -23,14 +23,26 @@
     computed: {
       ...mapGetters(['getParams'])
     },
+    methods:{
+      getMessage(){
+        this.params=this.getParams;
+        getMessage(this.params).then(res=>{
+          if(res.success===true){
+            this.myForm=translate(res.obj);
+          }else {
+             this.$message({
+               type:'warning',
+               message:res.msg,
+             })
+          }
+        })
+      },
+      update(){
+        this.getMessage();
+      }
+    },
     beforeMount(){
-      this.params=this.getParams;
-      getMessage(this.params).then(res=>{
-        if(res.success===true){
-          this.myForm=translate(res.obj);
-          console.log(this.myForm)
-        }
-      })
+     this.getMessage();
     }
   }
 </script>
