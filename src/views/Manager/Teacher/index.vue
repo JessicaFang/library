@@ -2,7 +2,7 @@
   <div>
     <el-form ref="form"  :model="form" class="form"  :inline="true">
       <el-form-item label-width="45px" label="姓名">
-        <el-input v-model="form.username" auto-complete="text"></el-input>
+        <el-input v-model="form.name" auto-complete="text"></el-input>
       </el-form-item>
       <el-form-item label-width="80px" label="职称" >
         <el-input v-model="form.classOrTitle" auto-complete="text"></el-input>
@@ -11,7 +11,7 @@
         <el-button type="primary" @click="onSearch">查找</el-button>
       </el-form-item>
     </el-form>
-    <input @change="importData"  style="display: none" type="file" ref="file" name="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+    <input @change="importData"  style="display: none" formenctype="multipart/form-data" type="file" ref="file" name="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
     <table-button
       class="tableBtn"
       :ButtonGroup="ButtonGroup"
@@ -25,9 +25,10 @@
       :total="total"
       @pageMesChange = "handleMesChange"
     ></DTable>
+    <div v-if="dialogVisible">
     <el-dialog
       title="教师信息修改"
-      :visible.sync="dialogVisible"
+      :visible.sync="visible"
       width="40%"
       :before-close="handleClose">
       <basic-message ref="message" :myForm="myForm" :params="params"></basic-message>
@@ -36,24 +37,27 @@
     <el-button type="primary" @click="updateMessage">确 定</el-button>
     </span>
     </el-dialog>
+    </div>
   </div>
 </template>
 
 <script>
   import BasicMessage from '@/components/Message/BasicMessage'
   import {translate} from "@/util/translate";
+  import {url} from '@/util/gobalVar'
   import{ getMessage }from '@/api/public'
   import{ importData,exportData,updateData,deleteData }from '@/api/manager'
   import {tableConfig,btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
   import TableButton from '@/components/Table/tableButton'
   import tableMixin from '@/util/Mixins/tableMixins'
+  import request from '@/util/request'
   export default {
     name: "index",
     data(){
       return {
         form:{
-          username:'',
+          name:'',
           classOrTitle:'',
         },
         tableData:[],
@@ -63,6 +67,7 @@
         myForm: [],
         params:{},
         dialogVisible:false,
+        visible:true,
       }
     },
     components:{
@@ -105,15 +110,42 @@
         var formData=new FormData();
         formData.append(fileName,file);
         console.log(formData.get(fileName));
-        importData(formData).then(res=>{
+        let params = Object.assign({},formData,{roleLevel:2})
+        let config = {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+        importData(params,config).then(res=>{
           if(res.success==true){
             this.$message({
               type:'success',
               message:'导入成功',
             });
             this.getTable();
+          }else{
+            this.$message({
+              type:'info',
+              message:res.msg
+            })
           }
+          this.$refs.file.value = null;
         })
+        // importData(params,config).then(res=>{
+        //   if(res.success==true){
+        //     this.$message({
+        //       type:'success',
+        //       message:'导入成功',
+        //     });
+        //     this.getTable();
+        //   }else{
+        //     this.$message({
+        //       type:'info',
+        //       message:res.msg
+        //     })
+        //   }
+        //   this.$refs.file.value = null;
+        // })
       },
       handleExportClick() {
         if(this.selectCloumn.length>0) {
@@ -123,12 +155,16 @@
             type: 'warning'
           }).then(() => {
             var username=this.getCloumn();
-            var params = {username: username};
+            var params = {usernames: username,roleLevel:2};
             exportData(params).then((res) =>{
-              if(res.success==true){
-                var blob=new Blob(res.data);
+              if(res.success==false){
+                this.$message({
+                  type: 'danger',
+                  message: res.msg
+                });
+              }else{
                 var a=document.createElement('a');
-                a.href=URL.createObjectURL(blob);
+                a.href=url()+'/iEExl/exportUser?roleLevel=2&usernames='+username;
                 a.download='用户列表.xlsx';
                 a.style.display='none';
                 document.body.appendChild(a);
@@ -138,11 +174,6 @@
                 this.$message({
                   type: 'info',
                   message: "操作成功"
-                });
-              }else{
-                this.$message({
-                  type: 'danger',
-                  message: "操作失败"
                 });
               }
             })
@@ -170,19 +201,26 @@
       handleAlterClick(){
          this.myForm=this.selectCloumn[0];
          this.params.roleLevel='2';
-         this.params.username=this.myForm.name;
          this.dialogVisible=true;
        },
       updateMessage(){
         this.$nextTick(() => {
           this.$refs.message.$refs.form.validate((valid) => {
             if (valid) {
-              updateData(this.$refs.message.form).then(res=>{
+              var params=Object.assign({},{roleLevel:2,username:this.$refs.message.form.no},this.$refs.message.form);
+              delete params.latestLoginTime
+              updateData(params).then(res=>{
                 if(res.success==true) {
                   this.dialogVisible = false;
                   this.$message({
                     type: 'success',
                     message: '修改成功'
+                  })
+                  this.getTable()
+                }else{
+                  this.$message({
+                    type: 'info',
+                    message: res.msg
                   })
                 }
               })
@@ -195,13 +233,18 @@
       handleDeleteClick(){
         if(this.selectCloumn.length>0) {
             var username=this.getCloumn();
-            var params = {username: username};
+            var params = {usernames: username,roleLevel:2};
             deleteData(params).then((res) =>{
               if(res.success==true){
                 this.getTable();
                 this.$message({
                   type: 'info',
                   message: "操作成功"
+                });
+              }else{
+                this.$message({
+                  type: 'warning',
+                  message: res.msg
                 });
               }
             })
@@ -217,26 +260,26 @@
       },
       getTable(){
         //this.defaultParams多少页多少行
-        const obj=[
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        ]
-        this.tableData=translate(obj);
-        this.total=4
-      /*  const params=Object.assign({},this.defaultParams,{roleLevel:'2',status:'1'},this.form);
+        // const obj=[
+        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
+        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
+        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
+        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
+        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
+        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
+        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
+        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
+        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
+        // ]
+        // this.tableData=translate(obj);
+        // this.total=4
+        const params=Object.assign({},this.defaultParams,{roleLevel:'2',status:'1'},this.form);
         getMessage(params).then(res=>{
-          if(res.success==true){
+          if(res.success){
             this.tableData=translate(res.obj);
             this.total=res.total
           }
-        })*/
+        })
       },
       init(){
         this.table=tableConfig;

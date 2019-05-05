@@ -41,7 +41,7 @@ export function upload(data) {
 //为课程添加学生
 export function addCourseStudent(params) {
   return request({
-    url: '/courser/addCourseStudent',
+    url: '/course/addCourseStudent',
     method: 'get',
     params
   });
@@ -49,7 +49,7 @@ export function addCourseStudent(params) {
 //为课程添加老师
 export function addCourseTeacher(params) {
   return request({
-    url: '/courser/addCourseTeacher',
+    url: '/course/addCourseTeacher',
     method: 'get',
     params
   });
@@ -57,7 +57,7 @@ export function addCourseTeacher(params) {
 //删除课程下的学生
 export function delCourseStudent(params) {
   return request({
-    url: '/courser/delCourseStudent',
+    url: '/course/delCourseStudent',
     method: 'get',
     params
   });
@@ -65,9 +65,37 @@ export function delCourseStudent(params) {
 //删除课程下的老师
 export function delCourseTeacher(params) {
   return request({
-    url: '/courser/delCourseTeacher',
+    url: '/course/delCourseTeacher',
     method: 'get',
     params
   });
 }
 
+export function queryUnCourseTeacher(params) {
+  return request({
+    url: '/course/queryUnCourseTeacher',
+    method: 'get',
+    params
+  });
+}
+export function queryCourseTeacher(params) {
+  return request({
+    url: '/course/queryCourseTeacher',
+    method: 'get',
+    params
+  });
+}
+export function queryCourseStudent(params) {
+  return request({
+    url: '/course/queryCourseStudent',
+    method: 'get',
+    params
+  });
+}
+export function queryUnCourseStudent(params) {
+  return request({
+    url: '/course/queryUnCourseStudent',
+    method: 'get',
+    params
+  });
+}

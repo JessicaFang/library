@@ -35,9 +35,12 @@
         }
       },
       watch:{
-        obj:function (obj) {
-          this.init(obj);
-        }
+        obj: {
+          handler(obj) {
+            this.init(obj);
+          },
+          immediate: true
+        },
       },
       methods:{
         init(obj) {
@@ -48,7 +51,6 @@
               this.list[i].answer = answer.charCodeAt(0) - 65;
             }
           }
-          console.log(this.list);
         }
       },
       beforeMount(){

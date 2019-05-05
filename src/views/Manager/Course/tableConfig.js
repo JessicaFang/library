@@ -7,7 +7,7 @@ export const btnConfig=[
   {colLength:8,event:'DELETEM',icon:'fa fa-times-rectangle',label:'删除负责人'},
   {colLength:8,event:'CHOICES',icon:'fa fa-times-rectangle',label:'选择学生'},
   {colLength:8,event:'DELETES',icon:'fa fa-times-rectangle',label:'删除学生'},
-  {colLength:8,event:'IMPORT',icon:'fa fa-times-rectangle',label:'课程导入'},
+  {colLength:8,event:'IMPORT',icon:'fa fa-times-rectangle',label:'题库导入'},
 ];
 export const tableConfig={
   selection:true,

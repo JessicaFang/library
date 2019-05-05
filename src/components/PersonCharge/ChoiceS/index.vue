@@ -2,7 +2,7 @@
   <div>
     <el-form ref="form"  :model="form" class="form"  :inline="true">
       <el-form-item label-width="45px" label="姓名">
-        <el-input v-model="form.username" auto-complete="text"></el-input>
+        <el-input v-model="form.name" auto-complete="text"></el-input>
       </el-form-item>
       <el-form-item label-width="45px" label="班级" >
         <el-input v-model="form.classOrTitle" auto-complete="text"></el-input>
@@ -30,7 +30,7 @@
 <script>
   import {translate} from "@/util/translate";
   import KnowledgeMessage from '@/components/Message/KnowledgeMessage'
-  import {addCourseStudent} from '@/api/public'
+  import {addCourseStudent,queryUnCourseStudent} from '@/api/public'
   import {tableConfig,btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
   import TableButton from '@/components/Table/tableButton'
@@ -41,7 +41,7 @@
     data(){
       return {
         form:{
-          username:'',
+          name:'',
           classOrTitle:'',
         },
         courseId:'',
@@ -65,6 +65,9 @@
       ...mapGetters(['getId'])
     },
     methods:{
+      onSearch(){
+        this.getTable()
+      },
       handleClick(event) {
         switch (event) {
           case 'ADDSTUDENT':
@@ -87,7 +90,7 @@
               no[index] = item.sno;
             });
             no=no.toString();
-            var params = {courseId:this.courseId,tnos:no};
+            var params = {courseId:this.courseId,snos:no};
             addCourseStudent(params).then((res) =>{
               if(res.success==true){
                 this.getTable();
@@ -121,26 +124,15 @@
       getTable(){
         //this.defaultParams多少页多少行
         //只需要还未被选择的学生
-        const params=Object.assign({},this.defaultParams,{roleLevel:'2',status:'1'},this.form);
-        const obj=[
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        ]
-        this.tableData=translate(obj);
-        this.total=4
-        /*  getMessage(params).then(res=>{
-            if(res.success==true){
-              this.tableData=translate(res.obj);
-              this.total=res.total
-            }
-          })*/
+        const params=Object.assign({},this.defaultParams,this.form,{courseId:this.courseId});
+        queryUnCourseStudent(params).then(res=>{
+          if(res.success==true){
+            this.tableData=translate(res.obj);
+            this.total=res.total
+          }else{
+            this.$message.info(res.msg)
+          }
+        })
       },
       init(){
         this.courseId=this.getId;

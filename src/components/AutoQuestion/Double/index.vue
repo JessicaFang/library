@@ -36,10 +36,13 @@
         default:false,
       }
     },
-    watch:{
-      obj:function (obj) {
-        this.init(obj);
-      }
+    watch: {
+      obj: {
+        handler(obj) {
+          this.init(obj);
+        },
+          immediate: true
+      },
     },
     methods:{
       init(obj){
@@ -47,7 +50,6 @@
         for (var i = 0; i < this.list.length; i++) {
           var answer=this.list[i].answer.split("");
           answer.forEach((item,index)=>{
-            console.log(item);
             answer[index]=item.charCodeAt(0)-65;
           })
           this.list[i].answer=answer

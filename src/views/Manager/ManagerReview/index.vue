@@ -8,7 +8,7 @@
         <el-input v-model="form.classOrTitle" auto-complete="text"></el-input>
       </el-form-item>
       <el-form-item label-width="100px" label="是否管理员" >
-        <el-select v-model="form.isAdmin" @change="isAdminChange">
+        <el-select clearable v-model="form.isAdmin" @change="isAdminChange">
           <el-option label="是" value="1"></el-option>
           <el-option label="否" value="0"></el-option>
         </el-select>

@@ -1,7 +1,7 @@
 <template>
   <el-form ref="form" :rules="rules"  :model="form" label-width="100px" class="form">
     <el-form-item label-width="80px" label="难度"  prop="difficultLevel">
-      <el-select v-model="form.difficultLevel">
+      <el-select clearable v-model="form.difficultLevel">
         <el-option label="较容易" value="0"></el-option>
         <el-option label="容易" value="0.3"></el-option>
         <el-option label="较困难" value="0.6"></el-option>

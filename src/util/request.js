@@ -19,7 +19,11 @@ service.interceptors.request.use(config=>{
   }
 );
 service.interceptors.response.use(response=>{
+   // if(response.headers['content-type"]']==) {
     return response.data;
+  // }else{
+  //   window.alert('')
+  //   }
   },err=>{
     return Promise.reject(err);
   }

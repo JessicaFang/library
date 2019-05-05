@@ -2,7 +2,7 @@
   <div>
     <el-form ref="form"  :model="form" class="form"  :inline="true">
       <el-form-item label-width="45px" label="姓名">
-        <el-input v-model="form.username" auto-complete="text"></el-input>
+        <el-input v-model="form.name" auto-complete="text"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSearch">查找</el-button>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import{ delCourseStudent  }from '@/api/public'
+  import{ delCourseStudent ,queryCourseStudent }from '@/api/public'
   import {tableConfig,btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
   import TableButton from '@/components/Table/tableButton'
@@ -36,7 +36,7 @@
     data(){
       return {
         form:{
-          username:'',
+          name:'',
           classOrTitle:'',
         },
         courseId:'',
@@ -77,7 +77,7 @@
               no[index] = item.sno;
             });
             no=no.toString();
-            var params = {courseId:this.courseId,tnos:no};
+            var params = {courseId:this.courseId,snos:no};
             delCourseStudent(params).then((res) =>{
               if(res.success==true){
                 this.getTable();
@@ -111,28 +111,15 @@
       getTable(){
         //可以根据名字进行查询
         const params=Object.assign({},this.defaultParams,{courseId:this.courseId},this.form);
-        const obj=[
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
-          {courseIntroduction:'的看法角度看',courseName:'政治',courseId:'1',sno:'001',name:'小熊'},
 
-        ];
-        this.tableData=obj;
-        this.total=40;
-        /*  getMessage(params).then(res=>{
+          queryCourseStudent(params).then(res=>{
             if(res.success==true){
-              this.tableData=translate(res.obj);
+              this.tableData=res.obj;
               this.total=res.total
+            }else{
+              this.$message.info(res.msg)
             }
-          })*/
+          })
       },
       init(){
         this.courseId=this.getId;

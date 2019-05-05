@@ -3,7 +3,7 @@
     <el-form-item label="课程号" prop="courseId" >
       <el-input v-model="form.courseId" auto-complete="text"disabled></el-input>
     </el-form-item>
-    <el-form-item  label="课程名"  prop="knowledgeTitle">
+    <el-form-item  label="知识点"  prop="knowledgeTitle">
       <el-input v-model="form.knowledgeTitle" auto-complete="text"></el-input>
     </el-form-item>
   </el-form>

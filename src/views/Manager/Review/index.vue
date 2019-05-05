@@ -122,7 +122,7 @@
       },
       handleDeleteClick() {
         const status='0';
-        const message="是否审核失败";
+        const message="是否审核不通过";
         this.examine(status,message);
       },
       onSearch(){

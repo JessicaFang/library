@@ -1,8 +1,5 @@
 <template>
   <el-form ref="form" :rules="rules"  :model="form" label-width="100px" class="form">
-    <el-form-item  :label="noLabel" prop="no">
-      <el-input v-model="form.no"></el-input>
-    </el-form-item>
     <el-form-item label="姓名" prop="name">
       <el-input v-model="form.name" auto-complete="text"></el-input>
     </el-form-item>
@@ -31,19 +28,9 @@
     },
     data(){
       return {
-        noLabel:'',
         titleLabel:'',
         form:{},
         rules: {
-          no: [
-            { validator: (rule, value, callback) => {
-                if (value === '') {
-                  callback(new Error('请输入'+this.noLabel));
-                } else {
-                  callback();
-                }
-              }, trigger: 'change' }
-          ],
           name: [
             {required: true, message: '请输入姓名', trigger: 'change'}
           ],
@@ -77,23 +64,12 @@
       }
     },
     beforeMount(){
-      this.getByParams();
+      this.titleLabel= this.params.roleLevel=='3'?'班级':'职称'
       const tempForm=_.cloneDeep(this.myForm);
       if( Object.keys(tempForm).length!=0) {
         this.form=tempForm;
       }
     },
-    methods:{
-      getByParams(){
-        if( this.params.roleLevel=='3'){
-          this.noLabel='学号';
-          this.titleLabel='班级';
-        }else{
-          this.noLabel='教师号';
-          this.titleLabel='职称';
-        }
-      },
-    }
 
   }
 </script>

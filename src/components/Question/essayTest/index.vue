@@ -6,7 +6,7 @@
     <div class="answer">
         <editor-bar v-model="questionForm.myAnswer" :showToolBar="showToolBar" @htmlChange="val=>change(val,'myAnswer')"></editor-bar>
     </div>
-    <div class="answerTitle">关键词</div>
+    <div class="answerRules">评分规则</div>
     <div class="answer">
         <el-input v-model="questionForm.detailReviewRules"></el-input>
     </div>
@@ -108,7 +108,7 @@
     height: 360px;
    }
   }
-  .title,.answerTitle {
+  .title,.answerTitle,.answerRules {
     width: 60px;
     background: #409EFF;
     margin: 15px 2px 10px 2px;
@@ -118,8 +118,11 @@
     height: 20px;
     padding: 5px 0px;
   }
-  .answerTitle{
+  .answerTitle,.answerRules{
     margin-top: 30px;
+  }
+  .answerRules{
+    width:120px;
   }
   .button{
     width: 100%;

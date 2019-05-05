@@ -21,11 +21,11 @@ export function Login(params) {
   });
 }
 
- export function Register(params) {
+ export function Register(data) {
     return request({
       url:'regist/userRegist',
-      method:'get',
-      params
+      method:'post',
+      data
     })
   };
 

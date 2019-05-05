@@ -16,13 +16,13 @@
        <div class="blankDiv">
          <el-tag
            class="tag"
-           :key="tag"
+           :key="indexTag"
            v-for="(tag,indexTag) in questionForm.blankAnswer[index]"
            closable
            @close="handleClose(index,indexTag)">
            {{tag}}
          </el-tag>
-          <el-input  placeholder="请输入填空内容" class="content"  v-model="blankInput[index]" @keyup.enter.native="havePress(index)"></el-input>
+          <el-input  placeholder="请输入填空答案,按回车可以输入多个近似答案" class="content"  v-model="blankInput[index]" @keyup.enter.native="havePress(index)"></el-input>
        </div>
       <el-button v-show="index>0"  @click="deleteBlank(index)" icon="el-icon-close"></el-button>
     </div>
@@ -71,10 +71,15 @@
         var message = '';
         if (validate(this.questionForm.blankQuestion)) {
           for (var i = 0; i < this.list; i++) {
-            for(var j = 0; j < this.questionForm.blankAnswer[i]; j++)
-              if (this.questionForm.blankAnswer[i][j].trim() != '') {
-              message = "请进行选项的填写";
+            if(this.questionForm.blankAnswer[i].length==0){
+              message = "请进行选项的填写"+i;
               return message;
+            }else {
+              for (var j = 0; j < this.questionForm.blankAnswer[i]; j++)
+                if (this.questionForm.blankAnswer[i][j].trim() == '') {
+                  message = "请进行选项的填写";
+                  return message;
+                }
             }
           }
         } else {
@@ -91,12 +96,17 @@
           });
         } else {
           this.list++;
-          this.questionForm.blankAnswer.push([]);
+          this.blankInput[this.list-1]='';
+          var  temp=this.questionForm.blankAnswer;
+          temp.push([]);
+          this.questionForm['blankAnswer']=temp;
         }
       },
       deleteBlank(index) {
-        console.log(this.questionForm.blankAnswer)
-        this.questionForm.blankAnswer.splice(index, 1);
+        this.blankInput.splice(index,1);
+        var  temp=this.questionForm.blankAnswer;
+        temp.splice(index, 1);
+         this.questionForm['blankAnswer']=temp;
         this.$nextTick(() => {
           this.list--;
          /* this.questionForm.options.pop();*/
@@ -106,7 +116,8 @@
       blankCheck() {
         this.blankInput.forEach((item, index) => {
           if (item != undefined && item.trim() != '') {
-            this.questionForm.blankAnswer[index][0] = item;
+            const length=this.questionForm.blankAnswer[index].length;
+            this.questionForm.blankAnswer[index] [length]= item;
           }
         })
       },
@@ -130,7 +141,6 @@
       onSubmit() {
         this.blankCheck();
         var message = this.check();
-        console.log(this.questionForm)
         if (message.length != 0) {
           this.$message({
             message: message,

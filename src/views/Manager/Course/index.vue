@@ -42,7 +42,7 @@
 <script>
   import CourseMessage from '@/components/Message/CourseMessage'
   import {translate} from "@/util/translate";
-  import{ addCourse,deleteCourse,alterCourse }from '@/api/manager'
+  import{queryCourse, addCourse,deleteCourse,alterCourse }from '@/api/manager'
   import{ examine }from '@/api/manager'
   import {tableConfig,btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
@@ -122,6 +122,12 @@
                   type: 'success',
                   message: '添加成功'
                 })
+                this.getTable()
+              }else{
+                this.$message({
+                  type: 'warning',
+                  message: res.msg
+                })
               }
             })
           } else {
@@ -159,6 +165,7 @@
                   type: 'info',
                   message: "删除成功"
                 });
+                this.paramsChange();
               }else{
                 this.$message({
                   type: 'danger',
@@ -189,6 +196,12 @@
                   type: 'success',
                   message: '修改成功'
                 })
+                this.getTable()
+              }else{
+                this.$message({
+                  type: 'warning',
+                  message: res.msg
+                })
               }
             })
           } else {
@@ -215,26 +228,18 @@
       },
       getTable(){
         //this.defaultParams多少页多少行
-        const params=Object.assign({},this.defaultParams,{roleLevel:this.roleLevel,status:'0'},this.form);
-        this.tableData=[
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-        ];
-        this.total=40;
-      /*  getMessage(params).then(res=>{
+        const params=Object.assign({},this.defaultParams,this.form);
+        queryCourse(params).then(res=>{
           if(res.success==true){
             this.tableData=translate(res.obj);
             this.total=res.total
+          }else{
+            this.$message({
+              type:'warning',
+              message:res.msg
+            })
           }
-        })*/
+        })
       },
       init(){
         this.table=tableConfig;

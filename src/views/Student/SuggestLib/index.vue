@@ -2,7 +2,7 @@
   <div>
     <el-form ref="form"  :model="form" class="form"  :inline="true">
       <el-form-item label-width="45px" label="题型" >
-        <el-select v-model="form.type" placeholder="请选择题目难度">
+        <el-select v-model="form.type" placeholder="请选择题型">
           <el-option label="单选题" value="1"></el-option>
           <el-option label="多选题" value="2"></el-option>
           <el-option label="填空题" value="3"></el-option>
@@ -14,7 +14,7 @@
         <el-input v-model="form.courseId" placeholder="请输入课程号"></el-input>
       </el-form-item>
       <el-form-item label-width="75px" label="审核状态">
-        <el-select v-model="form.suggestState" placeholder="请选择题目难度">
+        <el-select v-model="form.suggestState" placeholder="请选择状态">
           <el-option label="待审核" value="待审核"></el-option>
           <el-option label="未通过" value="未通过"></el-option>
           <el-option label="未提交" value="未提交"></el-option>

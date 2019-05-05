@@ -11,19 +11,21 @@
         </el-select>
       </el-form-item>
       <el-form-item label="题目难度" v-show="formShow">
-        <el-select v-model="form.difficultLevel" >
-          <el-option label="较容易" value="0"></el-option>
-          <el-option label="容易" value="0.3"></el-option>
-          <el-option label="较困难" value="0.6"></el-option>
-          <el-option label="困难" value="1"></el-option>
+        <el-select clearable v-model="form.difficultLevel" >
+          <el-option label="容易" value="0"></el-option>
+          <el-option label="一般" value="0.3"></el-option>
+          <el-option label="困难" value="0.6"></el-option>
+          <el-option label="很困难" value="1"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="知识点"  v-show="formShow">
-        <el-select v-model="form.knowledgeTitle">
-          <el-option label="属性" value="属性"></el-option>
-          <el-option label="物理" value="物理"></el-option>
-          <el-option label="化学" value="化学"></el-option>
-          <el-option label="英语" value="英语"></el-option>
+        <el-select clearable v-model="form.knowledgeTitle" @focus="knowledgeEvent">
+          <el-option
+            v-for="item in knowledgeTitleList"
+            :key="item.knowledgeTitle"
+            :label="item.knowledgeTitle"
+            :value="item.knowledgeTitle">
+          </el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -34,7 +36,7 @@
        <div class="left">
         <div class="leftHead">
           <div>输入区</div>
-          <div><a @click='displayRules'  href="#">规则展示</a>&nbsp;&nbsp;<a @click="displayExample" href="#">范例展示</a></div>
+          <div><a @click='displayRules'  href="#">范例展示</a>&nbsp;&nbsp;<a @click="displayExample" href="#">规则展示</a></div>
         </div>
         <textarea v-model="inputContent" class="input"></textarea>
       </div>
@@ -71,17 +73,20 @@
   import Single from  '@/components/AutoQuestion/Single'
   import Double from  '@/components/AutoQuestion/Double'
   import blankFill from  '@/components/AutoQuestion/blankFill'
-  import { mapGetters } from 'vuex';
+  import Blank from  '@/components/AutoQuestion/Blank'
+  import { mapGetters } from 'vuex'
+  import {queryKnowledge}from '@/api/manager'
   export default {
     name: "AutoExport",
     data(){
       return {
         form:{
-          difficultLevel:'',
+          difficultLevel:'0',
           type:'1',
           knowledgeTitle:'',
           courseId:"",
         },
+        knowledgeTitleList:[],
         type:'1',
         inputContent:'',
         loading:false,
@@ -92,112 +97,7 @@
         template:'Single',
         obj:[],
         formShow:true,
-      /*  obj:[
-           {
-              question:'1.jaisohidfdifhdifhdifhd',
-              options:[
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-              ],
-              answer:'D',
-              errorMsg:'',
-              right:'true',
-           },  {
-              question:'1.jaisohidfdifhdifhdifhd',
-              options:[
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-              ],
-              answer:'D',
-              errorMsg:'打飞机可东方今典看',
-              right:'true',
-           },  {
-              question:'1.jaisohidfdifhdifhdifhd',
-              options:[
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-              ],
-              answer:'AB',
-              errorMsg:'',
-              right:'true',
-           },  {
-              question:'1.jaisohidfdifhdifhdifhd',
-              options:[
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-              ],
-              answer:'CA',
-              errorMsg:'',
-              right:'true',
-           },  {
-              question:'1.jaisohidfdifhdifhdifhd',
-              options:[
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-                '斤斤计较军放到',
-              ],
-              answer:'DAC',
-              errorMsg:'',
-              right:'true',
-           },
-        ]*/
-      /*  obj:[
-          {
-            question:'就放得开风景渡口风景渡口风景渡口____京东方肯德基',
-            answer:'honglfdjfdjfkd',
-            errorMsg:'',
-            right:'true'
-          },{
-            question:'就放得开风景渡口风景渡口风景渡口____京东方肯德基',
-            answer:'honglfdjfdjfkd',
-            errorMsg:'fjdkfjdkjf',
-            right:'true'
-          },{
-            question:'就放得开风景渡口风景渡口风景渡口____京东方肯德基',
-            answer:'honglfdjfdjfkd',
-            errorMsg:'',
-            right:'true'
-          },{
-            question:'就放得开风景渡口风景渡口风景渡口____京东方肯德基',
-            answer:'honglfdjfdjfkd',
-            errorMsg:'',
-            right:'true'
-          },
-        ]*/
-    /*  obj:[
-        {
-          question:'are you ok',
-          answer:'对',
-          errorMsg:'缺少答案',
-          right:'true',
-        }, {
-          question:'are you ok',
-          answer:'对',
-          errorMsg:'缺少答案',
-          right:'true',
-        },
-        {
-          question:'are you ok',
-          answer:'对',
-          errorMsg:'缺少答案',
-          right:'true',
-        },
-        {
-          question:'are you ok',
-          answer:'对',
-          errorMsg:'缺少答案',
-          right:'true',
-        },
-      ]*/
+
       }
     },
     computed:{
@@ -207,8 +107,18 @@
       Single,
       Double,
       blankFill,
+      Blank
     },
     methods:{
+      knowledgeEvent() {
+        queryKnowledge({courseId: this.courseId}).then(res => {
+          if (res.success) {
+            this.knowledgeTitleList = res.obj
+          } else {
+            this.$message.info(res.msg)
+          }
+        })
+      },
       typeChange(){
         switch (this.type){
           case '1':
@@ -218,7 +128,11 @@
             this.template='Double';
             break;
           case  '3':
+            this.template='blankFill';
+            break;
           case  '4':
+            this.template='Blank';
+            break;
           case  '5':
             this.template='blankFill';
             break;
@@ -251,10 +165,10 @@
           this.loading=true;
           const params=Object.assign({},{type:this.form.type,txt:this.inputContent});
            libFormat(params).then(res=>{
-             this.obj=res.obj;
+             this.type=this.form.type;
              this.typeChange();
+             this.obj=res.obj;
              if(res.success==true){
-              this.type=this.form.type,
               this.loading=false;
               if(res.msg.length!=0){
                 this.disable=false;

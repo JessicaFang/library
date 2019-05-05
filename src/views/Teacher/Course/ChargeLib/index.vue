@@ -11,7 +11,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label-width="45px" label="难度">
-        <el-select v-model="form.difficultLevel" placeholder="请选择题目难度">
+        <el-select clearable v-model="form.difficultLevel" placeholder="请选择题目难度">
           <el-option label="较容易" value="0"></el-option>
           <el-option label="容易" value="0.3"></el-option>
           <el-option label="较困难" value="0.6"></el-option>

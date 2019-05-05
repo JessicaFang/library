@@ -39,7 +39,7 @@
 <script>
   import KnowledgeMessage from '@/components/Message/KnowledgeMessage'
   import {translate} from "@/util/translate";
-  import{ addKnowledge,deleteKnowledge,alterKnowledge }from '@/api/manager'
+  import{queryKnowledge, addKnowledge,deleteKnowledge,alterKnowledge }from '@/api/manager'
   import {tableConfig,btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
   import TableButton from '@/components/Table/tableButton'
@@ -79,9 +79,6 @@
           case 'ADD':
             this.handleAddClick();
             break;
-          case 'ALTER':
-            this.handleAlterClick();
-            break;
           case 'DELETE':
             this.handleDeleteClick();
             break;
@@ -99,6 +96,13 @@
                 this.$message({
                   type: 'success',
                   message: '添加成功'
+                })
+
+                this.getTable()
+              }else{
+                this.$message({
+                  type: 'warning',
+                  message: res.msg
                 })
               }
             })
@@ -123,7 +127,7 @@
               know[index] = item.knowledgeTitle;
             });
             know=know.toString();
-            var params = {courseId:this.courseId,knowledgeTitle:know};
+            var params = {courseId:this.courseId,knowledgeTitles:know};
             deleteKnowledge(params).then((res) =>{
               if(res.success==true){
                 this.paramsChange();
@@ -146,51 +150,22 @@
           });
         }
       },
-      ALTER(){
-        this.$refs.message.$refs.form.validate((valid) => {
-          if (valid) {
-            alterKnowledge(this.$refs.message.form).then(res=>{
-              if(res.success==true) {
-                this.dialogVisible = false;
-                this.$message({
-                  type: 'success',
-                  message: '修改成功'
-                })
-              }
-            })
-          } else {
-            return false;
-          }
-        });
-      },
-      handleAlterClick(){
-        this.knowForm.length=0;
-        this.knowForm.splice(0,1,this.selectCloumn[0]);
-        this.dialogTitle='知识点修改';
-        this.$nextTick(()=>{
-          this.dialogVisible=true;
-        })
-        this.updateMessage=this.ALTER;
-      },
       handleGoBackClick(){
         this.$router.go(-1);
       },
       getTable(){
         const params=Object.assign({},this.defaultParams,{courseId:this.courseId,knowledgeTitle:this.form.knowledgeTitle});
-        this.tableData=[
-          {courseId:'1',knowledgeTitle:'哈哈哈哈'},
-          {courseId:'1',knowledgeTitle:'哈哈哈哈'},
-          {courseId:'1',knowledgeTitle:'哈哈哈哈'},
-          {courseId:'1',knowledgeTitle:'哈哈哈哈'},
-          {courseId:'1',knowledgeTitle:'哈哈哈哈'},
-          {courseId:'1',knowledgeTitle:'哈哈哈哈'},
-          {courseId:'1',knowledgeTitle:'哈哈哈哈'},
-          {courseId:'1',knowledgeTitle:'哈哈哈哈'},
-          {courseId:'1',knowledgeTitle:'哈哈哈哈'},
-          {courseId:'1',knowledgeTitle:'哈哈哈哈'},
-          {courseId:'1',knowledgeTitle:'哈哈哈哈'},
-        ];
-        this.total=40;
+        queryKnowledge(params).then(res=>{
+          if(res.success){
+            this.tableData=res.obj
+            this.total = res.total
+          }else{
+            this.$message({
+              type:'warning',
+              message:res.msg
+            })
+          }
+        })
       },
       init(){
         this.courseId=this.getId;

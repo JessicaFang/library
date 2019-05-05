@@ -2,7 +2,7 @@
   <div>
     <el-form ref="form"  :model="form" class="form"  :inline="true">
       <el-form-item label-width="45px" label="姓名">
-        <el-input v-model="form.username" auto-complete="text"></el-input>
+        <el-input v-model="form.name" auto-complete="text"></el-input>
       </el-form-item>
       <el-form-item label-width="45px" label="职称" >
         <el-input v-model="form.classOrTitle" auto-complete="text"></el-input>
@@ -36,12 +36,13 @@
   import TableButton from '@/components/Table/tableButton'
   import tableMixin from '@/util/Mixins/tableMixins'
   import { mapGetters } from 'vuex'
+  import{queryUnCourseTeacher} from '@/api/public'
   export default {
     name: "index",
     data(){
       return {
         form:{
-          username:'',
+          name:'',
           classOrTitle:'',
         },
         courseId:'',
@@ -121,26 +122,16 @@
       getTable(){
         //this.defaultParams多少页多少行
         //只需要还未被选择的学生
-        const params=Object.assign({},this.defaultParams,{roleLevel:'2',status:'1'},this.form);
-        const obj=[
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-          {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        ]
-        this.tableData=translate(obj);
-        this.total=4
-        /*  getMessage(params).then(res=>{
+        const params=Object.assign({},this.defaultParams,this.form,{courseId:this.courseId});
+        console.log(params)
+          queryUnCourseTeacher(params).then(res=>{
             if(res.success==true){
               this.tableData=translate(res.obj);
               this.total=res.total
+            }else{
+              this.$message.info(res.msg)
             }
-          })*/
+          })
       },
       init(){
         this.courseId=this.getId;

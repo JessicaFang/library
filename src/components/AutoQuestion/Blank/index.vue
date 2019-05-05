@@ -1,15 +1,15 @@
 <template>
   <div>
     <el-card v-for="(item,index1) in list" :key="index1">
-    <div class="title">题目</div>
+      <div class="title">题目</div>
       <div v-html="item.question"></div>
-    <div class="blank">答案</div>
-       <div class="answer" v-html="item.answer"></div>
-    <div v-if="item.rules">
-       <div class="blank" >评分规则</div>
-       <div class="answer" v-html="item.rules"></div>
-    </div>
-     <div v-show="item.errorMsg">
+      <div class="blank">答案</div>
+      <div class="answer" v-for="(opt,i) in item.answer" :key="i">
+          <div v-for="(opt2 ,i2) in opt" :key="i2">
+             <span v-html="opt2"></span>&nbsp;&nbsp;&nbsp;
+          </div>
+      </div>
+      <div v-show="item.errorMsg">
         <div class="error">输入错误 ：</div>
         {{item.errorMsg}}
       </div>

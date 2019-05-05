@@ -18,9 +18,9 @@ export function updateManager(params) {
 }
 export function importData(data) {
   return request({
-    url: '/user/updateUserInfo',
+    url: '/iEExl/uploadUser',
     method: 'post',
-    data
+    data,
   });
 }
 export function updateData(data) {
@@ -30,56 +30,63 @@ export function updateData(data) {
     data
   });
 }
-export function deleteData(data) {
+export function deleteData(params) {
   return request({
-    url: '/user/updateUserInfo',
-    method: 'post',
-    data
+    url: '/user/delUser',
+    method: 'get',
+    params
   });
 }
-export function addCourse(data) {
+export function addCourse(params) {
   return request({
-    url: '/user/updateUserInfo',
-    method: 'post',
-    data
+    url: '/course/saveCourse',
+    method: 'get',
+    params
   });
 }
-export function deleteCourse(data) {
+export function queryCourse(params) {
   return request({
-    url: '/user/updateUserInfo',
-    method: 'post',
-    data
+    url: '/course/queryCourse',
+    method: 'get',
+    params
   });
-}export function alterCourse(data) {
+}
+export function deleteCourse(params) {
   return request({
-    url: '/user/updateUserInfo',
-    method: 'post',
-    data
+    url: '/course/delCourse',
+    method: 'get',
+    params
+  });
+}export function alterCourse(params) {
+  return request({
+    url: '/course/saveCourse',
+    method: 'get',
+    params
+  });
+}
+export function queryKnowledge(params) {
+  return request({
+    url: '/knowledge/queryKnowledge',
+    method: 'get',
+    params
   });
 }
 
-export function addKnowledge(data) {
+export function addKnowledge(params) {
   return request({
-    url: '/user/updateUserInfo',
-    method: 'post',
-    data
+    url: '/knowledge/addKnowledge',
+    method: 'get',
+    params
   });
 }
-export function deleteKnowledge(data) {
+export function deleteKnowledge(params) {
   return request({
-    url: '/user/updateUserInfo',
-    method: 'post',
-    data
+    url: '/knowledge/delKnowledge',
+    method: 'get',
+    params
   });
 }
 
-export function alterKnowledge(data) {
-  return request({
-    url: '/user/updateUserInfo',
-    method: 'post',
-    data
-  });
-}
 
 export function saveLib(data) {
   return request({
@@ -88,19 +95,27 @@ export function saveLib(data) {
     data
   });
 }
-export function delLib(data) {
+export function delLib(params) {
   return request({
     url: '/lib/delLib',
-    method: 'post',
-    data
+    method: 'get',
+    params
   });
 }
 //导出题目信息
-export function exportData(data) {
+export function exportLib(params) {
   return request({
-    url: '/lib/batAddSAMLib',
+    url: '/iEExl/exportLib',
     method: 'post',
-    data
+    params
+  });
+}
+
+export function exportData(params) {
+  return request({
+    url: '/iEExl/exportUser',
+    method: 'post',
+    params
   });
 }
 
@@ -112,8 +127,7 @@ export function selectLib(data) {
     data
   });
 }
-//todo
-//查看单道题目
+
 export function selectLibById(data) {
   return request({
     url: '/lib/selectLibById',

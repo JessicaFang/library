@@ -5,7 +5,7 @@ export const btnConfig=[
 export const tableConfig={
   selection:true,
   list:[
-    {prop:'no',label:'号码'},
+    {prop:'no',label:'用户名'},
     {prop:'myEmail',label:'邮箱'},
     {prop:'sex',label:'性别'},
     {prop:'name',label:'姓名'},

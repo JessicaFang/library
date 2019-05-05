@@ -97,12 +97,20 @@ var tableMixin = {
       this.getTable();
     },
     //只有数据删除的时候才进行paramsChnage
-    paramsChange(){
-      const pages=Math.floor(this.selectCloumn.length/this.defaultParams.size);//计算删除离几页
+    paramsChange(total){
+      console.log(total);
+      const pages=Math.floor(this.selectCloumn.length/this.defaultParams.rows);//计算删除离几页
+      const lastPage=Math.ceil(this.total/this.defaultParams.rows);//总页数
       if(pages>0){
-          const lastPage=Math.ceil(this.total/this.defaultParams.size);//总页数
           const calPage=lastPage-pages;//删除之后在那一页
           if(this.defaultParams.page>calPage) this.defaultParams.page=calPage; //如果页数进行变更
+      }else{
+          if(this.defaultParams.page==lastPage){
+            const lastPageLength=total-(this.defaultParams.page-1)*this.defaultParams.rows;
+            if(this.selectCloumn.length==lastPageLength){
+              this.defaultParams.page--;
+            }
+          }
       }
     },
     handleClose(done) {
