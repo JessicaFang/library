@@ -18,7 +18,7 @@
     </table-button>
     <DTable
       class="table"
-      :tableHeight="420"
+      :tableHeight="390"
       @selectChange="calSelection"
       :table="table"
       :tableData="tableData"
@@ -60,7 +60,7 @@
       },
       handleViewClick(){
         var paperId=this.selectCloumn[0].paperId;
-        this.$router.push({name:echarts,params:{paperId:paperId}})
+        this.$router.push({name:'TeacherEcharts',params:{paperId:paperId}})
       },
       getTable() {
         const params=Object.assign({},this.defaultParams,this.form,{paperState:'1'});

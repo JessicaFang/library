@@ -13,6 +13,7 @@ import ChargeStudentPaper from '@/views/Teacher/SuggestLib/ChargeStudentPaper'
 import TeacherExam from '@/components/Exam'
 import TeacherMessage from '@/views/Teacher/Message'
 import TeacherStatics from '@/views/Teacher/Statics'
+import TeacherEcharts from '@/views/Teacher/Statics/echart'
 import Student from  '@/views/Student'
 import StudentMessage from  '@/views/Student/Message'
 import ChoiceTest from '@/views/Student/ChoiceTest'
@@ -53,6 +54,7 @@ export default new Router({
         { path: '/ChargeStudentPaper',name:'ChargeStudentPaper', component: ChargeStudentPaper },
         { path: '/TeacherExam',name:'TeacherExam', component: TeacherExam },
         { path: '/TeacherStatics',name:'TeacherStatics', component: TeacherStatics },
+        { path: '/TeacherEcharts',name:'TeacherEcharts', component: TeacherEcharts },
       ]
     },
     { path: '/StudentExaming',name:'StudentExaming', component: StudentExaming },
