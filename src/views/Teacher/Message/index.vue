@@ -36,6 +36,7 @@
 
 <style scoped lang="scss">
   .message{
-    margin-top: 10px;
+    margin-top: 50px;
+    width:1100px;
   }
 </style>

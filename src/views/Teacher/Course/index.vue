@@ -100,4 +100,7 @@
   .table{
     margin-top: 8px;
   }
+  /deep/ .el-table colgroup.gutter{
+      display: table-cell!important;
+    }
 </style>

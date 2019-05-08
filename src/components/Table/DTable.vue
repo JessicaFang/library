@@ -80,4 +80,7 @@
   position: relative;
   min-height: 400px;
 }
+  /deep/  .el-table th.gutter{
+    display: table-cell!important;
+  }
 </style>

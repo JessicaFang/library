@@ -3,7 +3,7 @@
     <div class="top">
       <h3>{{title}}</h3>
       <div class="topRight">
-        <span>欢迎你：{{getParams.username}}</span>&nbsp;&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>欢迎您：{{getParams.username}}</span>&nbsp;&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;
         <span @click="quit" class="quit">退出</span>&nbsp;&nbsp;&nbsp;&nbsp;
         <img :src="main" class="img" @click="uploadImg">
         <input @change="addImg"  style="display: none" type="file" ref="img" name="image" accept="image/x-png,image/gif,image/jpeg,image/bmp"/>
@@ -13,7 +13,7 @@
       <el-menu
         :default-active="$route.path"
         class="el-menu-vertical-demo"
-        background-color="#545c64"
+        background-color="#3a3e4a"
         text-color="#fff"
         active-text-color="#ffd04b"
         router
@@ -122,13 +122,13 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background:	silver ;
-    color: #545C64;
+    background: #323744;
+    color: #ffffff;
     height: 40px;
   }
   .sideBar{
     position: absolute;
-    background: #545C64;
+    background: #3a3e4a;
     min-height:calc(100% - 40px);
     min-width:200px;
   }
@@ -146,9 +146,10 @@
   }
   .content{
     position: absolute;
-    left:200px;
-    width: calc(100% - 200px);
-    max-height: calc( 100% - 40px);
+    left:250px;
+    width: calc(100% - 300px);
+    max-height: calc( 100% - 100px);
+    margin-top:40px;
     overflow: auto;
   }
   .quit{

@@ -6,8 +6,8 @@
           <el-input placeholder="请输入试卷名称" v-model="form.paperTitle" >
           </el-input>
         </el-form-item>
-        <el-form-item label="试卷分类" prop="classification" >
-          <el-select clearable v-model="form.classification" placeholder="请选择分类" @focus="getOptions" multiple>
+        <el-form-item label="知识点" prop="classification" >
+          <el-select clearable v-model="form.classification" placeholder="请选择知识点" @focus="getOptions" multiple>
             <el-option v-for="(item,index) in options" :label="item.knowledgeTitle" :key="index" :value="item.knowledgeTitle"></el-option>
           </el-select>
         </el-form-item>

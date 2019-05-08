@@ -27,27 +27,27 @@
       <div class="content">
         <div class="question">
           <div class="totalQuestion">
-            <h3 class="title" >单选题</h3>
+            <h4 class="title" >单选题</h4>
             <Single></Single>
             <el-button class="title" type="primary" @click="questionSelect('1')">题目选择</el-button>
           </div>
           <div class="totalQuestion">
-            <h3 class="title">多选题</h3>
+            <h4 class="title">多选题</h4>
             <Double></Double>
             <el-button class="title" type="primary" @click="questionSelect('2')">题目选择</el-button>
           </div>
           <div class="totalQuestion">
-            <h3 class="title">判断题</h3>
+            <h4 class="title">判断题</h4>
             <Judge></judge>
             <el-button class="title" type="primary" @click="questionSelect('3')">题目选择</el-button>
           </div>
           <div class="totalQuestion">
-            <h3 class="title">填空题</h3>
+            <h4 class="title">填空题</h4>
             <blank-fill></blank-fill>
             <el-button class="title" type="primary" @click="questionSelect('4')">题目选择</el-button>
           </div>
           <div class="totalQuestion">
-            <h3 class="title">问答题</h3>
+            <h4 class="title">问答题</h4>
             <essay-test></essay-test>
             <el-button class="title" type="primary" @click="questionSelect('5')">题目选择</el-button>
           </div>
@@ -59,7 +59,7 @@
     </div>
     <div v-if="dialogVisible">
       <el-dialog
-        width="75%"
+        width="65%"
         title="题目列表"
         :visible="visible"
         :before-close="handleClose">
@@ -726,10 +726,10 @@
     vertical-align: top;
     display: inline-block;
     width:18%;
-    top:130px;
+    top:153px;
   }
   .card{
-    margin: 10px 20px;
+    margin: 10px 40px;
     div{
       padding: 2px;
     }

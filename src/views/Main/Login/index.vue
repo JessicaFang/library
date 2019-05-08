@@ -7,8 +7,8 @@
         </div>
         <div class="right">
           <top class="top" :message="message2"></top>
-          <el-form ref="form" :rules="rules" :model="form" label-width="60px" class="rightForm">
-            <el-form-item label="姓名" prop="username">
+          <el-form ref="form" :rules="rules" :model="form" label-width="90px" class="rightForm">
+            <el-form-item label="用户名" prop="username">
               <el-input v-model="form.username"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
