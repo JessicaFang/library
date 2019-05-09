@@ -85,6 +85,7 @@
                   type: 'info',
                   message: "删除成功"
                 });
+                this.paramsChange(total);
               }else{
                 this.$message({
                   type: 'danger',

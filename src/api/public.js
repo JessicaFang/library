@@ -29,7 +29,13 @@ export function batAddSAMLib(data) {
     data
   });
 }
-
+export function batAddSAMSuggest(data) {
+  return request({
+    url: '/suggest/batAddSAMSuggest',
+    method: 'post',
+    data
+  });
+}
 export function upload(data) {
   return request({
     url: '/editor/upload',
@@ -95,6 +101,13 @@ export function queryCourseStudent(params) {
 export function queryUnCourseStudent(params) {
   return request({
     url: '/course/queryUnCourseStudent',
+    method: 'get',
+    params
+  });
+}
+export function queryKnowledge(params) {
+  return request({
+    url: '/knowledge/queryKnowledge',
     method: 'get',
     params
   });

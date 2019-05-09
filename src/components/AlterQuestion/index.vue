@@ -3,18 +3,15 @@
     <el-form :inline="true" :model="form" class="form" v-show="showForm">
       <el-form-item label="题目难度">
         <el-select  clearable v-model="form.difficultLevel" placeholder="请选择题目难度">
-          <el-option label="较容易" value="0"></el-option>
-          <el-option label="容易" value="0.3"></el-option>
-          <el-option label="较困难" value="0.6"></el-option>
-          <el-option label="困难" value="1"></el-option>
+          <el-option label="容易" value="0"></el-option>
+          <el-option label="一般" value="0.3"></el-option>
+          <el-option label="困难" value="0.6"></el-option>
+          <el-option label="很困难" value="1"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="知识点">
-        <el-select  clearable v-model="form.knowledgeTitle" placeholder="请选择题目难度">
-          <el-option label="物理" value="物理"></el-option>
-          <el-option label="知识点" value="知识点"></el-option>
-          <el-option label="化学" value="化学"></el-option>
-          <el-option label="英语" value="英语"></el-option>
+        <el-select  clearable v-model="form.knowledgeTitle" @focus="getKnowledgeTitle" placeholder="请选择题目难度">
+          <el-option v-for="(item,index) in knowledgeTitleList" :key="index" :label="item.knowledgeTitle"  :value="item.knowledgeTitle"></el-option>
         </el-select>
       </el-form-item>
     </el-form>
@@ -31,6 +28,7 @@
 <script>
   import { saveLib } from '@/api/manager'
   import { saveSuggest } from "@/api/student";
+  import { queryKnowledge } from '@/api/public'
   import { reset }  from '@/util/reset'
   import Single from  '@/components/Question/Single'
   import Double from  '@/components/Question/Double'
@@ -44,6 +42,7 @@
       return {
         form:{},
         template:'Single',
+        knowledgeTitleList:{},
         questionMes:{},
         roleLevel:'',
         submitFunction:'',
@@ -51,7 +50,7 @@
       }
     },
     computed: {
-      ...mapGetters(['getQuestMes','getParams'])
+      ...mapGetters(['getQuestMes','getParams','getId'])
     },
     components:{
       Single,
@@ -100,6 +99,18 @@
         })
       }
     },
+    getKnowledgeTitle(){
+      queryKnowledge({courseId:this.getId}).then(res=>{
+        if(res.success==true){
+          this.knowledgeTitleList=res.obj;
+        }else{
+          this.$message({
+            type:'warning',
+            message:res.msg,
+          })
+        }
+      })
+    },
     beforeMount(){
       console.log("hello")
       this.roleLevel=this.getParams.roleLevel;
@@ -107,7 +118,7 @@
         this.submitFunction=saveSuggest;
         this.showForm=false;
       }else{
-        this.form.difficultLevel=this.getQuestMes.data.difficultLevel;
+        this.form.difficultLevel=this.getQuestMes.data.difficultLevel+"";
         this.form.knowledgeTitle=this.getQuestMes.data.knowledgeTitle;
         this.submitFunction=saveLib;
       }

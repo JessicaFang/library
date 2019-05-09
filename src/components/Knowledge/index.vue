@@ -130,7 +130,7 @@
             var params = {courseId:this.courseId,knowledgeTitles:know};
             deleteKnowledge(params).then((res) =>{
               if(res.success==true){
-                this.paramsChange();
+                this.paramsChange(this.total);
                 this.getTable();
                 this.$message({
                   type: 'info',

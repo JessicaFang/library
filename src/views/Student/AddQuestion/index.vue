@@ -28,12 +28,15 @@
 </template>
 
 <script>
+
+  import{ queryCourseStudent }from '@/api/public'
   import{ examine }from '@/api/manager'
   import {tableConfig,btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
   import TableButton from '@/components/Table/tableButton'
   import tableMixin from '@/util/Mixins/tableMixins'
   import { mapActions } from 'vuex'
+  import { mapGetters } from 'vuex'
   export default {
     name: "index",
     data(){
@@ -58,10 +61,14 @@
       DTable,
       TableButton,
     },
+    computed:{
+      ...mapGetters(['getParams'])
+    },
     mixins: [tableMixin],
     methods:{
       ...mapActions( // 语法糖
         ['seIdActions'] // 相当于this.$store.dispatch('modifyName'),提交这个方法
+
       ),
       handleClick(event) {
         switch (event) {
@@ -81,20 +88,11 @@
       },
       getTable(){
         //this.defaultParams多少页多少行
-        const params=Object.assign({},this.defaultParams,{roleLevel:this.roleLevel,status:'0'},this.form);
-        this.tableData=[
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-        ];
-        this.total=40;
+        const params=Object.assign({},this.defaultParams,this.form,{sno:this.getParams.username});
+        queryCourseStudent(params).then(res=>{
+          this.tableData=res.obj
+          this.total = res.total
+        })
       },
       init(){
         this.table=tableConfig;

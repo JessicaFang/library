@@ -181,6 +181,7 @@
                 type: 'info',
                 message: "操作成功"
               });
+              this.dialogVisible = false
             } else {
               this.$message({
                 type: 'warning',
@@ -210,7 +211,7 @@
         })
       },
       getTable(){
-        const params=Object.assign({},this.defaultParams,this.form,{sno:'jwuyou',suggestState:''});
+        const params=Object.assign({},this.defaultParams,this.form,{sno:'jwuyou',suggestState:'',isSubmit:'1'});
         selectSuggest(params).then(res=>{
           if(res.success==true){
             this.tableData=res.obj;

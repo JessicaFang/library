@@ -68,7 +68,7 @@
 </template>
 
 <script>
-  import { libFormat,batAddSAMLib}  from '@/api/public'
+  import { libFormat,batAddSAMLib,batAddSAMSuggest}  from '@/api/public'
   import {rulesContent,exampleContent} from './dialogContent'
   import Single from  '@/components/AutoQuestion/Single'
   import Double from  '@/components/AutoQuestion/Double'
@@ -80,6 +80,7 @@
     name: "AutoExport",
     data(){
       return {
+        submitFunc:'',
         form:{
           difficultLevel:'0',
           type:'1',
@@ -193,8 +194,9 @@
           delete params.difficultLevel;
           delete params.knowledgeTitle;
           params.sno=this.getParams.username
-        }
-        batAddSAMLib(params).then(res=>{
+          this.submitFunc = batAddSAMSuggest
+        }else this.submitFunc = batAddSAMLib
+        this.submitFunc(params).then(res=>{
           if(res.success==true){
             this.disable=true;
             this.inputContent='';

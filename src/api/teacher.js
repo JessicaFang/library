@@ -7,10 +7,10 @@ export function getCourseTeacher(params) {
   });
 }
 //提交建议题目入库
-export function submitSuggest(params) {
+export function submitSuggest(data) {
   return request({
     url: '/suggest/suggest2Lib',
-    method: 'get',
-    params
+    method: 'post',
+    data
   });
 }

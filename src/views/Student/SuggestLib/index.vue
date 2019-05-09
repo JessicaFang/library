@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-form ref="form"  :model="form" class="form"  :inline="true">
-      <el-form-item label-width="45px" label="题型" >
+    <el-form ref="form" :model="form" class="form" :inline="true">
+      <el-form-item label-width="45px" label="题型">
         <el-select v-model="form.type" placeholder="请选择题型">
           <el-option label="单选题" value="1"></el-option>
           <el-option label="多选题" value="2"></el-option>
@@ -36,43 +36,47 @@
       :table="table"
       :tableData="tableData"
       :total="total"
-      @pageMesChange = "handleMesChange"
+      @pageMesChange="handleMesChange"
     ></DTable>
   </div>
 </template>
 
 <script>
-  import {selectSuggest,selectSuggestById,delSuggest,exportSuggest,submitSuggest} from '@/api/student'
-  import {tableConfig,btnConfig} from './tableConfig'
+  import {url} from '@/util/gobalVar'
+  import {selectSuggest, selectSuggestById, delSuggest, exportSuggest, submitSuggest} from '@/api/student'
+  import {exportLib} from '@/api/manager'
+  import {tableConfig, btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
   import TableButton from '@/components/Table/tableButton'
   import tableMixin from '@/util/Mixins/tableMixins'
-  import { mapActions,mapGetters } from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
+
   export default {
     name: "index",
-    data(){
+    data() {
       return {
-        form:{
-          type:'1',
-          courseId:'2',
-          suggestState:''
+        exportFunc:'',
+        form: {
+          type: '1',
+          courseId: '2',
+          suggestState: ''
         },
-        type:'',
-        tableData:[],
-        table:{},
-        total:0,
-        ButtonGroup:{},
+        type: '',
+        tableData: [],
+        table: {},
+        total: 0,
+        ButtonGroup: {},
       }
     },
-    components:{
+    components: {
       DTable,
       TableButton
     },
-    computed:{
+    computed: {
       ...mapGetters(['getParams']),
     },
     mixins: [tableMixin],
-    methods:{
+    methods: {
       ...mapActions( // 语法糖
         ['setQuestActions'] // 相当于this.$store.dispatch('modifyName'),提交这个方法
       ),
@@ -88,26 +92,26 @@
             this.handleDeleteQClick();
             break;
           case 'REVIEW':
-          this.handleReviewQClick();
+            this.handleReviewQClick();
         }
       },
-      getCloumnId(){
+      getCloumnId() {
         var id = [];
         this.selectCloumn.forEach((item, index) => {
           id[index] = item.id
         });
-        id=id.toString();
+        id = id.toString();
         return id
       },
-      handleAlterQClick(){
-        if(this.selectCloumn[0].suggestState!='已审核') {
+      handleAlterQClick() {
+        if (this.selectCloumn[0].suggestState != '已审核') {
           var type = this.type;
-          var data={};
+          var data = {};
           var id = this.selectCloumn[0].id
           const params = {type: type, id: id};
-          selectSuggestById(params).then(res=>{
-            if(res.success==true){
-              data=res.obj;
+          selectSuggestById(params).then(res => {
+            if (res.success == true) {
+              data = res.obj;
               this.setQuestActions({type: type, data: data})
               this.$router.push('/StudentAlterQ')
             }
@@ -171,19 +175,19 @@
              difficultLevel: '0.6'
            }
          }*/
-        }else{
+        } else {
           this.$message({
-             type:'warning',
-             message:'该题目已经提交审核'
+            type: 'warning',
+            message: '该题目已经提交审核'
           })
         }
       },
       handleDeleteQClick() {
-      if(this.selectCloumn.length>0) {
-          const id=this.getCloumnId();
-          var params = {ids: id, type:this.type};
-          delSuggest(params).then((res) =>{
-            if(res.success==true){
+        if (this.selectCloumn.length > 0) {
+          const id = this.getCloumnId();
+          var params = {ids: id, type: this.type};
+          delSuggest(params).then((res) => {
+            if (res.success == true) {
               //参数识别
               this.paramsChange();
               this.getTable();
@@ -191,52 +195,53 @@
                 type: 'info',
                 message: "删除成功"
               });
-            }else{
+            } else {
               this.$message({
                 type: 'danger',
                 message: "删除失败"
               });
             }
           })
-      }else{
-        this.$message({
-          message: "请选择数据",
-          type: 'warning'
-        });
-      }
-    },
-      handleReviewQClick() {
-        if(this.selectCloumn.length>0) {
-          var flag=true;
-          this.selectCloumn.forEach((item, index) => {
-             if(item.suggestState!='未提交'){
-               flag=false;
-             }
+        } else {
+          this.$message({
+            message: "请选择数据",
+            type: 'warning'
           });
-          if(flag){
-          const id=this.getCloumnId();
-          var params = {ids: id,type:this.type};
-          submitSuggest(params).then((res) => {
-            if (res.success == true) {
-              if(this.form.suggestState=='未提交')this.paramsChange();
-              this.getTable();
-              this.$message({
-                type: 'info',
-                message: "操作成功"
-              });
-            } else {
-              this.$message({
-                type: 'danger',
-                message: "操作失败"
-              });
+        }
+      },
+      handleReviewQClick() {
+        if (this.selectCloumn.length > 0) {
+          var flag = true;
+          this.selectCloumn.forEach((item, index) => {
+            if (item.suggestState != '未提交') {
+              flag = false;
             }
-          })}else{
+          });
+          if (flag) {
+            const id = this.getCloumnId();
+            var params = {ids: id, type: this.type};
+            submitSuggest(params).then((res) => {
+              if (res.success == true) {
+                if (this.form.suggestState == '未提交') this.paramsChange();
+                this.getTable();
+                this.$message({
+                  type: 'info',
+                  message: "操作成功"
+                });
+              } else {
+                this.$message({
+                  type: 'danger',
+                  message: "操作失败"
+                });
+              }
+            })
+          } else {
             this.$message({
-              type:'warning',
-              message:'只能提交未提交的数据'
+              type: 'warning',
+              message: '只能提交未提交的数据'
             })
           }
-        }else{
+        } else {
           this.$message({
             message: "请选择数据",
             type: 'warning'
@@ -244,61 +249,69 @@
         }
       },
       handleExportQClick() {
-        if(this.selectCloumn.length>0) {
-          const id=this.getCloumnId();
-          var params = {ids: id,type:this.type};
-       /*   var url='http://jwuyou.ngrok.xiaomiqiu.cn/iEExl/exportLib'
-          url=url+'?type='+this.type+'&ids='+id;*/
-           exportSuggest(params).then((res) => {
-             console.log(res);
-             var blob = new Blob(res.obj);
-             var a=document.createElement('a');
-             a.href=URL.createObjectURL(blob);
-             a.download='题目信息.xlsx';
-             a.style.display='none';
-             document.body.appendChild(a);
-             a.click();
-             a.remove();
-            if (res.success == true) {
-              console.log(res);
+        if (this.selectCloumn.length > 0) {
+          const id = this.getCloumnId();
+          /*   var url='http://jwuyou.ngrok.xiaomiqiu.cn/iEExl/exportLib'
+             url=url+'?type='+this.type+'&ids='+id;*/
+          var params = {type: this.form.type, ids: id};
+
+             exportLib(params).then((res) => {
+            if (res.success == false) {
+              this.$message({
+                type: 'danger',
+                message: res.msg
+              });
+            } else {
+              var a = document.createElement('a');
+              a.href = url() + '/iEExl/exportSuggest?type=' + this.form.type + '&ids=' + id;
+              a.download = '题目列表.xlsx';
+              a.style.display = 'none';
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
               this.getTable();
               this.$message({
                 type: 'info',
                 message: "操作成功"
               });
-            } else {
-              this.$message({
-                type: 'danger',
-                message: "操作失败"
-              });
             }
-          })}else{
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: "取消导出"
+            })
+          })
+        }
+        else {
           this.$message({
             message: "请选择数据",
             type: 'warning'
           });
         }
       },
-      onSearch(){
-        this.defaultParams={page:1,rows:10};
+      onSearch() {
+        this.defaultParams = {page: 1, rows: 10};
         this.getTable();
-      },
-      getTable(){
-        const params=Object.assign({},this.defaultParams,this.form,{sno:this.getParams.username});
-        selectSuggest(params).then(res=>{
-          if(res.success==true){
-            this.tableData=res.obj;
-            this.total=res.total;
-            this.type=this.form.type;
+      }
+      ,
+      getTable() {
+        const params = Object.assign({}, this.defaultParams, this.form, {sno: this.getParams.username});
+        selectSuggest(params).then(res => {
+          if (res.success == true) {
+            this.tableData = res.obj;
+            this.total = res.total;
+            this.type = this.form.type;
           }
         })
-      },
-      init(){
-        this.table=tableConfig;
-        this.ButtonGroup=btnConfig;
-      },
+      }
+      ,
+      init() {
+        this.table = tableConfig;
+        this.ButtonGroup = btnConfig;
+      }
+      ,
     },
-    beforeMount(){
+    beforeMount() {
       this.init();
       this.getTable();
     }
@@ -306,7 +319,7 @@
 </script>
 
 <style scoped>
-  .table{
+  .table {
     margin-top: 8px;
   }
 </style>

@@ -58,7 +58,7 @@ export function delSuggest(params) {
 //exportSuggest还没有搞定的数据导出接口
 export function exportSuggest(params={}) {
   return request({
-    url: '/iEExl/exportLib',
+    url: '/iEExl/exportSuggest',
     method: 'post',
     params
   });
