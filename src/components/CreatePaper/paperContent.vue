@@ -3,7 +3,7 @@
     <div class="left">
       <el-card  class="card">
         <div>单选题数：{{single.length}}题</div>
-        <div>前选总分：{{single.count}}分</div>
+        <div>单选总分：{{single.count}}分</div>
       </el-card>
       <el-card  class="card">
         <div>多选题数：{{double.length}}题</div>
@@ -20,6 +20,10 @@
       <el-card  class="card">
         <div>问答题数：{{my.length}}题</div>
         <div>问答总分：{{my.count}}分</div>
+      </el-card>
+      <el-card  class="card">
+        <div>题数：{{single.length+double.length+judge.length+blank.length+my.length}}题</div>
+        <div>总分：{{single.count+double.count+judge.count+blank.count+my.count}}分</div>
       </el-card>
     </div>
     <div class="right">

@@ -136,7 +136,7 @@
      font-weight:bold;
     /*background: #409EFF;*/
     margin: 0px 0px 10px 0px;
-    text-align: center;
+    text-align: left;
     /*color: white;*/
     border-radius: 2px;
     height: 20px;

@@ -115,7 +115,7 @@
     /deep/ .el-table__body-wrapper{
       overflow: auto;
       position: relative;
-      min-height: 200px;
+      min-height: 150px;
     }
   }
 </style>

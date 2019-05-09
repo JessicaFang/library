@@ -124,21 +124,23 @@
     height: 20px;
   }
   .title span{
-    color: white;
+    /*color: white;*/
+    font-weight:bold;
     border-radius: 2px;
     line-height:20px;
-    background:#409EFF;
-    padding:6px 6px;
+    /*background:#409EFF;*/
+    /*padding:6px 6px;*/
   }
   .double,.error{
-    width: 60px;
-    background: #409EFF;
+    width: 40px;
+    font-weight:bold;
+    /*background: #409EFF;*/
     margin: 0px 0px 10px 0px;
-    text-align: center;
-    color: white;
+    text-align: left;
+    /*color: white;*/
     border-radius: 2px;
     height: 20px;
-    padding:5px 0px;
+    /*padding:5px 0px;*/
   }
   .double{
     margin-top: 10px;

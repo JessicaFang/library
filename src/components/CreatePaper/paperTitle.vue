@@ -85,7 +85,7 @@
     width: 26%;
   }
   .card{
-    margin: 20px;
+    margin: 7px;
   }
   .title{
     margin: 0 10px 20px 0;

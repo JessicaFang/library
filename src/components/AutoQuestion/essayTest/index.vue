@@ -102,21 +102,23 @@
     height: 20px;
   }
   .title span{
-    color: white;
+    /*color: white;*/
     border-radius: 2px;
     line-height:20px;
-    background:#409EFF;
-    padding:6px 6px;
+    font-weight:bold;
+    /*background:#409EFF;*/
+    /*padding:6px 6px;*/
   }
   .blank,.rules{
-    width: 60px;
-    background: #409EFF;
+    width: 80px;
+    /*background: #409EFF;*/
+    font-weight:bold;
+    text-align:left;
     margin: 0px 0px 10px 0px;
-    text-align: center;
-    color: white;
+    /*color: white;*/
     border-radius: 2px;
     height: 20px;
-    padding:5px 0px;
+    /*padding:5px 0px;*/
   }
    .rules{
      margin-top:10px ;
