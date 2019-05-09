@@ -16,18 +16,18 @@ export function reset(type,question) {
         break;
       case  '3':
         question.questionForm={
-          blankQuestion: '',
-            blankAnswer: [[]],
+          judgeQuestion:'',
+          judgeAnswer:''
         };
-        question.list=1;
-        question.blankInput= [];
+        question.choice=['',''];
         break;
       case '4':
         question.questionForm={
-          judgeQuestion:'',
-            judgeAnswer:''
+          blankQuestion: '',
+          blankAnswer: [[]],
         };
-        question.choice=['',''];
+        question.list=1;
+        question.blankInput= [];
         break;
       case  '5':
         question.questionForm={

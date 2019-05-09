@@ -116,11 +116,11 @@
         }
         save(params).then(res => {
           if (res.success == true) {
-            reset(this.form.type, this.$refs.question);
             this.$message({
               type: 'warning',
               message: '上传题目成功',
             })
+            reset(this.form.type, this.$refs.question);
           } else {
             this.$message({
               type: 'warning',

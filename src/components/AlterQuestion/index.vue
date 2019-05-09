@@ -10,7 +10,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="知识点">
-        <el-select  clearable v-model="form.knowledgeTitle" @focus="getKnowledgeTitle" placeholder="请选择题目难度">
+        <el-select  clearable v-model="form.knowledgeTitle" @focus="getKnowledgeTitle"  placeholder="请选择题目难度">
           <el-option v-for="(item,index) in knowledgeTitleList" :key="index" :label="item.knowledgeTitle"  :value="item.knowledgeTitle"></el-option>
         </el-select>
       </el-form-item>
@@ -97,19 +97,19 @@
              })
           }
         })
-      }
-    },
-    getKnowledgeTitle(){
-      queryKnowledge({courseId:this.getId}).then(res=>{
-        if(res.success==true){
-          this.knowledgeTitleList=res.obj;
-        }else{
-          this.$message({
-            type:'warning',
-            message:res.msg,
-          })
-        }
-      })
+      },
+      getKnowledgeTitle(){
+        queryKnowledge({courseId:this.getId}).then(res=>{
+          if(res.success==true){
+            this.knowledgeTitleList=res.obj;
+          }else{
+            this.$message({
+              type:'warning',
+              message:res.msg,
+            })
+          }
+        })
+      },
     },
     beforeMount(){
       console.log("hello")

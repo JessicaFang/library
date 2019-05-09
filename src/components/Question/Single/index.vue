@@ -1,7 +1,7 @@
 <template>
    <div>
      <div class="title">题目</div>
-     <editor-bar v-model="questionForm.singleQuestion" @htmlChange="val=>change(val,'singleQuestion')"></editor-bar>
+     <editor-bar v-model="questionForm.singleQuestion" :valueChange="changeStatu.questionChange"  @endChange="endChange('questionChange')"   @htmlChange="val=>change(val,'singleQuestion')"></editor-bar>
      <div class="single">答案</div>
      <div v-for="(item,index) in 4" :key="index" class="answers">
         <el-radio v-model="questionForm.trueIndex" :label="index"></el-radio>
@@ -26,6 +26,9 @@
             options:[],
             trueIndex:''
           },
+          changeStatu:{
+            questionChange:true,
+          }
         }
       },
       computed: {
@@ -49,6 +52,9 @@
           }else{
             this.questionForm[type]=val;
           }
+        },
+        endChange(type){
+          this.changeStatu[type]=false;
         },
         check(){
           var message='';

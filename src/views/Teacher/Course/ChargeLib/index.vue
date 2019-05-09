@@ -114,7 +114,7 @@
             if (res.success == true) {
               data = res.obj;
               this.setQuestActions({type: type, data: data})
-              this.$router.push('/StudentAlterQ')
+              this.$router.push('/TeacherAlterQ')
             }
           })
           /*   if(type=='1') {

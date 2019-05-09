@@ -24,7 +24,7 @@
         },
         valueChange:{
           type:Boolean,
-          default:false,
+          default:true,
         },
         index:Number,
         showToolBar:{
@@ -41,11 +41,12 @@
         //顺序是这里发生改变，onchange传递数据出去，触发change事件，然后把值赋给questionForm，
         // 接着通过v-model回传到wangeditor,然后被监听之后又用this.editor.txt.html更改时数据,所以发生改变
         value: function(newValue) {
-       /*    if (this.valueChange) {*/
+          console.log(this.valueChange)
+           if (this.valueChange) {
              this.editor.txt.html(newValue);
-             this.$emit('endChange',this.index);
+             this.$emit('endChange');
            }
-       /*  }*/
+         }
        },
        methods:{
          setEditor() {

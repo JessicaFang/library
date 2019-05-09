@@ -75,7 +75,7 @@
               message = "请进行选项的填写"+i;
               return message;
             }else {
-              for (var j = 0; j < this.questionForm.blankAnswer[i]; j++)
+              for (var j = 0; j < this.questionForm.blankAnswer[i].length; j++)
                 if (this.questionForm.blankAnswer[i][j].trim() == '') {
                   message = "请进行选项的填写";
                   return message;
