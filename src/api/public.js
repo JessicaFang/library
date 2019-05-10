@@ -61,3 +61,13 @@ export function updateMessage(data) {
     data
   })
 }
+
+//上传图片
+
+export function uploadFaceUrl(data) {
+  return request({
+    url:'/user/uploadFaceUrl',
+    method:'post',
+    data
+  })
+}

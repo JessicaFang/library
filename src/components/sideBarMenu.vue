@@ -5,7 +5,7 @@
       <div class="topRight">
         <span>欢迎您：{{getParams.username}}</span>&nbsp;&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;
         <span @click="quit" class="quit">退出</span>&nbsp;&nbsp;&nbsp;&nbsp;
-        <img :src="main" class="img" @click="uploadImg">
+        <img :src="main" class="img" ref="faceUrl" @click="uploadImg">
         <input @change="addImg"  style="display: none" type="file" ref="img" name="image" accept="image/x-png,image/gif,image/jpeg,image/bmp"/>
       </div>
     </div>
@@ -31,6 +31,8 @@
 <script>
     import main from '@/assets/Main.jpg'
      import { mapGetters } from 'vuex'
+     import {uploadFaceUrl  } from '@/api/public'
+     import {url } from '@/util/url'
      export default {
      name: "sideBarMenu",
      props:['menu','title'],
@@ -46,7 +48,7 @@
          uploadImg(){
            this.$refs.img.click();
          },
-         dealImg(base64,bili,callback){
+     /*    dealImg(base64,bili,callback){
            var img=new Image();
            img.src=base64;
            this.main=base64;
@@ -67,7 +69,7 @@
              var dataURL=canvas.toDataURL('image/jpeg');
              callback(that.dataURLtoBlob(dataURL));
            }
-         },
+         },*/
          addImg(){
            var file=this.$refs.img.files[0];
            var size=file.size;
@@ -77,7 +79,7 @@
                type:'warning'
              })
            }else{
-             var r=new FileReader();
+            /* var r=new FileReader();
              r.readAsDataURL(file);
              var that=this;
              r.onload=function (e) {
@@ -85,18 +87,35 @@
                that.dealImg(base64,1.5,(blob)=>{
                  console.log(blob)
                })
-             }
+             }*/
+            console.log(file)
+            console.log(file.name)
+             var param = new FormData();
+             param.append('faceUrl',file);
+             param.append('username',this.getParams.username);
+             param.append('roleLevel',this.getParams.roleLevel);
+             uploadFaceUrl(param).then(res=>{
+               if(res.success==true){
+                 this.main=url()+res.obj
+               }else{
+                 this.$message({
+                   type:'warning',
+                   message:res.msg
+                 })
+               }
+             })
+
            }
          },
          //canvas图片处理  绘制和压缩图片
-        dataURLtoBlob(dataurl) {
+       /* dataURLtoBlob(dataurl) {
           var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
           bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
           while(n--){
              u8arr[n] = bstr.charCodeAt(n);
           }
           return new Blob([u8arr], {type:mime});
-         },
+         },*/
          quit(){
            //退出登录
          }
