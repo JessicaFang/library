@@ -5,13 +5,13 @@
         <el-input v-model="form.name" auto-complete="text"></el-input>
       </el-form-item>
       <el-form-item label-width="70px" label="试卷状态">
-        <el-select v-model="form.paperState" placeholder="请选择试卷状态">
+        <el-select clearable v-model="form.paperState" placeholder="请选择试卷状态">
           <el-option label="未批改" value="0"></el-option>
           <el-option label="已批改" value="1"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label-width="70px" label="人工批改">
-        <el-select v-model="form.manualCorrecting" placeholder="请选择是否人工批改">
+        <el-select clearable v-model="form.manualCorrecting" placeholder="请选择是否人工批改">
           <el-option label="否" value="0"></el-option>
           <el-option label="是" value="1"></el-option>
         </el-select>

@@ -1,5 +1,5 @@
 export const btnConfig=[
-  {colLength:8,event:'ADDPAPER',icon:'fa fa-times-rectangle',label:'查阅试卷'},
+  {colLength:8,event:'ADDPAPER',icon:'fa fa-times-rectangle',label:'查看试卷'},
   {colLength:8,event:'ALTER',icon:'fa fa-times-rectangle',label:'批改试卷'},
   {colLength:8,event:'GOBACK',icon:'fa fa-times-rectangle',label:'返回上一页'},
 ];

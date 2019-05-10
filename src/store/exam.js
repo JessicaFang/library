@@ -4,7 +4,7 @@ export default {
     exam: {},
     isManual:false,
     paperState:0,
-    paperId:0,
+    paperId:0
   },
   // // 2. getters
   getters:{
@@ -33,7 +33,7 @@ export default {
     },
     setPaperIdActions({commit,state}, params){
       commit("setPaperId", params);
-    },
+    }
   },
   // 4. mutations
   mutations:{
@@ -48,6 +48,6 @@ export default {
     },
     setPaperId(state, params){
       state.paperId= params.paperId;
-    },
+    }
   }
 };

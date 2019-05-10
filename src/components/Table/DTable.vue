@@ -78,7 +78,7 @@
   /deep/ .el-table__body-wrapper {
   overflow: auto;
   position: relative;
-  min-height: 400px;
+  min-height: 200px;
 }
   /deep/  .el-table th.gutter{
     display: table-cell!important;

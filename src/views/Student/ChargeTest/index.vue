@@ -5,13 +5,13 @@
         <el-input v-model="form.courseId" auto-complete="text"></el-input>
       </el-form-item>
       <el-form-item label-width="70px" label="成绩排序">
-        <el-select v-model="form.orderByGrade" placeholder="成绩排序">
+        <el-select  clearable v-model="form.orderByGrade" placeholder="成绩排序">
           <el-option label='升序' value="0"></el-option>
           <el-option label="降序" value="1"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label-width="70px" label="成绩批改">
-        <el-select v-model="form.paperState" placeholder="成绩批改">
+      <el-form-item label-width="70px" label="批改状态">
+        <el-select clearable v-model="form.paperState" placeholder="批改状态">
           <el-option label='未批改' value="0"></el-option>
           <el-option label="已批改" value="1"></el-option>
         </el-select>
@@ -49,8 +49,8 @@
       return {
         form:{
           courseId:'',
-          orderByGrade:'0',
-          paperState:'0',
+          orderByGrade:'',
+          paperState:'',
         },
         ButtonGroup:{},
         tableData:[],

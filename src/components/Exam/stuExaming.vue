@@ -4,7 +4,7 @@
       <div class="head">
         <div class="headTitle">
           <h2>{{exam.testPaper.paperTitle}}</h2>
-          <h3>{{exam.testPaper.paperHead}}</h3>
+          <span>{{exam.testPaper.paperHead}}</span>
         </div>
         <div class="headMessage">
           <span>学号：{{sno}}</span>&nbsp;&nbsp;
@@ -22,7 +22,7 @@
               {{index+1}}、<span class="questionTitle" v-html="item.singleQuestion"></span>（{{item.singlePoints}}分）
             </h6>
             <div v-for="(opt,index2) in item.singleTestChoice" :key="index2" class="answers">
-              <el-radio v-model="single[item.testSingleId]"   :label="index2+''"></el-radio>
+              <el-radio v-model="single[item.testSingleId]"  :label="index2+''"></el-radio>
               <span v-text="translate(index2)"></span>、<span class="questionContent" v-html="opt"></span>
             </div>
           </div>
@@ -34,7 +34,7 @@
               {{index+1}}、<span class="questionTitle" v-html="item.multipleQuestion"></span>（{{item.multiplePoints}}分）
             </h6>
             <div v-for="(opt,index2) in item.multipleTestChoice" :key="index2" class="answers">
-              <input  v-model="multiple[item.testMultipleId]" type="checkbox" :value="index2" />
+              <input  v-model="multiple[item.testMultipleId][index2]" type="checkbox" :value="index2" />
               <span v-text="translate(index2)"></span>、<span class="questionContent" v-html="opt"></span>
             </div>
           </div>
@@ -68,7 +68,7 @@
             <h6  class="title">
               {{index+1}}、<span class="questionTitle" v-html="item.myQuestion"></span>（{{item.myPoints}}分）
             </h6>
-            <textarea  v-html="my[item.testQuestionId]" class="answers myAnswer"></textarea>
+            <textarea  v-model="my[item.testQuestionId]" class="answers myAnswer"></textarea>
           </div>
         </div>
       </div>
@@ -132,14 +132,19 @@
         for(var key in this.multiple){
           var obj={testMultipleVo:{}};
           obj.testMultipleVo.testMultipleId=key;
-          obj.multipleAnswer=this.multiple[key].join("");
+          let multipleAnswerStr = ''
+          for(let optId = 0;optId<4;optId++){
+            if(this.multiple[key][optId]==true)multipleAnswerStr+=optId
+          }
+          obj.multipleAnswer=multipleAnswerStr;
+          console.log(this.multiple)
           resultMultipleVos.push(obj);
         }
         var resultJudgeVos=[];
         for(var key in this.judge){
           var obj={testJudgeVo:{}};
           obj.testJudgeVo.testJudgeId=key;
-          obj.testJudgeAnswer=this.judge[key];
+          obj.judgeAnswer=this.judge[key];
           resultJudgeVos.push(obj);
         }
         var resultBlankVos=[];
@@ -160,7 +165,8 @@
         submitAnswer(params).then(res=>{
           if(res.success==true){
             this.exitFullScreen();
-            window.open('http://127.0.0.1:8080/#/ChoiceTest','_self')
+            this.$router.push("ChoiceTest")
+            // window.open('http://127.0.0.1:8080/#/ChoiceTest','_self')
           }else {
             this.$message({
               type: 'warning',
@@ -168,7 +174,8 @@
             })
             if (res.msg == '试卷只能提交一次') {
               this.exitFullScreen();
-              window.open('http://127.0.0.1:8080/#/ChoiceTest', '_self')
+              this.$router.push("ChoiceTest")
+              // window.open('http://127.0.0.1:8080/#/ChoiceTest', '_self')
             }
           }
         })
@@ -215,7 +222,7 @@
       }
       if(this.exam.testMultipleVos!=undefined&&this.exam.testMultipleVos.length!=0){
         for (var i = 0; i < this.exam.testMultipleVos.length; i++) {
-          var id=this.exam.testMultipleVos[i].multipleId;
+          var id=this.exam.testMultipleVos[i].testMultipleId;
           this.multiple[id]=[];
         }
       }
@@ -234,7 +241,7 @@
     background:#409EFF;
   }
   .examBackground{
-    padding:0px 50px 0 150px;
+    padding-left:150px;
     background:  #f5f5f5;
   }
   .exam{
@@ -245,6 +252,7 @@
   .head{
     border-bottom: 1px solid silver;
     text-align: center;
+    padding:30px 0;
   }
   .headTitle{
     div,p{
@@ -291,15 +299,15 @@
   .time{
     position: fixed;
     width: 150px;
-    right: 30px;
-    top: 30px;
+    right: 80px;
+    top:20px;
     text-align: center;
   }
   .timeText{
     padding: 10px 0;
   }
   .content{
-    margin-left:8px;
+    margin:0 30px;
   }
   .questionTitle, .questionContent{
     display: inline-block;

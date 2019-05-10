@@ -10,10 +10,10 @@
              menuList:[
                {url:'/TeacherMessage',label:'个人信息'},
                {url:'/TeacherCourse',label:'试卷管理'},
-               {url:'/TeacherSuggestLib',label:'学生试卷管理'},
-               {url:'/TeacherStatics',label:'试卷统计'}
+               {url:'/TeacherSuggestLib',label:'答卷批改'},
+               {url:'/TeacherStatics',label:'结果统计'}
                ],
-             title:'教师管理系统'
+             title:'在线考试'
           }
       },
       components:{

@@ -62,6 +62,7 @@ export function queryTestPaper(params) {
   return request({
     url: '/test/queryTestPaper',
     method: 'get',
+    async:false,
     params
   });
 }

@@ -6,7 +6,7 @@ export const tableConfig={
   list:[
     {prop:'paperId',label:'试卷号'},
     {prop:'courseId',label:'课程号'},
-    {prop:'paperTitle',label:'试题名称'},
+    {prop:'paperTitle',label:'试卷名称'},
     {prop:'testTime',label:'考试时间',width:300},
     {prop:'minutesLength',label:'考试时长'},
     {prop:'totalPoints',label:'总分'},

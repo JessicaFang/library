@@ -7,8 +7,9 @@
           <p>{{exam.paperHead}}</p>
         </div>
         <div class="headMessage">
-          <span>学号：<span style="color: lightskyblue">{{exam.sno}}</span></span>&nbsp;&nbsp;
-          <span v-show="exam.allTotalScore">总分：<span style="color: red">{{exam.allTotalScore}}分</span></span>&nbsp;&nbsp;
+          <span>学号：<span style="color: #020281">{{exam.sno}}</span></span>&nbsp;&nbsp;
+          <span v-show="exam.totalPoints">总分：<span style="color: #020281">{{exam.totalPoints}}分</span></span>&nbsp;&nbsp;
+          <span v-show="exam.allTotalScore">成绩：<span style="color: #020281">{{exam.allTotalScore}}分</span></span>&nbsp;&nbsp;
           <span v-show="paperState=='1'&&chargeName!=false&&chargeName">批改老师：{{chargeName}}</span>
         </div>
       </div>
@@ -17,7 +18,7 @@
           <h3>单选题</h3>
           <div v-for="(item,index) in exam.resultSingleVos" :key="index" class="question">
             <h6 class="title">{{index+1}}、<span class="questionTitle" v-html="item.testSingleVo.singleQuestion"></span>
-              （<span style="color: red">{{item.testSingleVo.singlePoints}}分</span>）
+              （<span style="color: #020281">{{item.testSingleVo.singlePoints}}分</span>）
             </h6>
             <div v-for="(opt,index2) in item.testSingleVo.singleTestChoice" :key="index2" class="answers">
               <el-radio v-model="item.singleAnswer" disabled  :label="index2+''"></el-radio>
@@ -25,7 +26,8 @@
             </div>
             <div>
               <div>正确答案：<span>{{translate(item.testSingleVo.singleTestAnswer)}}</span></div>
-              <div>考试结果：<span>{{item.right}}</span></div>
+              <div>学生答案：<span>{{translate(item.singleAnswer)}}</span></div>
+              <div>考试结果：<span>{{item.singleScore}}</span>分</div>
             </div>
           </div>
         </div>
@@ -35,7 +37,7 @@
             <h6  class="title">
               {{index+1}}、
               <span class="questionTitle" v-html="item.testMultipleVo.multipleQuestion"></span>
-              （<span style="color: red">{{item.testMultipleVo.multiplePoints}}分</span>）
+              （<span style="color: #020281">{{item.testMultipleVo.multiplePoints}}分</span>）
             </h6>
             <div v-for="(opt,index2) in item.testMultipleVo.multipleTestChoice" :key="index2" class="answers">
               <input disabled v-model="item.multipleAnswer" type="checkbox" :value="index2" />
@@ -43,7 +45,8 @@
             </div>
             <div>
               <div>正确答案：<span>{{translateArr(item.testMultipleVo.multipleTestAnswer)}}</span></div>
-              <div>考试结果：<span >{{item.right}}</span></div>
+              <div>学生答案：<span>{{translateArr1(item.multipleAnswer)}}</span></div>
+              <div>考试结果：<span >{{item.multipleScore}}</span>分</div>
             </div>
           </div>
         </div>
@@ -53,7 +56,7 @@
             <h6  class="title">
               {{index+1}}、
               <span class="questionTitle" v-html="item.testJudgeVo.judgeQuestion"></span>
-              （<span style="color: red">{{item.testJudgeVo.judgePoints}}分</span>）
+              （<span style="color: #020281">{{item.testJudgeVo.judgePoints}}分</span>）
             </h6>
             <div  class="answers">
               <el-radio v-model="item.judgeAnswer" disabled  :label="judge[0]"></el-radio><i class="el-icon-check"></i>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -61,7 +64,8 @@
             </div>
             <div>
               <div>正确答案：<span ><i v-if="item.testJudgeVo.judgeAnswer" class="el-icon-check"></i><i v-else class="el-icon-close"></i></span></div>
-              <div>考试结果：<span>{{item.right}}</span></div>
+              <div>学生答案：<span ><i v-if="item.judgeAnswer" class="el-icon-check"></i><i v-else class="el-icon-close"></i></span></div>
+              <div>考试结果：<span>{{item.judgeScore}}</span>分</div>
             </div>
           </div>
         </div>
@@ -71,7 +75,7 @@
             <h6  class="title">
               {{index+1}}、
               <span class="questionTitle" v-html="item.testBlankVo.blankQuestion"></span>
-              （<span style="color: red">{{item.testBlankVo.blankPoints}}分</span>）
+              （<span style="color: #020281">{{item.testBlankVo.blankPoints}}分</span>）
             </h6>
             <div v-for='(opt,index2) in item.blankAnswer' :key="index2" class="answers">
               第{{index2+1}}个空、<span v-html="opt"></span>
@@ -84,7 +88,7 @@
                 </div>
               </div>
               <div>考试结果：
-                <div class="result" v-if="isManual"><el-input class="input" v-model="blank[item.testBlankVo.testBlankId]"></el-input></div>
+                <div class="result" v-if="isManual"><el-input class="input" v-model="blank[item.testBlankVo.testBlankId]"></el-input>分</div>
                 <div class="result" v-else>{{blank[item.testBlankVo.testBlankId]}}分</div>
               </div>
             </div>
@@ -96,13 +100,13 @@
             <h6  class="title">
               {{index+1}}、
               <span class="questionTitle" v-html="item.testQuestionVo.myQuestion"></span>
-              （<span style="color: red">{{item.testQuestionVo.myPoints}}分</span>）
+              （<span style="color: #020281">{{item.testQuestionVo.myPoints}}分</span>）
             </h6>
             <div v-html="item.myAnswer" class="answers"></div>
             <div>
               <div>正确答案：<span  v-html="item.testQuestionVo.myAnswer"></span></div>
               <div>考试结果：
-                <div class="result" v-if="isManual"><el-input class="input" v-model="my[item.testQuestionVo.testQuestionId]"></el-input></div>
+                <div class="result" v-if="isManual"><el-input class="input" v-model="my[item.testQuestionVo.testQuestionId]"></el-input>分</div>
                 <div class="result" v-else>{{my[item.testQuestionVo.testQuestionId]}}分</div>
               </div>
             </div>
@@ -143,6 +147,15 @@
       translateArr(index){
         const list=['A','B','C','D'];
         var temp=index.split('');
+        var result="";
+        temp.forEach(item=>{
+          result+=list[parseInt(item)]
+        })
+        return result
+      },
+      translateArr1(index){
+        const list=['A','B','C','D'];
+        var temp=index;
         var result="";
         temp.forEach(item=>{
           result+=list[parseInt(item)]
@@ -279,13 +292,13 @@
     background:#409EFF;
   }
   .examBackground{
-    padding:0px 150px;
-    background: white;
+    padding:0 150px 0 50px;
+    background: #ffffff;
   }
   .exam{
     width: 100%;
-    padding: 14px 0;
-    background: #f5f5f5;
+    padding: 50px 50px 14px 50px;
+    background: #f2f2f2;
   }
   .head{
     border-bottom: 1px solid silver;
@@ -293,7 +306,7 @@
   }
   .headTitle{
     div,p{
-      margin-top: 4px;
+      margin-top: 24px;
     }
   }
   .headMessage{
