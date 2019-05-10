@@ -8,7 +8,7 @@
     border
     @selection-change="handleSelectionChange">
     <el-table-column
-      v-show="table.selection"
+      v-if="table.selection"
       type="selection"
       width="55">
     </el-table-column>

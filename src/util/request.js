@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const service = axios.create({
   // baseURL: 'http://jwuyou.ngrok.xiaomiqiu.cn',
-  baseURL:'http://127.0.0.1:8091/',
+  baseURL:'http://fykx67.natappfree.cc',
   timeout: 60 * 1000,
   withCredentials: true,
 })
