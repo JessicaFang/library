@@ -60,7 +60,7 @@
 <script>
   import { mapGetters,mapActions } from 'vuex';
   import {calPoint} from '@/util/calPoint'
-  import {beforeAddTestPaper}from '@/api/teacher'
+  import {beforeAddTestPaper,autoAddTestPaper}from '@/api/teacher'
   export default {
     name: "paperContent",
     data(){
@@ -129,20 +129,26 @@
       ),
       questionSelect(type){
         this.type=type;
-        var obj={'questionCount':10,'singleCount':14,'judgeCount':34,'blankCount':32,'multipleCount':9};
-        this.maxNumber=obj[this.type];
-        this.changeForm();
-        this.$nextTick(()=>{
-          this.dialogVisible=true;
-        })
-        /* beforeAddTestPaper().then(res=>{
-            if(res.success===true){
-              this.maxNumber=res.obj[this.type];
-              this.$nextTick(()=>{
-                this.dialogVisible=true;
-              })
-            }
+        /* var obj={'questionCount':10,'singleCount':14,'judgeCount':34,'blankCount':32,'multipleCount':9};
+         this.maxNumber=obj[this.type];
+
+         this.$nextTick(()=>{
+           this.dialogVisible=true;
          })*/
+        beforeAddTestPaper().then(res=>{
+          if(res.success===true){
+            this.maxNumber=res.obj[this.type];
+            this.changeForm();
+            this.$nextTick(()=>{
+              this.dialogVisible=true;
+            })
+          }else{
+            this.$message({
+              type:'warning',
+              message:res.msg,
+            })
+          }
+        })
       },
       changeForm() {
         switch (this.type) {
@@ -233,15 +239,24 @@
             questionCount:this.my.length,
             questionPoints:this.my.count,
           }
-            this.setActiveActions({active: 3, source: 'paperContentAuto'});
-          }
-        },
+          autoAddTestPaper(obj).then(res=>{
+            if(res.success===true){
+              this.setActiveActions({active: 3, source: 'paperContentAuto'});
+            }else{
+              this.$message({
+                type:'warning',
+                message:res.msg
+              })
+            }
+          })
+        }
+      },
       check(){
         if(this.single.length=='0'&&this.double.length=='0'&&this.judge.length=='0'&&this.blank.length=='0'&&this.my.length=='0'){
           return '请进行题目的输入';
         }else{
           if((this.single.length.trim()=='0'&&this.single.count.trim()!='0')||(this.single.length.trim()!='0'&&this.single.count.trim()=='0')){
-              return '请进行正确的单选成绩输入'
+            return '请进行正确的单选成绩输入'
           }
           if((this.double.length.trim()=='0'&&this.double.count.trim()!='0')||(this.double.length.trim()!='0'&&this.double.count.trim()=='0')){
             return '请进行正确的多选成绩输入'

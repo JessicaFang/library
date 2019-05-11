@@ -169,3 +169,10 @@ export function correctStuPaper(data={}){
     data
   })
 }
+export function autoAddTestPaper(params){
+  return request({
+    url:"/auto/addTestPaper",
+    method:'get',
+    params
+  })
+}
