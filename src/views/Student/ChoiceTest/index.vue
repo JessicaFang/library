@@ -80,8 +80,6 @@
           if (res.success === true) {
             this.setPaperIdActions({paperId: paperId});
             this.setExamActions(res.obj);
-            //当window.open为用户触发事件内部或者加载时，不会被拦截，一旦将弹出代码移动到ajax或者一段异步代码内部，马上就出现被拦截的表现了。
-            // window.open('http://localhost:8080/#/StudentExaming', '_self', 'big', 'fullscreen=yes')
             this.$router.push("StudentExaming")
           } else {
             this.$message({

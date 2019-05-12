@@ -4,7 +4,7 @@
     ref="table"
     :data="tableData"
     :max-height="tableHeight"
-    style="max-width: 100%"
+    style="width: 100%"
     border
     @selection-change="handleSelectionChange">
     <el-table-column
@@ -67,7 +67,6 @@
       },
       mounted(){
        /*   console.log(this.tableData);*/
-
       }
     }
 </script>
