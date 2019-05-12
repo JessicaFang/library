@@ -15,7 +15,7 @@
 
 <script>
   import {mapGetters,mapActions} from 'vuex'
-  import {sendCode} from '@/api/public'
+  import {sendCode,validCode} from '@/api/public'
   export default {
     name: "personMessage",
     data(){
@@ -52,10 +52,18 @@
       next(){
         this.$refs.form.validate(valid=>{
           if(valid){
-            for(var key in this.form) {
-              this.setResetFormAction({key:key,value:this.form[key]});
-            }
-            this.$emit('next',2)
+            const params = Object.assign({},this.getResetForm,this.form)
+            validCode(params).then(res=>{
+              if(res.success){
+                for(var key in this.form) {
+                  this.setResetFormAction({key:key,value:this.form[key]});
+                }
+                this.$emit('next',2)
+              }else{
+                this.$message.info(res.msg)
+              }
+            })
+
           }
         })
       },
@@ -81,6 +89,8 @@
                 type:'success',
                 message:'验证码发送成功',
               })
+            }else{
+              this.$message.warning(res.msg)
             }
           })
         }else{

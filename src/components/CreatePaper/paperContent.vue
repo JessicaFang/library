@@ -735,7 +735,7 @@
   .card{
     margin: 10px 40px;
     div{
-      padding: 2px;
+      /*padding: 1px;*/
     }
     span{
       color: #1A8CFE ;

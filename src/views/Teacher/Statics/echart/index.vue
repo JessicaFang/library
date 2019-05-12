@@ -17,6 +17,7 @@
         <div class="tabs-content" v-loading="loading">
           <div>
             <el-card v-for='(item,index) in testSingleVos' :key="index">
+              <h5>单选题：</h5>
               <table>
                 <tr>
                   <td>{{index+1}}、<span class="questionTitle" v-html="item.singleQuestion"></span></td>
@@ -36,6 +37,7 @@
           </div>
           <div>
             <el-card v-for='(item,index) in testMultipleVos' :key="index">
+              <h5>多选题：</h5>
               <table>
                 <tr>
                   <td>{{index+1}}、<span class="questionTitle" v-html="item.multipleQuestion"></span></td>
@@ -55,6 +57,7 @@
           </div>
           <div>
             <el-card v-for='(item,index) in testJudgeVos' :key="index">
+              <h5>判断题：</h5>
               <table>
                 <tr>
                   <td>{{index+1}}、<span v-html="item.judgeQuestion" class="questionTitle"></span></td>
@@ -80,7 +83,7 @@
         </div>
       </el-tab-pane>
     </el-tabs>
-      <el-button type="primary" class="button" @click="goBack">返回上一页</el-button>
+    <el-button type="primary" class="button" @click="goBack">返回上一页</el-button>
   </div>
 </template>
 <script>
@@ -223,9 +226,10 @@
     margin: 0 auto;
   }
   .button{
-    width: 100%;
-    margin: 10px 0;
-    position: fixed;
+    margin:5px auto;
+    /*position: fixed;*/
+    float:right;
+    min-width:100%;
     bottom:10px
   }
 </style>

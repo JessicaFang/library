@@ -77,8 +77,9 @@
               <span class="questionTitle" v-html="item.testBlankVo.blankQuestion"></span>
               （<span style="color: #020281">{{item.testBlankVo.blankPoints}}分</span>）
             </h6>
+            学生答案：
             <div v-for='(opt,index2) in item.blankAnswer' :key="index2" class="answers">
-              第{{index2+1}}个空、<span v-html="opt"></span>
+              {{index2+1}}、<span v-html="opt"></span>
             </div>
             <div>
               <div>
@@ -102,7 +103,8 @@
               <span class="questionTitle" v-html="item.testQuestionVo.myQuestion"></span>
               （<span style="color: #020281">{{item.testQuestionVo.myPoints}}分</span>）
             </h6>
-            <div v-html="item.myAnswer" class="answers"></div>
+            学生答案：
+            <span v-html="item.myAnswer" class="answers"></span>
             <div>
               <div>正确答案：<span  v-html="item.testQuestionVo.myAnswer"></span></div>
               <div>考试结果：
@@ -251,10 +253,12 @@
       if(this.exam.resultMultipleVos!=undefined&&this.exam.resultMultipleVos.length!=0){
         for (var i = 0; i < this.exam.resultMultipleVos.length; i++) {
           var trueIndex=[];
-          const temp=this.exam.resultMultipleVos[i].multipleAnswer.split("");
-          temp.forEach((item,index)=>{
-            trueIndex[index]=parseInt(item);
-          })
+          if(this.exam.resultMultipleVos[i].multipleAnswer) {
+            const temp = this.exam.resultMultipleVos[i].multipleAnswer.split("");
+            temp.forEach((item, index) => {
+              trueIndex[index] = parseInt(item);
+            })
+          }
           this.exam.resultMultipleVos[i].multipleAnswer=trueIndex;
         }
       }

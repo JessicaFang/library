@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="top">
-      <h3>{{title}}</h3>
+      <h4>{{title}}</h4>
       <div class="topRight">
         <span>欢迎您：{{getParams.username}}</span>&nbsp;&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;
         <span @click="quit" class="quit">退出</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -48,6 +48,28 @@
          uploadImg(){
            this.$refs.img.click();
          },
+     /*    dealImg(base64,bili,callback){
+           var img=new Image();
+           img.src=base64;
+           this.main=base64;
+           console.log(img)
+           var that=this;
+           img.onload=function () {
+             var canvas = document.createElement('canvas');
+             var ctx=canvas.getContext('2d');
+             var w=that.width/bili;
+             var h=that.height/bili;
+             var anw = document.createAttribute("width");
+             anw.nodeValue = w;
+             var anh = document.createAttribute("height");
+             anh.nodeValue = h;
+             canvas.setAttributeNode(anw);
+             canvas.setAttributeNode(anh);
+             ctx.drawImage(this,0,0,w,h);
+             var dataURL=canvas.toDataURL('image/jpeg');
+             callback(that.dataURLtoBlob(dataURL));
+           }
+         },*/
          addImg(){
            var file=this.$refs.img.files[0];
            var size=file.size;
@@ -57,6 +79,17 @@
                type:'warning'
              })
            }else{
+            /* var r=new FileReader();
+             r.readAsDataURL(file);
+             var that=this;
+             r.onload=function (e) {
+               var base64=e.target.result;
+               that.dealImg(base64,1.5,(blob)=>{
+                 console.log(blob)
+               })
+             }*/
+            console.log(file)
+            console.log(file.name)
              var param = new FormData();
              param.append('faceUrl',file);
              param.append('username',this.getParams.username);
@@ -74,6 +107,15 @@
 
            }
          },
+         //canvas图片处理  绘制和压缩图片
+       /* dataURLtoBlob(dataurl) {
+          var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+          bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+          while(n--){
+             u8arr[n] = bstr.charCodeAt(n);
+          }
+          return new Blob([u8arr], {type:mime});
+         },*/
          quit(){
            //退出登录
          }
@@ -82,7 +124,7 @@
 
        },
        mounted(){
-
+      /* console.log(this.$router);*/
        }
     }
 </script>
@@ -126,8 +168,6 @@
     left:250px;
     width: calc(100% - 300px);
     max-height: calc( 100% - 100px);
-    padding:20px 20px 0px 20px;
-
     margin-top:40px;
     overflow: auto;
   }

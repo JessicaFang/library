@@ -8,9 +8,10 @@
           <el-input v-model="form.paperTitle" placeholder="请输入试卷名称"></el-input>
         </el-form-item>
         <el-form-item label-width="75px" label="试卷状态">
-          <el-select v-model="form.finished" placeholder="请选择试卷状态">
+          <el-select clearable v-model="form.finished" placeholder="请选择试卷状态">
             <el-option label='未开考' value="0"></el-option>
-            <el-option label='已开考' value="1"></el-option>
+            <el-option label='正在进行' value="1"></el-option>
+            <el-option label='已结束' value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>

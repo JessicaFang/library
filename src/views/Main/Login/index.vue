@@ -74,25 +74,25 @@
       ),
       judge(){
         const params=Object.assign({},this.form);
-        /*login(params).then(res=>{
+        login(params).then(res=>{
             if(res.success==true){
-
+              this.setParamsActions(params);
+              //由于动态路由也是传递params的，所以在 this.$router.push() 方法中path不能和params一起使用，否则params将无效。需要用name来指定页面。
+              switch (this.form.roleLevel){
+                case "2":
+                  this.$router.push({name:'Teacher'});
+                  break;
+                case "3":
+                  this.$router.push({name:'Student'});
+                  break;
+                default:
+                  console.log("err");
+              }
             }else{
-              console.log(res);
+              this.$message.warning(res.msg)
             }
-        });*/
-        this.setParamsActions(params);
-        //由于动态路由也是传递params的，所以在 this.$router.push() 方法中path不能和params一起使用，否则params将无效。需要用name来指定页面。
-        switch (this.form.roleLevel){
-          case "2":
-            this.$router.push({name:'Teacher'});
-            break;
-          case "3":
-            this.$router.push({name:'Student'});
-            break;
-          default:
-            console.log("err");
-        }
+        });
+
       },
       onSubmit(){
         this.$refs.form.validate(valid=>{

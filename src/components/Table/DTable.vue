@@ -4,7 +4,7 @@
     ref="table"
     :data="tableData"
     :max-height="tableHeight"
-    style="width: 100%"
+    style="max-width: 100%"
     border
     @selection-change="handleSelectionChange">
     <el-table-column
@@ -62,10 +62,12 @@
         },
         pageMesChange(val){
           this.$emit('pageMesChange',val);
-        }
+        },
+
       },
       mounted(){
        /*   console.log(this.tableData);*/
+
       }
     }
 </script>

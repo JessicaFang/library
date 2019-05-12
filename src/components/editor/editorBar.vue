@@ -42,8 +42,8 @@
         // 接着通过v-model回传到wangeditor,然后被监听之后又用this.editor.txt.html更改时数据,所以发生改变
         value: function(newValue) {
        /*    if (this.valueChange) {*/
-             this.editor.txt.html(newValue);
-             this.$emit('endChange',this.index);
+         /*    this.editor.txt.html(newValue);
+             this.$emit('endChange',this.index);*/
            }
        /*  }*/
        },

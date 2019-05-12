@@ -13,5 +13,6 @@ export const tableConfig={
     {prop:'minutesLength',label:'考试时长'},
     {prop:'passingScore',label:'及格分数'},
     {prop:'totalPoints',label:'总分'},
+    {prop:'paperState',label:'试卷状态'}
   ],
 };

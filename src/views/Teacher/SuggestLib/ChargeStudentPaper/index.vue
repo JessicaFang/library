@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form ref="form"  :model="form" class="form"  :inline="true" >
-      <el-form-item label-width="70px" label="试卷名称" >
+      <el-form-item label-width="70px" label="学生姓名" >
         <el-input v-model="form.name" auto-complete="text"></el-input>
       </el-form-item>
       <el-form-item label-width="70px" label="试卷状态">
@@ -116,6 +116,12 @@
         const params=Object.assign({},this.defaultParams,this.form,{courseId:this.getId});
         teaQueryBaseStuPaper(params).then(res=>{
           if(res.success==true) {
+            for(let item = 0;item<res.obj.length;item++){
+              if(res.obj[item].paperState == '1'){
+                res.obj[item].paperState = '已批改'
+              }
+              else res.obj[item].paperState = '未批改'
+            }
             this.tableData = res.obj;
             this.total = res.total;
           }else{

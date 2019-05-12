@@ -10,11 +10,11 @@ export function upload(data) {
 }
 
 //登录
-export function login(data) {
+export function login(params) {
   return request({
     url: '/login/userLoginFront',
-    method: 'post',
-    data
+    method: 'get',
+    params
   });
 }
 //注册
@@ -34,7 +34,14 @@ export function sendCode(params) {
     params
   });
 }
-
+//发送验证码
+export function validCode(params) {
+  return request({
+    url: '/user/validCode',
+    method: 'get',
+    params
+  });
+}
 //发送验证码后重置密码
 export function resetPwd(params) {
   return request({

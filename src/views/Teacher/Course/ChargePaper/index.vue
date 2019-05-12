@@ -4,6 +4,12 @@
       <el-form-item label-width="75px" label="试卷名称" >
         <el-input v-model="form.paperTitle" placeholder="请输入试卷名称"></el-input>
       </el-form-item>
+      <el-form-item label-width="75px" label="试卷状态" >
+        <el-select clearable v-model="form.paperState" placeholder="请输入试卷状态">
+          <el-option label="已发布" value="1"></el-option>
+          <el-option label="未发布" value="0"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSearch">查找</el-button>
       </el-form-item>
@@ -38,6 +44,7 @@
       return {
         form:{
           paperTitle:'',
+          paperState:'',
         },
         tableData:[],
         table:{},
@@ -50,11 +57,11 @@
       TableButton
     },
     computed:{
-      ...mapGetters(['getId']),
+      ...mapGetters(['getId'])
     },
     mixins: [tableMixin],
     methods:{
-      ...mapActions(['setTotalPaperActions','setActiveActions','setPointActions','setAllPointActions']),
+      ...mapActions(['setTotalPaperActions','setActiveActions','setPointActions','setAllPointActions','setPaperIdActions']),
       handleClick(event) {
         switch (event) {
           case 'ALTERQTEST':
@@ -85,6 +92,7 @@
             var obj = _.cloneDeep(res.obj)
             this.setTotalPaperActions(obj);
             this.setActiveActions({active: 3, source: 'ChargePaper', alterFlag: true});
+            this.setPaperIdActions({paperId:paperId});
             this.$router.push({name: 'TeacherAddPaper'});
           }else{
             this.$message({
@@ -165,9 +173,12 @@
         this.getTable();
       },
       getTable(){
-        const params=Object.assign({},this.defaultParams,this.form,{courseId:this.getId,paperState:'1'});
+        const params=Object.assign({},this.defaultParams,this.form,{courseId:this.getId});
         queryTestPaper(params).then(res=>{
           if(res.success==true){
+            for(let item = 0;item<res.obj.length;item++){
+              res.obj[item].paperState = res.obj[item].paperState == '1'?'已发布':'未发布'
+            }
             this.tableData=res.obj;
             this.total=res.total;
           }else{
