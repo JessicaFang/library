@@ -2,10 +2,10 @@
   <div>
     <el-form ref="form"  :model="form" class="form"  :inline="true">
       <el-form-item label-width="70px" label="课程号" >
-        <el-input v-model="form.courseId" auto-complete="text"></el-input>
+        <el-input v-model="form.courseId" auto-complete="text" placeholder="请输入课程号"></el-input>
       </el-form-item>
-      <el-form-item label-width="70px" label="课程名">
-        <el-input v-model="form.courseName" auto-complete="text"></el-input>
+      <el-form-item label-width="70px" label="课程名"  >
+        <el-input v-model="form.courseName" auto-complete="text" placeholder="请输入课程名"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSearch">查找</el-button>
@@ -88,26 +88,13 @@
       getTable(){
         console.log(this.getParams);
         const params=Object.assign({},this.defaultParams,{tno:this.getParams.username},this.form);
-       this.tableData=[
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-          {courseId:'1',courseName:'计网',courseIntroduction:'费称号'},
-        ];
-        this.total=40;
-       /* getCourseTeacher(params).then(res=>{
+        getCourseTeacher(params).then(res=>{
           if(res.success==true){
             console.log(res.obj[0]);
             this.tableData=res.obj;
             this.total=res.total;
           }
-        })*/
+        })
       },
       init(){
         this.table=tableConfig;

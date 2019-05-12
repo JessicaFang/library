@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">题目</div>
-    <editor-bar v-model="questionForm.judgeQuestion" @htmlChange="val=>change(val,'judgeQuestion')"></editor-bar>
+    <editor-bar v-model="questionForm.judgeQuestion" :clear="$attrs" v-on="$listeners"  @htmlChange="val=>change(val,'judgeQuestion')"></editor-bar>
     <div class="choice">选择判断结果</div>
     <div>
       <el-button  :type="choice[0]"  ref="1" @click="judge('1')">正确</el-button>
@@ -48,7 +48,7 @@
       },
       check(){
         var message='';
-        if(validate(this.questionForm.judgeQuestion)){
+        if(this.questionForm.judgeQuestion.trim()!=''){
           if(this.questionForm.judgeAnswer.length==0){
             message="请选择正确与否";
             return message
@@ -62,13 +62,6 @@
       judge(num){
         this.choice=parseInt(num)?['success','']:['','success'];
         this.questionForm.judgeAnswer=num;
-      },
-      validate(message){
-        if(message.trim()!=''){
-          return true;
-        }else{
-          return false;
-        }
       },
       onSubmit(){
         var message=this.check();

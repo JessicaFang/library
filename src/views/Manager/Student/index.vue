@@ -104,7 +104,8 @@
         var file=this.$refs.file.files[0];
         var fileName=this.$refs.file.files[0].name
         var formData=new FormData();
-        formData.append(fileName,file);
+        formData.append('file',file);
+        formData.append('roleLevel','3');
         importData(formData).then(res=>{
           if(res.success==true){
             this.$message({
@@ -206,6 +207,7 @@
           var params = {usernames: username,roleLevel:3};
           deleteData(params).then((res) =>{
             if(res.success==true){
+              this.paramsChange(this.total)
               this.getTable();
               this.$message({
                 type: 'info',

@@ -69,10 +69,10 @@
             this.template='Double';
             break;
           case  '3':
-            this.template='blankFill';
+            this.template='Judge';
             break;
           case '4':
-            this.template='Judge';
+            this.template='blankFill';
             break;
           case  '5':
             this.template='essayTest';
@@ -112,7 +112,6 @@
       },
     },
     beforeMount(){
-      console.log("hello")
       this.roleLevel=this.getParams.roleLevel;
       if(this.roleLevel=='3'){
         this.submitFunction=saveSuggest;

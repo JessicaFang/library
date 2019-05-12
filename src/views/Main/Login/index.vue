@@ -71,16 +71,15 @@
     },
     methods:{
       ...mapActions( // 语法糖
-        ['setParamsActions'] // 相当于this.$store.dispatch('modifyName'),提交这个方法
+        ['setParamsActions','setLoginActions'] // 相当于this.$store.dispatch('modifyName'),提交这个方法
       ),
       judge(){
-        const params={username:this.form.username,roleLevel:this.form.roleLevel};
-        //TODO password待加密 password不传到$router.push()
-        /* let params1 = {username:this.form.username,roleLevel:this.form.roleLevel,password:this.form.password}
-         Login(params1).then(res=>{
-           if(res.success){*/
-            this.setParamsActions(params);
-            //由于动态路由也是传递params的，所以在 this.$router.push() 方法中path不能和params一起使用，否则params将无效。需要用name来指定页面。
+         let params = Object.assign({},this.form)
+         Login(params).then(res=>{
+           if(res.success){
+             console.log('login',res.obj);
+            this.setParamsActions({username:params.username,roleLevel:res.obj[0].roleLevel});
+            this.setLoginActions({token:res.obj[0].token,url:res.obj[0].url});
             switch (this.form.roleLevel){
               case "1":
                 this.$router.push({name:'Manager'});
@@ -94,19 +93,18 @@
               default:
                 console.log("err");
             }
-       /*   }else{
-            this.$message.error(res.msg)
+          }else{
+            this.$message.warning(res.msg)
           }
-        })*/
+        })
 
       },
       onSubmit(){
-        this.judge();
-        /*this.$refs.form.validate(valid=>{
+        this.$refs.form.validate(valid=>{
           if(valid){
             this.judge();
           }
-        })*/
+        })
       },
     }
   }

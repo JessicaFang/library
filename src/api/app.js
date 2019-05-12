@@ -16,7 +16,7 @@ import request from '@/util/request';
 export function Login(params) {
   return request({
     url: '/login/userLoginBack',
-    method: 'get',
+    method: 'post',
     params
   });
 }
@@ -28,4 +28,13 @@ export function Login(params) {
       data
     })
   };
+
+export function Quit(params) {
+  return request({
+    url:'login/userLogoutBack',
+    method:'get',
+    params
+  })
+};
+
 

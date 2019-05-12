@@ -28,7 +28,6 @@
       getMessage(this.params).then(res=>{
         if(res.success===true){
           this.myForm=translate(res.obj);
-          console.log(this.myForm)
         }
       })
     }

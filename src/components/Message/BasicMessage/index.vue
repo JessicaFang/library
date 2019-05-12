@@ -3,8 +3,8 @@
     <el-form-item label="姓名" prop="name">
       <el-input v-model="form.name" auto-complete="text"></el-input>
     </el-form-item>
-    <el-form-item  :label="titleLabel"  prop="title">
-      <el-input v-model="form.title" auto-complete="text"></el-input>
+    <el-form-item  :label="titleLabel"  prop="classOrTitle">
+      <el-input v-model="form.classOrTitle" auto-complete="text"></el-input>
     </el-form-item>
     <el-form-item label="性别" prop="sex">
       <el-radio-group v-model="form.sex">
@@ -34,7 +34,7 @@
           name: [
             {required: true, message: '请输入姓名', trigger: 'change'}
           ],
-          title: [
+          classOrTitle: [
             { validator: (rule, value, callback) => {
                 if (value === '') {
                   callback(new Error('请输入'+this.titleLabel));

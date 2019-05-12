@@ -24,3 +24,16 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+router.beforeEach((to, from, next) => {
+  console.log(to);
+  if (to.name === 'Login'||to.name === 'Register'||to.name === 'Reset') {
+    next();
+  } else {
+    let token = localStorage.getItem('token');
+    if (token === 'null' || token === '') {
+      next('/');
+    } else {
+      next();
+    }
+  }
+});

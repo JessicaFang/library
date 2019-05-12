@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+import {url } from '@/util/gobalVar'
 const service = axios.create({
   // baseURL: 'http://jwuyou.ngrok.xiaomiqiu.cn',
-  baseURL:'http://fykx67.natappfree.cc',
+  baseURL:url(),
   timeout: 60 * 1000,
   withCredentials: true,
 })
@@ -13,18 +13,23 @@ service.interceptors.request.use(config=>{
     config.headers['X-Requested-With'] = 'XMLHttpRequest';
     config.headers['Content-Type'] = 'application/json; charset=UTF-8';
     config.headers['Access-Control-Allow-Origin'] = '*';
+    if (localStorage.getItem('token')) {
+      config.headers['Authorization']= localStorage.getItem('token');
+    }
     return config;
   }, err=>{
     return Promise.reject(err);
   }
 );
 service.interceptors.response.use(response=>{
-   // if(response.headers['content-type"]']==) {
+  // if(response.status=='401'){
+  //   localStorage.removeItem('token');
+  //   this.$router.push({name:'Login'});
+  // }else {
     return response.data;
-  // }else{
-  //   window.alert('')
-  //   }
+  // }
   },err=>{
+    console.log('ddfd');
     return Promise.reject(err);
   }
 )

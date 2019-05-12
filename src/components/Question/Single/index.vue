@@ -1,11 +1,11 @@
 <template>
    <div>
      <div class="title">题目</div>
-     <editor-bar v-model="questionForm.singleQuestion" :valueChange="changeStatu.questionChange"  @endChange="endChange('questionChange')"   @htmlChange="val=>change(val,'singleQuestion')"></editor-bar>
+     <editor-bar v-model="questionForm.singleQuestion" :clear="$attrs" v-on="$listeners"  @htmlChange="val=>change(val,'singleQuestion')"></editor-bar>
      <div class="single">答案</div>
      <div v-for="(item,index) in 4" :key="index" class="answers">
         <el-radio v-model="questionForm.trueIndex" :label="index"></el-radio>
-        <editor-bar class="aContent" v-model="questionForm.options[index]" @htmlChange="val=>change(val,'options',index)"></editor-bar>
+        <editor-bar class="aContent" :clear="$attrs" v-on="$listeners" v-model="questionForm.options[index]" @htmlChange="val=>change(val,'options',index)"></editor-bar>
      </div>
      <div class="bottom">
        <el-button class="button" type="primary" @click="onSubmit">提交</el-button>
@@ -26,9 +26,6 @@
             options:[],
             trueIndex:''
           },
-          changeStatu:{
-            questionChange:true,
-          }
         }
       },
       computed: {
@@ -52,9 +49,6 @@
           }else{
             this.questionForm[type]=val;
           }
-        },
-        endChange(type){
-          this.changeStatu[type]=false;
         },
         check(){
           var message='';
@@ -93,10 +87,12 @@
              const form=_.cloneDeep(this.questionForm);
              form.trueIndex=form.trueIndex+'';
              this.$emit('submit',form);
+
           }
         }
       },
       beforeMount(){
+        console.log(1);
         const data=this.questionMes;
         if(data!=undefined&&Object.keys(data).length!=0){
             this.questionForm.singleQuestion=data.singleQuestion;

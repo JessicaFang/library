@@ -10,6 +10,7 @@ export const tableConfig={
     {prop:'courseId',label:'课程号'},
     {prop:'questionContent',label:'题目'},
     {prop:'difficultLevel',label:'难度'},
+    {prop:'knowledgeTitle',label:'知识点'},
 
   ],
 };

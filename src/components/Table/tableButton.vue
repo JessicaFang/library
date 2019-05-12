@@ -8,7 +8,7 @@
       :loading="btn.loading"
       @click="()=>handleClick(btn.event)"
     >
-      <i v-if="btn.icon" class="btn-active" :class="btn.icon"></i>
+    <!--  <i v-if="btn.icon" class="btn-active" :class="btn.icon"></i>-->
       {{btn.label}}
     </el-button>
   </el-button-group>

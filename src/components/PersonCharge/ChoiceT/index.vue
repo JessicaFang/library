@@ -129,7 +129,7 @@
               this.tableData=translate(res.obj);
               this.total=res.total
             }else{
-              this.$message.info(res.msg)
+              this.$message.warning(res.msg)
             }
           })
       },

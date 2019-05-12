@@ -96,6 +96,7 @@
                   type: 'info',
                   message: "操作成功"
                 });
+                this.paramsChange(this.total)
               }else{
                 this.$message({
                   type: 'danger',

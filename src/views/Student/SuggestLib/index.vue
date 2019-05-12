@@ -5,8 +5,8 @@
         <el-select v-model="form.type" placeholder="请选择题型">
           <el-option label="单选题" value="1"></el-option>
           <el-option label="多选题" value="2"></el-option>
-          <el-option label="填空题" value="3"></el-option>
-          <el-option label="判断题" value="4"></el-option>
+          <el-option label="判断题" value="3"></el-option>
+          <el-option label="填空题" value="4"></el-option>
           <el-option label="简答题" value="5"></el-option>
         </el-select>
       </el-form-item>
@@ -44,7 +44,6 @@
 <script>
   import {url} from '@/util/gobalVar'
   import {selectSuggest, selectSuggestById, delSuggest, exportSuggest, submitSuggest} from '@/api/student'
-  import {exportLib} from '@/api/manager'
   import {tableConfig, btnConfig} from './tableConfig'
   import DTable from '@/components/Table/DTable'
   import TableButton from '@/components/Table/tableButton'
@@ -58,7 +57,7 @@
         exportFunc:'',
         form: {
           type: '1',
-          courseId: '2',
+          courseId: '',
           suggestState: ''
         },
         type: '',
@@ -116,65 +115,6 @@
               this.$router.push('/StudentAlterQ')
             }
           })
-          /*  if(type=='1') {
-            data = {
-             trueIndex: '1',
-             options: [
-               '啊啊啊啊',
-               '啊啊啊啊',
-               '啊啊啊啊',
-               '啊啊啊啊',
-             ],
-             knowledgeTitle: '知识点',
-             id: '2',
-             courseId: '2',
-             singleQuestion: '<p>helloworld</p>',
-             difficultLevel: '0.6'
-           }
-         }else if(type=='2'){
-           data={
-             trueIndex: '023',
-             options: [
-             '啊啊啊啊',
-             '啊啊啊啊',
-             '啊啊啊啊',
-             '啊啊啊啊',
-           ],
-             knowledgeTitle: '知识点',
-             id: '2',
-             courseId: '2',
-             multipleQuestion: '<p>helloworld</p>',
-             difficultLevel: '0.6'
-          }
-         }else if(type=='4'){
-           data={
-             judgeAnswer:true,
-             knowledgeTitle: '知识点',
-             id: '2',
-             courseId: '2',
-             judgeQuestion: '<p>helloworld</p>',
-             difficultLevel: '0.6'
-           }
-         }else if(type=='3'){
-           data={
-             blankAnswer: [ ['023','232'],['fdfjd','fjdk']],
-             knowledgeTitle: '知识点',
-             id: '2',
-             courseId: '2',
-             blankQuestion: '<p>helloworld</p>',
-             difficultLevel: '0.6'
-           }
-         }else if(type=='5'){
-           data={
-             detailReviewRules:'评分规则',
-             myAnswer: 'hahahah',
-             knowledgeTitle: '知识点',
-             id: '2',
-             courseId: '2',
-             myQuestion: '<p>helloworld</p>',
-             difficultLevel: '0.6'
-           }
-         }*/
         } else {
           this.$message({
             type: 'warning',
@@ -251,11 +191,8 @@
       handleExportQClick() {
         if (this.selectCloumn.length > 0) {
           const id = this.getCloumnId();
-          /*   var url='http://jwuyou.ngrok.xiaomiqiu.cn/iEExl/exportLib'
-             url=url+'?type='+this.type+'&ids='+id;*/
           var params = {type: this.form.type, ids: id};
-
-             exportLib(params).then((res) => {
+          exportSuggest(params).then((res) => {
             if (res.success == false) {
               this.$message({
                 type: 'danger',

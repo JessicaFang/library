@@ -106,7 +106,7 @@
                     showCancelButton:true
                   });
                 }else{
-                  this.$message.error(res.msg)
+                  this.$message.warning(res.msg)
                 }
               })
             }

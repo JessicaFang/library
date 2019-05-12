@@ -34,6 +34,7 @@ import ALTERQ from '@/components/AlterQuestion'
 import ManagerExport from '@/components/Export';
 import ManagerMessage from '@/views/Manager/Message'
 import StudentImport from '@/components/Export';
+import noPage from '@/views/404'
 Vue.use(Router)
 
 export default new Router({
@@ -59,8 +60,8 @@ export default new Router({
       name: 'Teacher',
       component:Teacher,
       children: [    //嵌套路由
-        { path: '/TeacherMessage',name:'TeacherCourse', component: TeacherMessage },
-        { path: '/TeacherCourse',name:'TeacherMessage', component: TeacherCourse },
+        { path: '/TeacherMessage',name:'TeacherMessage', component: TeacherMessage },
+        { path: '/TeacherCourse',name:'TeacherCourse', component: TeacherCourse },
         { path: '/TeacherKnowledge',name:'TeacherKnowledge', component: TeacherKnowledge },
         { path: '/TeacherDeleteS',name:'TeacherDeleteS', component: TeacherDeleteS },
         { path: '/TeacherChoiceS',name:'TeacherChoiceS', component: TeacherChoiceS },
@@ -75,7 +76,6 @@ export default new Router({
       name: 'Student',
       component:Student,
       children: [    //嵌套路由
-        {  path: "",  component:StudentMessage},
         { path: '/StudentMessage',name:'StudentMessage', component: StudentMessage },
         { path: '/StudentAddQuest',name:'StudentAddQuest', component: StudentAddQuest },
         { path: '/StudentImport',name:'StudentImport', component: StudentImport },
@@ -104,7 +104,11 @@ export default new Router({
         { path: '/ManagerExport',name:'ManagerExport', component: ManagerExport },
       ]
     },
-
+    {
+      path: '/*',
+      name: 'noPage',
+      component:noPage,
+    },
 
 
 

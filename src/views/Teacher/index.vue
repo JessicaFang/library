@@ -18,6 +18,9 @@
       components:{
         sideBarMenu
       },
+      mounted(){
+        this.$router.push({name:'TeacherMessage'})
+      }
     }
 </script>
 

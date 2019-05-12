@@ -11,6 +11,6 @@ export const tableConfig={
     {prop:'myEmail',label:'邮箱'},
     {prop:'sex',label:'性别'},
     {prop:'name',label:'姓名'},
-    {prop:'title',label:'班级'},
+    {prop:'myClass',label:'班级'},
   ],
 };

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">题目</div>
-    <editor-bar v-model="questionForm.blankQuestion" @htmlChange="val=>change(val,'blankQuestion')"></editor-bar>
+    <editor-bar v-model="questionForm.blankQuestion" :clear="$attrs" v-on="$listeners"  @htmlChange="val=>change(val,'blankQuestion')"></editor-bar>
     <div class="blank">填空</div>
     <!--渲染时候的更新问题，v-for的时候数据得到更新，但是questioForm.option进行变化而v-for没有渲染，是得不到数据的-->
      <div  class="blankFill" v-for="(item,index) in list">

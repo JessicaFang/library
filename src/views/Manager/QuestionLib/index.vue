@@ -2,7 +2,7 @@
   <div>
     <el-form ref="form"  :model="form" class="form"  :inline="true">
       <el-form-item label-width="45px" label="题型" >
-        <el-select v-model="form.type" placeholder="请选择题型">
+        <el-select v-model="form.type" placeholder="请选择题型" @change="onSearch">
           <el-option label="单选题" value="1"></el-option>
           <el-option label="多选题" value="2"></el-option>
           <el-option label="判断题" value="3"></el-option>

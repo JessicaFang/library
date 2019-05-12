@@ -25,16 +25,16 @@
     },
     beforeMount(){
       this.params=this.getParams;
-      console.log(this.params);
-      this.myForm=[{myEmail: '4408811996@qq.com', no: '001', sex: '男', name: '小熊', title: '副教授'}];
-      console.log(this.myForm)
-    /*  getMessage(this.params).then(res=>{
+      getMessage(this.params).then(res=>{
         if(res.success===true){
-           this.myForm=translate(res.obj);
-           this.myForm={myEmail: '4408811996@qq.com', no: '001', sex: '男', name: '小熊', title: '副教授'};
-           console.log(this.myForm)
+          this.myForm=translate(res.obj);
+        }else{
+          this.$message({
+            type:'warning',
+            message:res.msg
+          })
         }
-      })*/
+      })
     }
   }
 </script>

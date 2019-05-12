@@ -9,11 +9,11 @@ export function examine(params) {
     params
   });
 }
-export function updateManager(params) {
+export function updateManager(data) {
   return request({
     url: '/user/updateUserInfo',
-    method: 'get',
-    params
+    method: 'post',
+    data
   });
 }
 export function importData(data) {

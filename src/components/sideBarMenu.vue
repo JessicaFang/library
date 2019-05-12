@@ -1,9 +1,10 @@
 <template>
   <div>
     <div class="top">
-      <h3>{{title}}</h3>
+      <h3 class="systemTitle">{{title}}</h3>
       <div class="topRight">
-        <span>欢迎你：{{getParams.username}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>欢迎你：{{getParams.username}}</span>&nbsp;&nbsp;||&nbsp;&nbsp;
+        <span @click="quit" class="quit">退出</span>&nbsp;&nbsp;
         <img :src="main" class="img" @click="uploadImg">
         <input @change="addImg"  style="display: none" type="file" ref="img" name="image" accept="image/x-png,image/gif,image/jpeg,image/bmp"/>
       </div>
@@ -29,20 +30,24 @@
 
 <script>
     import main from '@/assets/Main.jpg'
-     import { mapGetters } from 'vuex'
+     import { mapGetters,mapActions } from 'vuex'
+    import {uploadFaceUrl  } from '@/api/public'
+    import {Quit  } from '@/api/app'
+    import { url } from '@/util/gobalVar'
      export default {
      name: "sideBarMenu",
      props:['menu','title'],
      computed: {
-       ...mapGetters(['getParams'])
+       ...mapGetters(['getParams','getLogin'])
      },
      data(){
         return {
-          main:main,
+          main:'',
         }
      },
        methods:{
-         uploadImg(){
+         ...mapActions(['setLoginActions']),
+        /* uploadImg(){
            this.$refs.img.click();
          },
          dealImg(base64,bili,callback){
@@ -95,14 +100,52 @@
              u8arr[n] = bstr.charCodeAt(n);
           }
           return new Blob([u8arr], {type:mime});
+         },*/
+         uploadImg(){
+           this.$refs.img.click();
+         },
+         addImg(){
+           var file=this.$refs.img.files[0];
+           var size=file.size;
+           if(size>5*1024*1024*1024){
+             this.$message({
+               message:'请选择5M以内的图片',
+               type:'warning'
+             })
+           }else{
+             var param = new FormData();
+             param.append('faceUrl',file);
+             param.append('username',this.getParams.username);
+             param.append('roleLevel',this.getParams.roleLevel);
+             uploadFaceUrl(param).then(res=>{
+               if(res.success==true){
+                 this.setLoginActions({token:localStorage.getItem("token"),url:res.obj});
+                 this.main=url()+this.getLogin.url;
+               }else{
+                 this.$message({
+                   type:'warning',
+                   message:res.msg
+                 })
+               }
+             })
+
+           }
+         },
+         quit(){
+              var params=this.getLogin.token;
+              Quit({token:params}).then(res=>{
+                this.$message.success('退出成功，即将返回登录页面');
+                this.$router.push({name:"Login"})
+              })
          },
        },
-       beforeMount(){
-
+       created(){
+          if(this.getLogin.url&&this.getLogin.url!='') {
+            this.main = url() + this.getLogin.url;
+          }else{
+            this.main=main;
+          }
        },
-       mounted(){
-      /* console.log(this.$router);*/
-       }
     }
 </script>
 
@@ -118,9 +161,14 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background:	silver ;
-    color: #545C64;
-    height: 40px;
+    background:#545C64;
+    color: white;
+    font-size: 18px;
+    height: 39px;
+    border-bottom: 1px solid white;
+  }
+  .systemTitle{
+    padding-left: 10px;
   }
   .sideBar{
     position: absolute;
@@ -146,5 +194,8 @@
     width: calc(100% - 200px);
     max-height: calc( 100% - 40px);
     overflow: auto;
+  }
+  .quit{
+    cursor: pointer;
   }
 </style>

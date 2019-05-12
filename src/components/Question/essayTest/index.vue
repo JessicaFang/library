@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="title">题目</div>
-    <editor-bar v-model="questionForm.myQuestion" @htmlChange="val=>change(val,'myQuestion')"></editor-bar>
+    <editor-bar v-model="questionForm.myQuestion" :clear="$attrs" v-on="$listeners"  @htmlChange="val=>change(val,'myQuestion')"></editor-bar>
     <div class="answerTitle">答案</div>
     <div class="answer">
-        <editor-bar v-model="questionForm.myAnswer" :showToolBar="showToolBar" @htmlChange="val=>change(val,'myAnswer')"></editor-bar>
+        <editor-bar v-model="questionForm.myAnswer" :clear="$attrs" v-on="$listeners" :showToolBar="showToolBar" @htmlChange="val=>change(val,'myAnswer')"></editor-bar>
     </div>
     <div class="answerRules">评分规则</div>
     <div class="answer">

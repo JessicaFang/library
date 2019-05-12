@@ -30,6 +30,7 @@
       </el-form-item>
     </el-form>
     <component
+      :clear="clear"
       @submit="onSubmit"
       :is="template"
       ref="question"
@@ -46,7 +47,7 @@
   import blankFill from '@/components/Question/blankFill'
   import Judge from '@/components/Question/Judge'
   import essayTest from '@/components/Question/essayTest'
-  import {mapGetters} from 'vuex';
+  import {mapGetters,mapActions} from 'vuex';
 
   export default {
     name: "HandExport",
@@ -61,6 +62,7 @@
         knowledgeTitleList: [],
         template: 'Single',
         formShow: true,
+        clear:false,
       }
     },
     computed: {
@@ -79,7 +81,7 @@
           if (res.success) {
             this.knowledgeTitleList = res.obj
           } else {
-            this.$message.info(res.msg)
+            this.$message.warning(res.msg)
           }
         })
       },
@@ -120,6 +122,7 @@
               type: 'warning',
               message: '上传题目成功',
             })
+            this.clear=!this.clear;
             reset(this.form.type, this.$refs.question);
           } else {
             this.$message({

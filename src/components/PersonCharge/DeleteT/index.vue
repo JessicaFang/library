@@ -83,6 +83,7 @@
             var params = {courseId:this.courseId,tnos:no};
             delCourseTeacher(params).then((res) =>{
               if(res.success==true){
+                this.paramsChange(this.total)
                 this.getTable();
                 this.$message({
                   type: 'info',

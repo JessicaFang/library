@@ -112,3 +112,37 @@ export function queryKnowledge(params) {
     params
   });
 }
+
+export function sendCode(params) {
+  return request({
+    url: '/user/sendCode',
+    method: 'get',
+    params
+  });
+}
+
+//发送验证码后重置密码
+export function resetPwd(params) {
+  return request({
+    url: '/user/resetPwd',
+    method: 'get',
+    params
+  });
+}
+
+export function validCode(params) {
+  return request({
+    url: '/user/validCode',
+    method: 'get',
+    params
+  });
+}
+
+export function uploadFaceUrl(data) {
+  return request({
+    url:'/user/uploadFaceUrl',
+    method:'post',
+    data
+  })
+}
+

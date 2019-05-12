@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="title">题目</div>
-    <editor-bar v-model="questionForm.multipleQuestion" @htmlChange="val=>change(val,'multipleQuestion')"></editor-bar>
+    <editor-bar v-model="questionForm.multipleQuestion" :clear="$attrs" v-on="$listeners"  @htmlChange="val=>change(val,'multipleQuestion')"></editor-bar>
     <div class="double">答案</div>
     <div v-for="(item,index) in 4" :key="index" class="answers">
        <input v-model="questionForm.trueIndex" type="checkbox" :value="index" />
-       <editor-bar  class="aContent" v-model="questionForm.options[index]" @htmlChange="val=>change(val,'options',index)"></editor-bar>
+       <editor-bar  class="aContent" v-model="questionForm.options[index]" :clear="$attrs" v-on="$listeners"   @htmlChange="val=>change(val,'options',index)"></editor-bar>
     </div>
     <div class="bottom">
       <el-button class="button" type="primary" @click="onSubmit">提交</el-button>

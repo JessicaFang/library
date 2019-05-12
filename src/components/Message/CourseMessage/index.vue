@@ -28,6 +28,7 @@
         rules: {
           courseId: [{required: true, message: '请输入课程号', trigger: 'change'}],
           courseName: [{required: true, message: '请输入课程名', trigger: 'change'}],
+          courseIntroduction: [{required: true, message: '请输入课程介绍', trigger: 'change'}],
         }
       }
     },

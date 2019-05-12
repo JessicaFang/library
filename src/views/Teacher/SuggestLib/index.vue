@@ -13,6 +13,13 @@
       <el-form-item label-width="60px" label="课程号">
         <el-input v-model="form.courseId" placeholder="请输入课程号"></el-input>
       </el-form-item>
+      <el-form-item label-width="80px" label="审核状态">
+        <el-select v-model="form.suggestState" placeholder="请选择审核状态" clearable>
+          <el-option label="待审核" value="待审核"></el-option>
+          <el-option label="未通过" value="未通过"></el-option>
+          <el-option label="通过" value="通过"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSearch">查找</el-button>
       </el-form-item>
@@ -62,7 +69,7 @@
       return {
         form:{
           type:'1',
-          courseId:'2',
+          courseId:'',
           suggestState:''
         },
         type:'',
@@ -73,7 +80,7 @@
         visible:true,
         dialogVisible:false,
         template:'Single',
-        myobj:[],//传给dialog的数据
+        myobj:[],
         dialogTitle:'',
       }
     },
@@ -89,14 +96,11 @@
     methods:{
       translateIndex(index){
         var trueIndex='';
-        console.log(index);
          index=index+'';
          index=index.split('');
+         var arr=['A','B','C','D']
          index.forEach(item=>{
-           if(item=='0') trueIndex+='A';
-           else if(item=='1') trueIndex+='B';
-           else if(item=='2') trueIndex+='C';
-           else if(item=='3') trueIndex+='D';
+            trueIndex+=arr[item];
          })
         return trueIndex;
       },
@@ -155,7 +159,6 @@
             const data=_.cloneDeep(res.obj);
             this.myobj=[];
             this.myobj.push(this.typeChange(data));
-            console.log(this.myobj);
             this.dialogTitle='题目查看';
               this.dialogVisible=true;
           }
@@ -175,7 +178,7 @@
           var params =Object.assign({},{ids: id,type:this.type,state:state},form)
           submitSuggest(params).then((res) => {
             if (res.success == true) {
-              this.paramsChange();
+              this.paramsChange(this.total);
               this.getTable();
               this.$message({
                 type: 'info',
@@ -211,7 +214,7 @@
         })
       },
       getTable(){
-        const params=Object.assign({},this.defaultParams,this.form,{sno:'jwuyou',suggestState:'',isSubmit:'1'});
+        const params=Object.assign({},this.defaultParams,this.form,{sno:''});
         selectSuggest(params).then(res=>{
           if(res.success==true){
             this.tableData=res.obj;

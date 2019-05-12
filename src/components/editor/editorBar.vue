@@ -7,7 +7,9 @@
 
 <script>
      import {upload} from '@/api/public'
+     import {url } from '@/util/gobalVar'
      import E from 'wangeditor';
+     import {mapGetters} from 'vuex'
      export default {
       name: "editorBar",
       data(){
@@ -26,11 +28,14 @@
           type:Boolean,
           default:true,
         },
-        index:Number,
         showToolBar:{
            type:Boolean,
            default:true,
-        }
+        },
+        clear:{
+          default:false,
+        },
+
       },
       //提供父组件v-model
       model:{
@@ -40,13 +45,16 @@
       watch:{
         //顺序是这里发生改变，onchange传递数据出去，触发change事件，然后把值赋给questionForm，
         // 接着通过v-model回传到wangeditor,然后被监听之后又用this.editor.txt.html更改时数据,所以发生改变
-        value: function(newValue) {
-         /* console.log(this.valueChange)
+        clear(newVal){
+        /*  console.log(this.editor);*/
+          this.editor.txt.html('<p><br></p>');
+        }
+       /* value: function(newValue) {
+          console.log(this.getNum);
            if (this.valueChange) {
              this.editor.txt.html(newValue);
-             this.$emit('endChange');
-           }*/
-         }
+           }
+         }*/
        },
        methods:{
          setEditor() {
@@ -77,7 +85,7 @@
              /* insert 是编辑器自带的 获取图片 url 后，插入到编辑器的方法 上传代码返回结果之后，将图片插入到编辑器中*/
              if (result.errno == 0) {
                for (var i = 0; i < result.data.length; i++) {
-                 insert('http://jwuyou.ngrok.xiaomiqiu.cn' + result.data[i]);
+                 insert(url() + result.data[i]);
                }
              }
            };
@@ -149,7 +157,8 @@
       },
       mounted(){
         this.setEditor();
-        this.editor.txt.html(this.value)
+        this.editor.txt.html(this.value);
+        console.log(this.clear);
       }
     }
 </script>

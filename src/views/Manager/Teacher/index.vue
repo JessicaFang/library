@@ -108,15 +108,9 @@
         var file=this.$refs.file.files[0];
         var fileName=this.$refs.file.files[0].name
         var formData=new FormData();
-        formData.append(fileName,file);
-        console.log(formData.get(fileName));
-        let params = Object.assign({},formData,{roleLevel:2})
-        let config = {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-        importData(params,config).then(res=>{
+        formData.append('file',file);
+        formData.append('roleLevel','2');
+        importData(formData).then(res=>{
           if(res.success==true){
             this.$message({
               type:'success',
@@ -131,21 +125,6 @@
           }
           this.$refs.file.value = null;
         })
-        // importData(params,config).then(res=>{
-        //   if(res.success==true){
-        //     this.$message({
-        //       type:'success',
-        //       message:'导入成功',
-        //     });
-        //     this.getTable();
-        //   }else{
-        //     this.$message({
-        //       type:'info',
-        //       message:res.msg
-        //     })
-        //   }
-        //   this.$refs.file.value = null;
-        // })
       },
       handleExportClick() {
         if(this.selectCloumn.length>0) {
@@ -159,7 +138,7 @@
             exportData(params).then((res) =>{
               if(res.success==false){
                 this.$message({
-                  type: 'danger',
+                  type: 'warning',
                   message: res.msg
                 });
               }else{
@@ -199,7 +178,8 @@
         })
       },
       handleAlterClick(){
-         this.myForm=this.selectCloumn[0];
+        console.log(this.selectCloumn[0]);
+         this.myForm=translate(this.selectCloumn[0]);
          this.params.roleLevel='2';
          this.dialogVisible=true;
        },
@@ -236,6 +216,7 @@
             var params = {usernames: username,roleLevel:2};
             deleteData(params).then((res) =>{
               if(res.success==true){
+                this.paramsChange(this.total);
                 this.getTable();
                 this.$message({
                   type: 'info',
@@ -259,20 +240,6 @@
         this.getTable();
       },
       getTable(){
-        //this.defaultParams多少页多少行
-        // const obj=[
-        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        //   {myEmail: '4408811996@qq.com', tno: '001', sex: '男', name: '小熊', myTitle: '副教授'},
-        // ]
-        // this.tableData=translate(obj);
-        // this.total=4
         const params=Object.assign({},this.defaultParams,{roleLevel:'2',status:'1'},this.form);
         getMessage(params).then(res=>{
           if(res.success){
