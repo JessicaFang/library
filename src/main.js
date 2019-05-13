@@ -25,7 +25,6 @@ new Vue({
   template: '<App/>'
 })
 router.beforeEach((to, from, next) => {
-  console.log(to);
   if (to.name === 'Login'||to.name === 'Register'||to.name === 'Reset') {
     next();
   } else {

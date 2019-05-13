@@ -29,7 +29,6 @@ service.interceptors.response.use(response=>{
     return response.data;
   // }
   },err=>{
-    console.log('ddfd');
     return Promise.reject(err);
   }
 )

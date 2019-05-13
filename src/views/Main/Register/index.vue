@@ -101,7 +101,7 @@
                     type:'success',
                     message: '操作成功，即将跳转到登录页面',
                     onClose(){
-                      that.$router.go(-1);
+                      that.$router.push({name:'Login'});
                     },
                     showCancelButton:true
                   });
